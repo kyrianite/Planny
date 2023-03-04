@@ -13,7 +13,7 @@ export default function MessagesScreen() {
 
   return (
     <View style={Styles.container}>
-      <Text>This is the MESSAGES screen</Text>
+      <Text>This is the MESSAGES screen. Testing to see if git push goes through</Text>
       <Button
         title="Go to HOME"
         onPress={() => navigation.navigate('Home')}
