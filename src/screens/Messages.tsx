@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, Button } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
 import Styles from '../constants/Styles';
