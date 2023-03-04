@@ -1,8 +1,16 @@
 import * as React from 'react';
 import { View, Text, Button } from 'react-native';
-import Styles from '../constants/Styles';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
-export default function MessagesScreen({ navigation }) {
+import Styles from '../constants/Styles';
+import { RootStackParamList } from '../../App';
+
+type MessagesScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+export default function MessagesScreen() {
+  const navigation = useNavigation<MessagesScreenNavigationProp>();
+
   return (
     <View style={Styles.container}>
       <Text>This is the MESSAGES screen</Text>

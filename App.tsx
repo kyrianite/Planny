@@ -1,12 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import HomeScreen from './screens/Home'
-import MessagesScreen from './screens/Messages';
+import HomeScreen from './src/screens/Home'
+import MessagesScreen from './src/screens/Messages';
 
-type RootStackParamList = {
+export type RootStackParamList = {
   Home: undefined;
   Messages: undefined;
 };
