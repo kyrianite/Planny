@@ -49,3 +49,17 @@ export default function App() {
     </NavigationContainer>
   );
 };
+// const Test = createNativeStackNavigator<RootStackParamList>();
+// const Stack = createBottomTabNavigator();
+
+// export default function App() {
+//   return (
+//     <NavigationContainer>
+//       <Stack.Navigator initialRouteName="Home">
+//         <Stack.Screen name="Home" component={HomeScreen} />
+//         <Stack.Screen name="Messages" component={MessagesScreen} />
+//         {/* <StatusBar style="auto" /> */}
+//       </Stack.Navigator>
+//     </NavigationContainer>
+//   );
+// };
