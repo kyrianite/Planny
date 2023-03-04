@@ -21,6 +21,14 @@ export default function HomeScreen() {
         title="Go to MESSAGES"
         onPress={() => navigation.navigate('Messages')}
       />
+      <Button
+        title="Create House"
+        onPress={() => navigation.navigate('CreateHouse')}
+      />
+      <Button
+        title="Join House"
+        onPress={() => navigation.navigate('JoinHouse')}
+      />
     </View>
   );
 };
