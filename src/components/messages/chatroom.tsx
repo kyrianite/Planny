@@ -11,7 +11,7 @@ export default function Chatroom() {
   useEffect(() => {
     const socket = io('http://localhost:3000');
     setSocket(socket);
-    socket.emit('joinRoom', room);
+    socket.emit('joinRoom', room)
     socket.on('message', (message) => {
       setMessages([...messages, message]);
     });
