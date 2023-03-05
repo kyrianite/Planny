@@ -157,3 +157,36 @@ const styles = StyleSheet.create({
     borderColor: '#2A2B2A',
   },
 });
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  messagesContainer: {
+    flex: 1,
+    width: '100%',
+    padding: 10,
+  },
+  inputContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    padding: 10,
+  },
+  input: {
+    flex: 1,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+  },
+  sendButton: {
+    padding: 10,
+    backgroundColor: '#0084ff',
+    color: '#fff',
+    fontWeight: 'bold',
+    marginLeft: 10,
+  },
+});
