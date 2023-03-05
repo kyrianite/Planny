@@ -37,16 +37,8 @@ export default function HomeScreen() {
         source={require('../../assets/budew.png')}
       />
       <Button
-        title="Go to TEST"
-        onPress={() => navigation.push('Test')}
-      />
-      <Button
-        title="Create House"
-        onPress={() => navigation.navigate('CreateHouse')}
-      />
-      <Button
-        title="Join House"
-        onPress={() => navigation.navigate('JoinHouse')}
+        title="Go to MESSAGES"
+        onPress={() => navigation.navigate('Messages')}
       />
       <Button
         title="Create House"
