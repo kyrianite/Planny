@@ -9,6 +9,7 @@ import CreateHouseScreen from './src/screens/CreateHouse';
 import JoinHouseScreen from './src/screens/JoinHouse';
 import CommunityScreen from './src/screens/Community';
 import ProfilePlaceholderScreen from './src/screens/ProfilePlaceholder';
+import AddNewPlantScreen from './src/screens/AddNewPlant';
 import MyPlantsScreen from './src/screens/MyPlants';
 import HouseGroupScreen from './src/screens/HouseGroup';
 import HouseGroupScreen from './src/screens/HouseGroup';
@@ -20,6 +21,7 @@ export type RootStackParamList = {
   MyPlants: undefined;
   Messages: undefined;
   HouseGroup: { screen: string, p: object }| undefined;
+  'Add New Plant': undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -31,6 +33,7 @@ function Home() {
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="CreateHouse" component={CreateHouseScreen} />
       <Stack.Screen name="JoinHouse" component={JoinHouseScreen} />
+      <Stack.Screen name="Add New Plant" component={AddNewPlantScreen} />
       <Stack.Screen name="MyPlants" component={MyPlantsScreen} options={{headerTitle:"My Plants"}}/>
       <Stack.Screen name="HouseGroup" component={HouseGroupScreen} options={{headerTitle: ""}}/>
     </Stack.Navigator>
@@ -50,17 +53,3 @@ export default function App() {
     </NavigationContainer>
   );
 };
-// const Test = createNativeStackNavigator<RootStackParamList>();
-// const Stack = createBottomTabNavigator();
-
-// export default function App() {
-//   return (
-//     <NavigationContainer>
-//       <Stack.Navigator initialRouteName="Home">
-//         <Stack.Screen name="Home" component={HomeScreen} />
-//         <Stack.Screen name="Messages" component={MessagesScreen} />
-//         {/* <StatusBar style="auto" /> */}
-//       </Stack.Navigator>
-//     </NavigationContainer>
-//   );
-// };

@@ -48,6 +48,10 @@ export default function HomeScreen() {
         title="Join House"
         onPress={() => navigation.navigate('JoinHouse')}
       />
+      <Button
+        title="Add a New Plant"
+        onPress={() => navigation.navigate('Add New Plant')}
+      />
     </View>
     </>
   );

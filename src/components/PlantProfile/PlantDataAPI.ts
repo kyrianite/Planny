@@ -10,7 +10,7 @@ const axiosOption = {headers: {'content-type': 'application/json'}};
 module.exports = {
   getPlantList: async (name: string) => {
     try {
-      const plants = await axios.get(`${baseURL}species-list?page=1&key=${process.env.PERENUAL_API_KEY}`, axiosOption);
+      const plants = await axios.get(`${baseURL}species-list?q=${name}page=1&key=${process.env.PERENUAL_API_KEY}`, axiosOption);
       return plants.data;
     } catch (err: unknown) {
       console.log('Could not get plant list.');
