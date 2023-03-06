@@ -10,6 +10,8 @@ import JoinHouseScreen from './src/screens/JoinHouse';
 import CommunityScreen from './src/screens/Community';
 import ProfilePlaceholderScreen from './src/screens/ProfilePlaceholder';
 import AddNewPlantScreen from './src/screens/AddNewPlant';
+import PlantProfileScreen from './src/screens/PlantProfile';
+import AssignPlantCaretakerScreen from './src/screens/AssignPlantCaretaker';
 import MyPlantsScreen from './src/screens/MyPlants';
 import HouseGroupScreen from './src/screens/HouseGroup';
 import HouseGroupScreen from './src/screens/HouseGroup';
@@ -22,6 +24,8 @@ export type RootStackParamList = {
   Messages: undefined;
   HouseGroup: { screen: string, p: object }| undefined;
   'Add New Plant': undefined;
+  'Plant Profile': undefined;
+  'Assign Caretaker': undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -34,6 +38,8 @@ function Home() {
       <Stack.Screen name="CreateHouse" component={CreateHouseScreen} />
       <Stack.Screen name="JoinHouse" component={JoinHouseScreen} />
       <Stack.Screen name="Add New Plant" component={AddNewPlantScreen} />
+      <Stack.Screen name="Plant Profile" component={PlantProfileScreen} />
+      <Stack.Screen name='Assign Caretaker' component={AssignPlantCaretakerScreen} />
       <Stack.Screen name="MyPlants" component={MyPlantsScreen} options={{headerTitle:"My Plants"}}/>
       <Stack.Screen name="HouseGroup" component={HouseGroupScreen} options={{headerTitle: ""}}/>
     </Stack.Navigator>

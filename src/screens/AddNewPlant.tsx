@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Image, Text, Button, TextInput } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../App';
 
-type AddNewPlantNavigationProp = NativeStackNavigationProp<RootStackParamList>;
-
 interface WaterDropdown {
   label: string;
   value: string;
 };
 
-export default function AddNewPlantScreen() {
-  const navigation = useNavigation<AddNewPlantNavigationProp>();
+type AddNewPlantNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Add New Plant'>;
+
+type Props = { navigation: AddNewPlantNavigationProp; };
+
+export default function AddNewPlantScreen( {navigation}: Props) {
 
   const [plantImage, setPlantImage] = useState<string>(require('../../assets/AddNewPlantDefaultImage.png'));
   const [plantName, setPlantName] = useState<string>('');
@@ -52,8 +52,7 @@ export default function AddNewPlantScreen() {
         <Button
           title = "Save"
           onPress = {() => {
-            alert('Added new plant!');
-            console.log('Added new plant!');
+            navigation.navigate('Plant Profile');
           }}
         />
         {plantImage && <Image source={{ uri: plantImage }} style={Styles.plantImage} />}
@@ -94,6 +93,5 @@ export default function AddNewPlantScreen() {
         />
       </View>
     </ScrollView>
-
   )
 }

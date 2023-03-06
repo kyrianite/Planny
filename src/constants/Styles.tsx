@@ -7,6 +7,9 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  plantHeading: {
+    flexDirection: 'row',
+  },
   plantImage: {
     width: 150,
     height: 150,
