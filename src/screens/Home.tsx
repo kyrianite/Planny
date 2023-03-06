@@ -11,6 +11,19 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'H
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   return (
+    <>
+    <View style={Styles.container}>
+      <Button
+        title="My Plants"
+        onPress={() => navigation.navigate('MyPlants')}
+      />
+      <Button
+        title="Patrat's House Plants"
+        onPress={() => {
+          console.log('Pressed Patrat\'s House Plants');
+        }}
+      />
+    </View>
     <View style={Styles.container}>
       <Text>Hello from the HOME screen</Text>
       <Image
@@ -30,5 +43,6 @@ export default function HomeScreen() {
         onPress={() => navigation.navigate('JoinHouse')}
       />
     </View>
+    </>
   );
 };
