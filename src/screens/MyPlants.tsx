@@ -73,20 +73,35 @@ export default function MyPlantsScreen() {
 }
 
 export default function MyPlantsScreen() {
-  const testPlants = [{name: 'aloe', type:'green', location: 'bathroom'}, {name: "cactus", type:"green", location:'living room'}];
+  const testPlants = [{name: 'aloe', type:'green', location: 'bathroom', image:''}, {name: "cactus", type:"green", location:'living room'}];
   const navigation = useNavigation<MyPlantsScreenNavigationProp>();
+
   function makeButtons() {
     return testPlants.map((plant) => {
       return (
-        <Text>{plant.name}</Text>
+        <TouchableOpacity activeOpacity={0.5}
+          style={TouchableOpacityStyle} onPress={() => {
+            navigation.navigate('HouseGroup', {screen: 'HouseGroup', p});
+            }}>
+          <View>
+            <Image style={ImageStyle}
+              source={require('../../assets/budew.png')}/>
+          </View>
+          <View>
+            <Text style={{fontWeight:'bold', backgroundColor:'lightgreen'}}>
+              {capitalize(plant.name)}
+            </Text>
+            <Text style={{backgroundColor:'lightgreen'}}>
+              {capitalize(plant.location)}
+              </Text>
+          </View>
+        </TouchableOpacity>
       )
     })
   }
   return (
     <View style={Styles.container}>
-      <View>
         {makeButtons()}
-      </View>
     </View>
   )
 }
