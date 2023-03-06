@@ -13,7 +13,8 @@ dbs.once('open', function () {
 let userSchema = mongoose.Schema({
   userId: {
     type:String,
-    required:true
+    required:true,
+    index:true,
   },
   firstName: {
     type: String,
@@ -34,7 +35,7 @@ let userSchema = mongoose.Schema({
 });
 
 let householdSchema = mongoose.Schema({
-  householdId:{type:Number, required: true},
+  householdId:{type:Number, required: true, index:true},
   householdName:{type:String, required: true},
   members:[{type:String}], //array of member's id
   plants:[{type:Number}], // array of plant's id
@@ -42,7 +43,7 @@ let householdSchema = mongoose.Schema({
 })
 
 let messagesSchema = mongoose.Schema({
-  messageId: {type:Number},
+  messageId: {type:Number, required: true, index: true},
   to:{type:String},
   messages:[{
     count:{
@@ -67,11 +68,13 @@ let messagesSchema = mongoose.Schema({
 let plantSchema = mongoose.Schema({
   userId:{
     type:String,
-    required:true
+    required:true,
+    index:true,
   },
   plantId:{
     type:Number,
-    required:true
+    required:true,
+    index:true,
   },
   plantName:{
     type:String,
@@ -101,7 +104,7 @@ let plantSchema = mongoose.Schema({
 })
 
 let communitySchema = mongoose.Schema({
-  communityId: {type: Number, required: true},
+  communityId: {type: Number, required: true, index: true},
   time:{type:Date, required: true},
   messageId:{type:Number},
   photos:[{type:String}],
