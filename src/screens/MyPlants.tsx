@@ -71,3 +71,22 @@ export default function MyPlantsScreen() {
     </View>
   )
 }
+
+export default function MyPlantsScreen() {
+  const testPlants = [{name: 'aloe', type:'green', location: 'bathroom'}, {name: "cactus", type:"green", location:'living room'}];
+  const navigation = useNavigation<MyPlantsScreenNavigationProp>();
+  function makeButtons() {
+    return testPlants.map((plant) => {
+      return (
+        <Text>{plant.name}</Text>
+      )
+    })
+  }
+  return (
+    <View style={Styles.container}>
+      <View>
+        {makeButtons()}
+      </View>
+    </View>
+  )
+}
