@@ -7,7 +7,7 @@ import HomeScreen from './src/screens/Home'
 import MessagesScreen from './src/screens/Messages';
 import CreateHouseScreen from './src/screens/CreateHouse';
 import JoinHouseScreen from './src/screens/JoinHouse';
-import CommunityPlaceholderScreen from './src/screens/CommunityPlaceholder';
+import CommunityScreen from './src/screens/Community';
 import ProfilePlaceholderScreen from './src/screens/ProfilePlaceholder';
 
 export type RootStackParamList = {
@@ -36,7 +36,7 @@ export default function App() {
       <Tabs.Navigator initialRouteName="Home">
         <Tabs.Screen name="Home" component={Home} options={{headerShown:false}} />
         <Tabs.Screen name="Messages" component={MessagesScreen} />
-        <Tabs.Screen name="Community" component={CommunityPlaceholderScreen} />
+        <Tabs.Screen name="Community" component={CommunityScreen} />
         <Tabs.Screen name="Profile" component={ProfilePlaceholderScreen} />
         {/* <StatusBar style="auto" /> */}
       </Tabs.Navigator>

@@ -169,7 +169,7 @@ module.exports={
       .then((data) => {callback(null, data)})
       .catch((err) => {callback(err)})
     } else {
-      model.Household.updateOne({householdId:body.householdId}, {$addToSet: body.update})
+      model.Community.updateOne({householdId:body.communityId}, {$addToSet: body.update})
       .then((data) => {callback(null, data)})
       .catch((err) => {callback(err)})
     }
