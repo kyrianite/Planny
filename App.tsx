@@ -11,6 +11,7 @@ import CommunityScreen from './src/screens/Community';
 import ProfilePlaceholderScreen from './src/screens/ProfilePlaceholder';
 import MyPlantsScreen from './src/screens/MyPlants';
 import HouseGroupScreen from './src/screens/HouseGroup';
+import HouseGroupScreen from './src/screens/HouseGroup';
 
 export type RootStackParamList = {
   Home: undefined;
