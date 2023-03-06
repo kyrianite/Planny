@@ -67,24 +67,30 @@ module.exports={
       messages: [JSON.parse(JSON.stringify(body).slice())],
       to:null,
     }
-    if (message.messages[0].to) {
-      message.to = JSON.parse(JSON.stringify(message.messages[0].to).slice())
-      delete message.messages[0].to
-    }
-    console.log('thisis message', message)
-    model.Messages.findOne().sort({_id: -1})
-      .then((lastMessage) => {
-        if (lastMessage === null) {
-          console.log(message)
-          model.Messages.create(message)
-            .then((data) => callback(null, data))
-            .catch((err) => {console.log(err)})
-        } else {
-          message.messageId = lastMessage.messageId + 1
-          model.Messages.create(message)
-            .then((data) => callback(null, data))
-            .catch((err) => callback(err))
+    model.User.find({userId:message.messages[0].userId})
+      .then((dataUser) => {
+        message.messages[0].firstName = dataUser[0].firstName;
+        message.messages[0].lastName = dataUser[0].lastName;
+        if (message.messages[0].to) {
+          message.to = JSON.parse(JSON.stringify(message.messages[0].to).slice())
+          delete message.messages[0].to
         }
+        console.log('thisis message', message)
+        model.Messages.findOne().sort({_id: -1})
+          .then((lastMessage) => {
+            if (lastMessage === null) {
+              console.log(message)
+              model.Messages.create(message)
+                .then((data) => callback(null, data))
+                .catch((err) => {console.log(err)})
+            } else {
+              message.messageId = lastMessage.messageId + 1
+              model.Messages.create(message)
+                .then((data) => callback(null, data))
+                .catch((err) => callback(err))
+            }
+          })
+          .catch((err) => {callback(err)})
       })
   },
   updateMessage: (body, callback) => {
@@ -92,13 +98,20 @@ module.exports={
       .then((data) => {
         let length = data[0].messages.length;
         let arrMessage = data[0].messages.slice()
-        let objUpdate = JSON.parse(JSON.stringify(body.message).slice())
-        objUpdate.count = length + 1;
-        arrMessage.push(objUpdate)
-        console.log(arrMessage)
-        model.Messages.updateOne({messageId:body.messageId}, {messages:arrMessage})
-         .then((data) => callback(null, data))
-         .catch((err) => callback(err))
+        model.User.find({userId:body.message.userId})
+          .exec()
+          .then((dataUser) => {
+            let objUpdate = JSON.parse(JSON.stringify(body.message).slice())
+            objUpdate.count = length + 1;
+            objUpdate.firstName = dataUser[0].firstName;
+            objUpdate.lastName = dataUser[0].lastName;
+            arrMessage.push(objUpdate)
+            console.log(arrMessage)
+            model.Messages.updateOne({messageId:body.messageId}, {messages:arrMessage})
+             .then((data) => callback(null, data))
+             .catch((err) => callback(err))
+          })
+          .catch((err) => {callback(err)})
       })
   },
   findMessage: (body, callback) => {
@@ -150,13 +163,21 @@ module.exports={
     model.Community.findOne().sort({_id: -1})
     .then((lastCommunity) => {
       let objCommunity = JSON.parse(JSON.stringify(body).slice())
-      objCommunity.communityId = 1;
-      if (lastCommunity !== null) {
-        objCommunity.communityId = lastCommunity.communityId +1
-      }
-      model.Community.create(objCommunity)
-        .then((data) => {
-          callback(null, data)
+      model.User.find({userId:body.userId})
+        .then((dataUser) => {
+          objCommunity.firstName = dataUser[0].firstName;
+          objCommunity.lastName = dataUser[0].lastName;
+          objCommunity.communityId = 1;
+          if (lastCommunity !== null) {
+            objCommunity.communityId = lastCommunity.communityId +1
+          }
+          model.Community.create(objCommunity)
+            .then((data) => {
+              callback(null, data)
+            })
+            .catch((err) => {
+              callback(err)
+            })
         })
         .catch((err) => {
           callback(err)
@@ -169,9 +190,9 @@ module.exports={
       .then((data) => {callback(null, data)})
       .catch((err) => {callback(err)})
     } else {
-      model.Household.updateOne({householdId:body.householdId}, {$addToSet: body.update})
-      .then((data) => {callback(null, data)})
-      .catch((err) => {callback(err)})
+      // model.Community.updateOne({communityId:body.communityId}, {$addToSet: body.update})
+      // .then((data) => {callback(null, data)})
+      // .catch((err) => {callback(err)})
     }
   },
   findCommunity: (callback) => {
