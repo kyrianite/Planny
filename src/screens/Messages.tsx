@@ -18,36 +18,36 @@ export default function MessagesScreen() {
     setText('');
   };
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      margin: 30,
-    },
-    input: {
-      padding: 10,
-      marginBottom: 10,
-      borderWidth: 1,
-      position: 'absolute',
-      bottom: 0,
-    },
-    text: {
-      padding: 10,
-      marginTop: 10,
-      borderBottomWidth: 1,
-    },
-    messageText: {
-      padding: 10,
-      marginTop: 10,
-      borderBottomWidth: 1,
-      position: 'absolute',
-      top: 0,
-    },
-    submitButton: {
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-  },
-  });
+  // const styles = StyleSheet.create({
+  //   container: {
+  //     flex: 1,
+  //     margin: 30,
+  //   },
+  //   input: {
+  //     padding: 10,
+  //     marginBottom: 10,
+  //     borderWidth: 1,
+  //     position: 'absolute',
+  //     bottom: 0,
+  //   },
+  //   text: {
+  //     padding: 10,
+  //     marginTop: 10,
+  //     borderBottomWidth: 1,
+  //   },
+  //   messageText: {
+  //     padding: 10,
+  //     marginTop: 10,
+  //     borderBottomWidth: 1,
+  //     position: 'absolute',
+  //     top: 0,
+  //   },
+  //   submitButton: {
+  //     position: 'absolute',
+  //     bottom: 0,
+  //     left: 0,
+  // },
+  // });
 
   return (
 <View style={styles.container}>
@@ -72,7 +72,11 @@ export default function MessagesScreen() {
 };
 
 
-// <Button
-// title="Go to HOME"
-// onPress={() => navigation.navigate('Home')}
-// />
+const styles = StyleSheet.create({
+  container:{
+    display: 'flex',
+    flexDirection: 'column', // inner items will be added vertically
+    flexGrow: 1,            // all the available vertical space will be occupied by it
+    justifyContent: 'space-between' // will create the gutter between body and footer
+  },
+});

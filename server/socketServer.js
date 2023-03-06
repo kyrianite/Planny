@@ -3,7 +3,7 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, { cors: { origin: '*' } });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3420;
 
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
@@ -19,8 +19,9 @@ io.on('connection', (socket) => {
   });
 
   socket.on('message', (message) => {
+    console.log(message)
     io.to(currentRoom).emit('message', message);
-    console.log(`Message sent: ${message}`);
+    console.log(`user "${message.name}" sent "${message.message}" to room "${currentRoom}"`);
   });
 
   socket.on('disconnect', () => {
