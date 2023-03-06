@@ -108,6 +108,7 @@ let communitySchema = mongoose.Schema({
   userId: {type:String, required: true},
   topic:{type:String, required: true},
   plantName:{type:String},
+  likes:{type:Number, default: 0},
   plantType:{type:String}
 })
 

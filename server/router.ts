@@ -108,5 +108,11 @@ routers.post('/communityMessage', controllers.postCommunityMessage)
 routers.get('/community', controllers.findCommunity)
 // no need params
 
+routers.put('/communityLikes', controllers.updateCommunityLikes)
+// in params
+// {
+//   communityId:
+// }
+
 
 module.exports = routers;

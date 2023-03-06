@@ -178,6 +178,11 @@ module.exports={
     model.Community.find()
       .then((data) => {callback(null,data)})
       .catch((err) => {callback(null)})
+  },
+  updateCommunityLikes: (communityId, callback) => {
+    model.Community.updateOne(communityId, {$inc: {likes: 1}})
+    .then((data) => {callback(null,data)})
+    .catch((err) => {callback(err)})
   }
 }
 

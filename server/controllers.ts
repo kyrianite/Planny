@@ -328,5 +328,18 @@ module.exports= {
         res.end()
       }
     })
+  },
+  updateCommunityLikes: (req, res) => {
+    db.updateCommunityLikes({communityId: req.query.communityId}, (err, data) => {
+      if (err) {
+        console.log(err)
+        res.status(500)
+        res.end(err)
+      } else {
+        res.json(data)
+        res.status(203)
+        res.end()
+      }
+    })
   }
 }
