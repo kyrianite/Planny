@@ -21,7 +21,7 @@ const path = require('path');
 const app = express();
 
 const bodyParser = require('body-parser');
-const router = require('./router.tsx');
+const router = require('./router');
 
 app.use(bodyParser());
 app.use(express.json());
