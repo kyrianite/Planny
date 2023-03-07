@@ -8,6 +8,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../App';
 
+const PlantAPI = require('../components/PlantProfile/PlantDataAPI');
+
 interface WaterDropdown {
   label: string;
   value: string;
@@ -47,6 +49,13 @@ export default function AddNewPlantScreen( {navigation}: Props) {
     }
   };
 
+  const handleSearch = async() => {
+    console.log('send search term to api', plantName);
+    const res = await PlantAPI.getPlantList(plantName);
+    console.log(res);
+  };
+
+
   return (
     <ScrollView>
       <View style={Styles.container}>
@@ -68,6 +77,7 @@ export default function AddNewPlantScreen( {navigation}: Props) {
           placeholder = "Plant name..."
           onChangeText = {name => setPlantName(name)}
           inputMode = 'search'
+          onSubmitEditing={handleSearch}
         />
         <Text>Location</Text>
         <TextInput

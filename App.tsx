@@ -14,7 +14,6 @@ import PlantProfileScreen from './src/screens/PlantProfile';
 import AssignPlantCaretakerScreen from './src/screens/AssignPlantCaretaker';
 import MyPlantsScreen from './src/screens/MyPlants';
 import HouseGroupScreen from './src/screens/HouseGroup';
-import HouseGroupScreen from './src/screens/HouseGroup';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -25,7 +24,7 @@ export type RootStackParamList = {
   HouseGroup: { screen: string, p: object }| undefined;
   'Add New Plant': undefined;
   'Plant Profile': undefined;
-  'Assign Caretaker': {
+  'Assign Caretaker': undefined | {
     caretakers: Array<string>;
   };
 };
@@ -59,5 +58,6 @@ export default function App() {
         {/* <StatusBar style="auto" /> */}
       </Tabs.Navigator>
     </NavigationContainer>
+
   );
 };
