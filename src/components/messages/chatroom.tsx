@@ -28,7 +28,7 @@ export default function Chatroom({ route }) {
   useEffect(() => {
     console.log(route.name)
     console.log(route.params.homeLocation) // dynamic house name
-    setRoom(room123) // This is where we will set the room from MongoDB
+    if (route.params.homeLocation) setRoom(route.params.homeLocation) // This is where we will set the room from MongoDB
     setUser(name123)
     const socket = io('http://localhost:3420');
     setSocket(socket);
