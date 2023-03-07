@@ -1,34 +1,35 @@
-import * as React from 'react';
-import { View, Text, Image, Button } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
+import * as React from "react";
+import { View, Text, Image, Button } from "react-native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useNavigation } from "@react-navigation/native";
 
-import Styles from '../constants/Styles';
-import { RootStackParamList } from '../../App';
+import Styles from "../constants/Styles";
+import { RootStackParamList } from "../../App";
 
-type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+type HomeScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Home"
+>;
 
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   return (
     <View style={Styles.container}>
       <Text>Hello from the HOME screen</Text>
-      <Image
-        style={Styles.budew}
-        source={require('../../assets/budew.png')}
-      />
+      <Image style={Styles.budew} source={require("../../assets/budew.png")} />
       <Button
         title="Go to MESSAGES"
-        onPress={() => navigation.navigate('Messages')}
+        onPress={() => navigation.navigate("Messages")}
       />
       <Button
         title="Create House"
-        onPress={() => navigation.navigate('CreateHouse')}
+        onPress={() => navigation.navigate("CreateHouse")}
       />
       <Button
         title="Join House"
-        onPress={() => navigation.navigate('JoinHouse')}
+        onPress={() => navigation.navigate("JoinHouse")}
       />
+      <Button title="Sign Up" onPress={() => navigation.navigate("SignUp")} />
     </View>
   );
-};
+}

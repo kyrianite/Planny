@@ -14,20 +14,23 @@
 //   console.log(`⚡️[server]: Server is running on ${port}`);
 // });
 
-require('dotenv').config();
-const express = require('express');
-const path = require('path');
+require("dotenv").config();
+const express = require("express");
+const path = require("path");
+const cors = require("cors");
 
 const app = express();
 
-const bodyParser = require('body-parser');
-const router = require('./router');
+const bodyParser = require("body-parser");
+const router = require("./router");
 
 app.use(bodyParser());
 app.use(express.json());
+app.use(cors());
+
 // app.use(express.static(path.join(`${__dirname}/../client/dist`)));
 
-app.use('/db', router);
+app.use("/db", router);
 // app.get('/db', (req, res) => {res.end('this is')})
 
 app.listen(process.env.PORT);
