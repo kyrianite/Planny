@@ -30,8 +30,8 @@ const tempStyling = StyleSheet.create({
   },
 
   LandingPageImage: {
-    width: 210,
-    height: 250,
+    width: 210, height: 250,
+    resizeMode:'contain'
   }
 
 })

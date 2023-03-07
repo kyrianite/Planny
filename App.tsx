@@ -37,8 +37,8 @@ function Home() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="CreateHouse" component={CreateHouseScreen} />
-      <Stack.Screen name="JoinHouse" component={JoinHouseScreen} />
+      <Stack.Screen name="CreateHouse" component={CreateHouseScreen} options={{headerTitle:"Return to Home"}}/>
+      <Stack.Screen name="JoinHouse" component={JoinHouseScreen} options={{headerTitle:"Return to Home"}}/>
       <Stack.Screen name="Add New Plant" component={AddNewPlantScreen}
         options={({navigation, route}) => ({headerRight: () => (
           <TouchableOpacity style={{padding: 10}} onPress={() => navigation.navigate('Plant Profile')}>
