@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, Button, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
@@ -51,7 +51,7 @@ export default function AddPostScreen() {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: Colors.lightBlue }}>
+    <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: '#fff' }}>
       <View style={styles.container}>
         <Text style={styles.title}>New Post</Text>
         <View style={styles.form}>
@@ -86,13 +86,9 @@ export default function AddPostScreen() {
             <Image source={{ uri: photo }} style={styles.postPhoto} key={index} />
           ))}
         </View>
-        <Button
-          title="Submit"
-          onPress={() => {
-            console.log('New Post Button');
-            navigation.navigate('Community');
-          }}
-        />
+        <TouchableOpacity style={styles.button} onPress={() => { console.log('Button Pressed') }}>
+        <Text style={styles.buttonText}>Send</Text>
+      </TouchableOpacity>
         <Button
           title="< Back"
           onPress={() => {
@@ -124,14 +120,29 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   input: {
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: 'grey',
     padding: 10,
     borderRadius: 20,
+    backgroundColor:Colors.sage
   },
   postPhoto: {
     height: 100,
     resizeMode: 'contain',
     marginVertical: 10,
+  },
+  button: {
+    backgroundColor: Colors.sage,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    marginLeft: 10,
+    width:100,
+    marginBottom: 30
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
 });

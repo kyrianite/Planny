@@ -40,17 +40,17 @@ export default function PostEntry(props: PostProps) {
     <View style={styles.postContainer}>
       <View style={styles.postHeader}>
         <Text style={styles.postUsername}>{username}</Text>
-        <Text style={styles.posttime}>{time}</Text>
       </View>
       <View style={styles.posttopic}>
-        <Text>{topic}</Text>
         <View style={styles.postPhotoContainer}>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        {photos.map((photo, index) => (
-          <Image source={{ uri: photo }} style={styles.postPhoto} key={index} />
-        ))}
-        </ScrollView>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            {photos.map((photo, index) => (
+              <Image source={{ uri: photo }} style={styles.postPhoto} key={index} />
+            ))}
+          </ScrollView>
         </View>
+        <Text>{topic}</Text>
+
       </View>
       <View style={styles.postFooter}>
         <TouchableOpacity onPress={onLikePress}>
@@ -63,13 +63,15 @@ export default function PostEntry(props: PostProps) {
           <Text>Share</Text>
         </TouchableOpacity>
       </View>
+      <Text style={styles.posttime}>{time}</Text>
+
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   postContainer: {
-    backgroundColor: Colors.lightBlue,
+    // backgroundColor: Colors.porcelain,
     padding: 10,
     margin: 10,
     borderRadius: 20,
@@ -84,21 +86,24 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   posttime: {
-    fontStyle: 'italic',
+    marginTop:5
+
   },
   posttopic: {
-    marginBottom: 10,
+    marginBottom: 5,
   },
+
   postPhotoContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height:250
+    height:210,
+    marginBottom:5
   },
   postPhoto: {
     height: 200,
     width: 200,
-    marginRight:10,
+    marginRight:20,
     borderRadius: 10
   },
   postFooter: {
