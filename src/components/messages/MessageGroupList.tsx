@@ -38,7 +38,7 @@ export default function MessageGroupList() {
 
 
   const createHome = () => {
-    setHomes([...homes, {location: 'houseName', lastMessage: 'test', lastMessager: 'test', avatar: placeholder2, householdMembers: members }])
+    setHomes([...homes, {location: houseName, lastMessage: 'test', lastMessager: 'test', avatar: placeholder2, householdMembers: members }])
     setModalVisible(false)
     setHouseName('');
     setMemberName('');
@@ -55,7 +55,7 @@ export default function MessageGroupList() {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{flex: 1, backgroundColor: '#EFDBCA', padding: 10, maxHeight: '80%', position: 'absolute', top: 0, bottom: 0, left: 0, right: 0,}}>
+      <ScrollView style={{flex: 1, backgroundColor: '#EFDBCA', padding: 10, maxHeight: '90%', position: 'absolute', top: 0, bottom: 0, left: 0, right: 0,}}>
       <Text style={{marginBottom: 25}}>Your Houses</Text>
       {homes.map(home => (
           <TouchableOpacity
@@ -70,7 +70,7 @@ export default function MessageGroupList() {
             console.log(homes)
           }}
         >
-        <View key={home.location} style={{flexDirection: 'row', borderWidth: 1, borderColor: 'black', padding: 10, margin: 10, borderRadius: 20, marginBottom: 25}}>
+        <View key={home.location} style={{flexDirection: 'row', borderWidth: 0, borderColor: 'black', padding: 10, margin: 10, borderRadius: 20, marginBottom: 25, backgroundColor: '#C6D5BE'}}>
           <Image source={home.avatar} style={{width: 50, height: 50, borderRadius: 25}} />
           <View style={{marginLeft: 10, marginBottom: 5}}>
             <Text style={{fontWeight: 'bold', textDecoration: 'underline', fontSize: '20px', }}>{home.location}</Text>
@@ -91,6 +91,9 @@ export default function MessageGroupList() {
         onRequestClose={() => {
           Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
+          setHouseName('');
+          setMemberName('');
+          setMembers([]);
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
@@ -132,7 +135,7 @@ export default function MessageGroupList() {
           </View>
         </View>
       </Modal>
-      <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
+      <View style={{position: 'absolute', bottom: 10, left: 0, right: 0, backgroundColor: '#B7DBDB'}}>
       <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => setModalVisible(true)}>
@@ -148,11 +151,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column', // inner items will be added vertically
         // all the available vertical space will be occupied by it
     // justifyContent: 'space-between', // will create the gutter between body and footer
-    position: 'relative'
+    position: 'relative',
+    backgroundColor: '#B7DBDB'
   },
   modalView: {
     margin: 20,
-    backgroundColor: '#EFDBCA',
+    backgroundColor: '#B7DBDB',
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
@@ -171,7 +175,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonOpen: {
-    backgroundColor: '#F194FF',
+    backgroundColor: '#C6D5BE',
     flex: 0.2,
     flexDirection: 'row',
     justifyContent: 'space-between',
