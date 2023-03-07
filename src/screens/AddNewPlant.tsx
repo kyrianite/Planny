@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Image, Text, Button, TextInput } from 'react-native';
+import { View, ScrollView, Image, Text, Button, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as ImagePicker from 'expo-image-picker';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import Styles from '../constants/Styles';
@@ -55,8 +56,12 @@ export default function AddNewPlantScreen( {navigation}: Props) {
             navigation.navigate('Plant Profile');
           }}
         />
-        {plantImage && <Image source={{ uri: plantImage }} style={Styles.plantImage} />}
-        <Button title="Upload image" onPress={pickImage} />
+        <View style={Styles.container}>
+          <Image source={{ uri: plantImage }} style={Styles.plantImage} />
+          <TouchableOpacity style={Styles.plantImageButtonContainer}>
+            <MaterialCommunityIcons name="file-image-plus" size={24} color="black" onPress={pickImage}/>
+          </TouchableOpacity>
+        </View>
         <Text>Search Plant Name</Text>
         <TextInput
           style = {Styles.singleLineInput}

@@ -25,7 +25,9 @@ export type RootStackParamList = {
   HouseGroup: { screen: string, p: object }| undefined;
   'Add New Plant': undefined;
   'Plant Profile': undefined;
-  'Assign Caretaker': undefined;
+  'Assign Caretaker': {
+    caretakers: Array<string>;
+  };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

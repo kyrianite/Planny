@@ -9,10 +9,49 @@ export default StyleSheet.create({
   },
   plantHeading: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline'
+  },
+  plantInfo: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    padding: 10
+  },
+  plantNameAndLoc: {
+    flex: 1,
+    alignSelf: 'center',
+    paddingStart: 10
+  },
+  plantHeadingNameText: {
+    fontSize: 15
+  },
+  plantHeadingLocText: {
+    fontSize: 10
+  },
+  plantWaterIcon: {
+    alignItems: 'baseline',
+    alignSelf: 'center',
+    padding: 10
+  },
+  plantImageButtonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    alignSelf: 'flex-end',
+    padding: 5
   },
   plantImage: {
     width: 150,
     height: 150,
+    borderWidth: 3
+  },
+  plantThumbnail: {
+    alignSelf: 'flex-start',
+    width: 50,
+    height: 50,
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 50,
+    overflow: 'hidden'
   },
   singleLineInput: {
     height: 40,

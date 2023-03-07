@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@expo/webpack-config": "^18.0.1",
+    "@react-native/assets-registry": "^0.72.0",
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/react-native-fontawesome": "^0.3.0",
     "@react-navigation/bottom-tabs": "^6.5.7",
@@ -44,8 +45,7 @@
     "react-native-web": "~0.18.10",
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.6.1",
-    "ts-node": "^10.9.1",
-    "expo-image-picker": "~14.1.1"
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
