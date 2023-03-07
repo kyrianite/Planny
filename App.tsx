@@ -9,12 +9,14 @@ import CreateHouseScreen from './src/screens/CreateHouse';
 import JoinHouseScreen from './src/screens/JoinHouse';
 import CommunityPlaceholderScreen from './src/screens/CommunityPlaceholder';
 import ProfilePlaceholderScreen from './src/screens/ProfilePlaceholder';
+import Chatroom from './src/components/messages/chatroom'
 
 export type RootStackParamList = {
   Home: undefined;
   CreateHouse: undefined;
   JoinHouse: undefined;
   Messages: undefined;
+  ChatRoom: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -26,6 +28,8 @@ function Home() {
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="CreateHouse" component={CreateHouseScreen} />
       <Stack.Screen name="JoinHouse" component={JoinHouseScreen} />
+      <Stack.Screen name="Messages" component={MessagesScreen} />
+      <Stack.Screen name="ChatRoom" component={Chatroom} />
     </Stack.Navigator>
   )
 }
