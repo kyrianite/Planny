@@ -69,6 +69,5 @@ export default function MyPlantsScreen() {
     <View style={Styles.container}>
         {makeButtons()}
     </View>
-    </View>
   )
 }
