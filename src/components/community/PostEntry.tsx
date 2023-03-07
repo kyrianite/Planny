@@ -1,4 +1,4 @@
-import { useStat } from 'react';
+import { useState } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import Colors from '../../constants/ColorScheme';
 
@@ -46,7 +46,6 @@ export default function PostEntry(props: PostProps) {
         <Text>{topic}</Text>
         <View style={styles.postPhotoContainer}>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-
         {photos.map((photo, index) => (
           <Image source={{ uri: photo }} style={styles.postPhoto} key={index} />
         ))}
@@ -94,11 +93,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height:100
+    height:250
   },
   postPhoto: {
-    height: 80,
-    width: 80,
+    height: 200,
+    width: 200,
     marginRight:10,
     borderRadius: 10
   },

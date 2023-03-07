@@ -1,12 +1,13 @@
-import { useState } from 'react';
-import { View, Text, Image, Button, TextInput, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Button, TextInput, StyleSheet, Image, ScrollView } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-
-import Styles from '../../constants/Styles';
 import { CommunityStackParamList } from '../../screens/Community';
+import Colors from '../../constants/ColorScheme';
 
-type MainScreenNavigationProp = NativeStackNavigationProp<CommunityStackParamList, 'AddPost'>;
+type AddPostScreenNavigationProp = NativeStackNavigationProp<CommunityStackParamList, 'AddPost'>;
+
 type NewPost = {
   username: string;
   time: string;
@@ -17,7 +18,9 @@ type NewPost = {
 };
 
 export default function AddPostScreen() {
-  const navigation = useNavigation<MainScreenNavigationProp>();
+
+  const navigation = useNavigation<AddPostScreenNavigationProp>();
+
   const [newPost, setNewPost] = useState<NewPost>({
     username: 'Quanjing Chen',
     time: '',
@@ -26,71 +29,93 @@ export default function AddPostScreen() {
     plantType: '',
     plantName: '',
   });
-  const onSubmit = () => {
-    console.log(newPost);
+
+  const onPlantTypeChange = (text: string) => {
+    setNewPost({ ...newPost, plantType: text });
+  };
+
+  const onPlantNameChange = (text: string) => {
+    setNewPost({ ...newPost, plantName: text });
+  };
+
+  const onBodyChange = (text: string) => {
+    setNewPost({ ...newPost, topic: text });
+  };
+
+  const onPhotoSelect = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync();
+    console.log(result);
+    if (!result.canceled) {
+      setNewPost({ ...newPost, photos: [...newPost.photos, result.assets[0].uri] });
+    }
   };
 
   return (
-    <View style={Styles.container}>
-      <Text>make a new Post</Text>
+    <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: Colors.lightBlue }}>
       <View style={styles.container}>
         <Text style={styles.title}>New Post</Text>
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Plant Type</Text>
+        <View style={styles.form}>
+          <Text style={styles.label}>Plant Type (optional)</Text>
           <TextInput
             style={styles.input}
             value={newPost.plantType}
-            onChangeText={(text) => setNewPost({ ...newPost, plantType: text })}
+            onChangeText={onPlantTypeChange}
           />
         </View>
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Plant Name</Text>
+        <View style={styles.form}>
+          <Text style={styles.label}>Plant Name (optional)</Text>
           <TextInput
             style={styles.input}
             value={newPost.plantName}
-            onChangeText={(text) => setNewPost({ ...newPost, plantName: text })}
+            onChangeText={onPlantNameChange}
           />
         </View>
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>topic</Text>
+        <View style={styles.form}>
+          <Text style={styles.label}>Body</Text>
           <TextInput
-            style={[styles.input, styles.multiline]}
-            value={newPost.topic}
-            onChangeText={(text) => setNewPost({ ...newPost, topic: text })}
+            style={[styles.input, { height: 100 }]}
             multiline={true}
+            numberOfLines={4}
+            value={newPost.topic}
+            onChangeText={onBodyChange}
           />
         </View>
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Photo</Text>
-          <Button title="Select Photo" onPress={() => pickImage()} />
+        <View style={styles.form}>
+          <Button title="Select Photo" onPress={onPhotoSelect} />
           {newPost.photos.map((photo, index) => (
             <Image source={{ uri: photo }} style={styles.postPhoto} key={index} />
           ))}
         </View>
-        <Button title="Submit" onPress={onSubmit} />
+        <Button
+          title="Submit"
+          onPress={() => {
+            console.log('New Post Button');
+            navigation.navigate('Community');
+          }}
+        />
+        <Button
+          title="< Back"
+          onPress={() => {
+            navigation.navigate('Community');
+          }}
+        />
       </View>
-      <Button
-        title="Back to community"
-        onPress={() => {
-          console.log('New Post Button');
-          navigation.navigate('Community');
-        }}
-      />
-    </View>
-  )
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
     padding: 10,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 10,
   },
-  formGroup: {
+  form: {
     marginBottom: 20,
   },
   label: {
@@ -100,12 +125,13 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    borderColor: 'grey',
     padding: 10,
-    fontSize: 16,
+    borderRadius: 20,
   },
-  multiline: {
+  postPhoto: {
     height: 100,
+    resizeMode: 'contain',
+    marginVertical: 10,
   },
 });

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Image, Button, TextInput } from 'react-native';
+import { View, Text, Button, TextInput } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
@@ -19,11 +19,10 @@ export default function CommentScreen() {
           placeholder="Enter comment" />
       </View>
       <Button
-        title="new comment"
-        onPress={() => {
-          console.log('New Comment Button');
-          navigation.navigate('Community');
-        }}
+          title="< Back"
+          onPress={() => {
+            navigation.navigate('Community');
+          }}
         />
     </View>
   )
