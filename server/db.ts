@@ -62,12 +62,20 @@ module.exports={
       })
   },
   postMessage: (body, callback) => {
-    let message = {
-      messageId:1,
-      messages: [JSON.parse(JSON.stringify(body).slice())],
-      to:null,
+let message = {
+  messageId : 1,
+  messages:[JSON.parse(JSON.stringify(body).slice())],
+  to: null
+}
+    if (!body) {
+      message = {
+        messageId:1,
+        messages: [],
+        to:null,
+      }
     }
-    model.User.find({userId:message.messages[0].userId})
+    if (message.messages[0]) {
+      model.User.find({userId:message.messages[0].userId})
       .then((dataUser) => {
         message.messages[0].firstName = dataUser[0].firstName;
         message.messages[0].lastName = dataUser[0].lastName;
@@ -92,6 +100,23 @@ module.exports={
           })
           .catch((err) => {callback(err)})
       })
+    } else {
+      model.Messages.findOne().sort({_id: -1})
+          .then((lastMessage) => {
+            if (lastMessage === null) {
+              console.log(message)
+              model.Messages.create(message)
+                .then((data) => callback(null, data))
+                .catch((err) => {console.log(err)})
+            } else {
+              message.messageId = lastMessage.messageId + 1
+              model.Messages.create(message)
+                .then((data) => callback(null, data))
+                .catch((err) => callback(err))
+            }
+          })
+          .catch((err) => {callback(err)})
+    }
   },
   updateMessage: (body, callback) => {
     model.Messages.find({messageId:body.messageId})
@@ -124,11 +149,13 @@ module.exports={
       })
   },
   postHousehold: (body, callback) => {
+    model.Messages.create()
     model.Household.findOne().sort({_id: -1})
       .then((lastHousehold) => {
         let objHousehold = {
           householdName: body.household.householdName,
           members:[body.userId],
+          messageId: body.messageId,
           householdId:1
         }
         if (lastHousehold !== null) {
