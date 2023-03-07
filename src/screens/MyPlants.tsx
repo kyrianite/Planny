@@ -13,14 +13,10 @@ type MyPlantsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList
 const tempStyling = StyleSheet.create({
   TouchableOpacityStyle: {
     backgroundColor: '#C6D5BE',
-    marginTop: 50,
-    height: 100,
-    width: 200,
-    borderWidth: 1,
-    alignItems:'center',
-    justifyContent: 'center',
-    borderRadius: 50,
-    flexDirection:'row'
+    marginTop: 50, borderWidth: 1,
+    height: 100, width: 200,
+    alignItems:'center', justifyContent: 'center',
+    borderRadius: 50, flexDirection:'row'
   },
   ImageStyle: {
     height: 50,
