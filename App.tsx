@@ -1,7 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { View, Button, TouchableOpacity } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import HomeScreen from './src/screens/Home'
 import MessagesScreen from './src/screens/Messages';
@@ -38,7 +39,11 @@ function Home() {
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="CreateHouse" component={CreateHouseScreen} />
       <Stack.Screen name="JoinHouse" component={JoinHouseScreen} />
-      <Stack.Screen name="Add New Plant" component={AddNewPlantScreen} />
+      <Stack.Screen name="Add New Plant" component={AddNewPlantScreen}
+        options={({navigation, route}) => ({headerRight: () => (
+          <TouchableOpacity style={{padding: 10}} onPress={() => navigation.navigate('Plant Profile')}>
+            <MaterialCommunityIcons name="content-save-outline" size={24} color="black" />
+          </TouchableOpacity>)})}/>
       <Stack.Screen name="Plant Profile" component={PlantProfileScreen} />
       <Stack.Screen name='Assign Caretaker' component={AssignPlantCaretakerScreen} />
       <Stack.Screen name="MyPlants" component={MyPlantsScreen} options={{headerTitle:"My Plants"}}/>
@@ -55,7 +60,6 @@ export default function App() {
         <Tabs.Screen name="Messages" component={MessagesScreen} />
         <Tabs.Screen name="Community" component={CommunityScreen} />
         <Tabs.Screen name="Profile" component={ProfilePlaceholderScreen} />
-        {/* <StatusBar style="auto" /> */}
       </Tabs.Navigator>
     </NavigationContainer>
 

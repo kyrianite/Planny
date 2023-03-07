@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Image, Text, Button, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import { View, ScrollView, Image, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -24,6 +24,7 @@ export default function AddNewPlantScreen( {navigation}: Props) {
   const [plantImage, setPlantImage] = useState<string>(require('../../assets/AddNewPlantDefaultImage.png'));
   const [plantName, setPlantName] = useState<string>('');
   const [plantLocation, setPlantLocation] = useState<string>('');
+  const [plantType, setPlantType] = useState<string>('');
   const [plantCare, setPlantCare] = useState<string>('');
 
   const [openWaterDd, setOpenWaterDd] = useState<boolean>(false);
@@ -53,48 +54,66 @@ export default function AddNewPlantScreen( {navigation}: Props) {
     console.log('send search term to api', plantName);
     const res = await PlantAPI.getPlantList(plantName);
     console.log(res);
+    console.log(res.data);
+    if (res.data.length > 0) {
+      setPlantType(res.data[0]?.cycle);
+      setPlantCare(`Sunlight: ${res.data[0]?.sunlight.toString()} \nWatering: ${res.data[0]?.watering}`);
+    }
   };
 
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={Styles.container}>
-        <Button
-          title = "Save"
-          onPress = {() => {
-            navigation.navigate('Plant Profile');
-          }}
-        />
         <View style={Styles.container}>
-          <Image source={{ uri: plantImage }} style={Styles.plantImage} />
-          <TouchableOpacity style={Styles.plantImageButtonContainer}>
+          <Image source={{ uri: plantImage }} style={styles.plantImage} />
+          <TouchableOpacity style={styles.plantImageButtonContainer}>
             <MaterialCommunityIcons name="file-image-plus" size={24} color="black" onPress={pickImage}/>
           </TouchableOpacity>
         </View>
-        <Text>Search Plant Name</Text>
+        <View style={styles.label}>
+          <Text>Search Plant Name: </Text>
+        </View>
         <TextInput
-          style = {Styles.singleLineInput}
+          style = {styles.singleLineInput}
           placeholder = "Plant name..."
           onChangeText = {name => setPlantName(name)}
           inputMode = 'search'
           onSubmitEditing={handleSearch}
         />
-        <Text>Location</Text>
+        <View style={styles.label}>
+          <Text>Plant Type: </Text>
+        </View>
         <TextInput
-          style = {Styles.singleLineInput}
+          style = {styles.singleLineInput}
+          placeholder = "Perennial..."
+          onChangeText = {type => setPlantType(type)}
+          value = {plantType}
+          inputMode = 'text'
+        />
+        <View style={styles.label}>
+          <Text>Location: </Text>
+        </View>
+        <TextInput
+          style = {styles.singleLineInput}
           placeholder = "Living room..."
           onChangeText={location => setPlantLocation(location)}
           inputMode = 'text'
         />
-        <Text>Care Instructions</Text>
+        <View style={styles.label}>
+          <Text>Care Instructions: </Text>
+        </View>
         <TextInput
-          style = {Styles.multilineInput}
+          style = {styles.multilineInput}
           placeholder = "70%+ humidity required..."
+          value={plantCare}
           onChangeText={care => setPlantCare(care)}
           inputMode = 'text'
           multiline
         />
-        <Text>Watering Frequency</Text>
+        <View style={styles.label}>
+          <Text>Watering Frequency: </Text>
+        </View>
         <DropDownPicker
           open={openWaterDd}
           value={wateringFreq}
@@ -103,10 +122,49 @@ export default function AddNewPlantScreen( {navigation}: Props) {
           setValue={setWateringFreq}
           setItems={setFreq}
           placeholder='Select a frequency...'
-          style={Styles.dropdown}
-          dropDownContainerStyle={Styles.dropdownContainer}
+          style={styles.dropdown}
+          dropDownContainerStyle={styles.dropdownContainer}
         />
       </View>
     </ScrollView>
   )
-}
+};
+
+const styles = StyleSheet.create({
+  plantImage: {
+    width: 150,
+    height: 150,
+  },
+  plantImageButtonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    alignSelf: 'flex-end',
+    padding: 5
+  },
+  label: {
+    alignSelf: 'flex-start',
+    marginLeft: '15%'
+  },
+  singleLineInput: {
+    height: 40,
+    width: 250,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10
+  },
+  multilineInput: {
+    height: 100,
+    width: 250,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10
+  },
+  dropdown: {
+    width: 250,
+    alignSelf: 'center'
+  },
+  dropdownContainer: {
+    width: 250,
+    alignSelf: 'center'
+  },
+});
