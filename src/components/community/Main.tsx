@@ -65,7 +65,7 @@ export default function MainScreen() {
       username: 'Sandy Chu',
       time: '2023-02-01',
       topic: 'This is my first post!',
-      photos: ['https://i.etsystatic.com/16989532/r/il/63b3a3/3421737845/il_1588xN.3421737845_26sl.jpg'],
+      photos: ['https://i.etsystatic.com/16989532/r/il/63b3a3/3421737845/il_1588xN.3421737845_26sl.jpg', 'https://i.etsystatic.com/16989532/r/il/4b15b5/1511638992/il_fullxfull.1511638992_32hu.jpg'],
       plantType: 'Succulent',
       plantName: 'Aloe Vera',
       likes: 10,
