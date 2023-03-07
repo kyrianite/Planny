@@ -54,6 +54,8 @@ let messagesSchema = mongoose.Schema({
       type:String,
       required:true
     },
+    firstName:{type:String, required: true},
+    lastName:{type:String, required:true},
     time:{
       type: Date,
       required: true
@@ -105,6 +107,8 @@ let plantSchema = mongoose.Schema({
 
 let communitySchema = mongoose.Schema({
   communityId: {type: Number, required: true, index: true},
+  firstName:{type:String, required:true},
+  lastName:{type:String, required:true},
   time:{type:Date, required: true},
   messageId:{type:Number},
   photos:[{type:String}],
