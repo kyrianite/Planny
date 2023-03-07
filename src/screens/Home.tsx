@@ -45,7 +45,7 @@ export default function HomeScreen() {
           <Text style={{fontSize: 30 }}>Welcome Back</Text>
           <Image
             style={tempStyling.LandingPageImage}
-            source={require('../../assets/budew.png')}
+            source={require('../../assets/PlannyLogo.png')}
           />
         </View>
 

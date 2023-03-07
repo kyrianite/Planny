@@ -37,9 +37,15 @@ function Home() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="CreateHouse" component={CreateHouseScreen} options={{
-      headerTitle: "Return to Home"}}/>
-      <Stack.Screen name="JoinHouse" component={JoinHouseScreen} options={{headerTitle:"Return to Home"}}/>
+      <Stack.Screen name="CreateHouse" component={CreateHouseScreen} />
+      <Stack.Screen name="JoinHouse" component={JoinHouseScreen} />
+      <Stack.Screen name="Add New Plant" component={AddNewPlantScreen}
+        options={({navigation, route}) => ({headerRight: () => (
+          <TouchableOpacity style={{padding: 10}} onPress={() => navigation.navigate('Plant Profile')}>
+            <MaterialCommunityIcons name="content-save-outline" size={24} color="black" />
+          </TouchableOpacity>)})}/>
+      <Stack.Screen name="Plant Profile" component={PlantProfileScreen} />
+      <Stack.Screen name='Assign Caretaker' component={AssignPlantCaretakerScreen} />
       <Stack.Screen name="MyPlants" component={MyPlantsScreen} options={{headerTitle:"My Plants"}}/>
       <Stack.Screen name="HouseGroup" component={HouseGroupScreen} options={{headerTitle: ""}}/>
     </Stack.Navigator>
@@ -56,6 +62,5 @@ export default function App() {
         <Tabs.Screen name="Profile" component={ProfilePlaceholderScreen} />
       </Tabs.Navigator>
     </NavigationContainer>
-
   );
 };
