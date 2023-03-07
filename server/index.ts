@@ -26,7 +26,6 @@ const router = require('./router');
 app.use(cors());
 app.use(bodyParser());
 app.use(express.json());
-app.use(cors());
 
 // app.use(express.static(path.join(`${__dirname}/../client/dist`)));
 
