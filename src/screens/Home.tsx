@@ -18,7 +18,7 @@ const p = {
 const tempStyling = StyleSheet.create({
   test: {
     backgroundColor: '#B4CCE1',
-    width: 200, margin: 5,
+    width: 150, margin: 5,
     height: 50, borderRadius: 50,
     alignItems: 'center', justifyContent: 'center'
   },
@@ -29,7 +29,7 @@ const tempStyling = StyleSheet.create({
     backgroundColor: 'white'
   },
 
-  budew: {
+  LandingPageImage: {
     width: 210,
     height: 250,
   }
@@ -39,44 +39,41 @@ export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   return (
     <>
-    <ScrollView style={{backgroundColor: 'white', flexDirection: 'column'}}>
-      <View style={{alignItems:'center', justifyContent:'center'}}>
-        <Text>Welcome Back</Text>
-        <Image
-          style={tempStyling.budew}
-          source={require('../../assets/budew.png')}
-        />
+      <ScrollView style={{backgroundColor: 'white', flexDirection: 'column'}}>
+
+        <View style={{alignItems:'center', justifyContent:'center'}}>
+          <Text style={{fontSize: 30 }}>Welcome Back</Text>
+          <Image
+            style={tempStyling.LandingPageImage}
+            source={require('../../assets/budew.png')}
+          />
+        </View>
+
+        <View style={{alignItems:'center', justifyContent:'center'}}>
+          <TouchableOpacity style={tempStyling.test}
+          onPress={() => navigation.navigate('MyPlants')}>
+            <Text>My Plants</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={tempStyling.test}
+          onPress={() => navigation.navigate('HouseGroup', {screen: 'HouseGroup', p})}>
+            <Text>Patrat's House Plants</Text>
+          </TouchableOpacity>
+        </View>
+
+      </ScrollView>
+      <View style={tempStyling.FloatingMenuStyle}>
+
+        <TouchableOpacity style={tempStyling.test}
+        onPress={() => navigation.navigate('CreateHouse')}>
+          <Text>Create a new House</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={tempStyling.test}
+        onPress={() => navigation.navigate('JoinHouse')}>
+          <Text>Join a House</Text>
+        </TouchableOpacity>
       </View>
-    <View style={{alignItems:'center', justifyContent:'center'}}>
-      <TouchableOpacity style={tempStyling.test}
-       onPress={() => navigation.navigate('MyPlants')}>
-        <Text>My Plants</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={tempStyling.test}
-       onPress={() => navigation.navigate('HouseGroup', {screen: 'HouseGroup', p})}>
-        <Text>Patrat's House Plants</Text>
-      </TouchableOpacity>
-
-    </View>
-    </ScrollView>
-    <View style={tempStyling.FloatingMenuStyle}>
-      {/* Removing Go to my Messages button since there is an existing tab */}
-      {/* <TouchableOpacity style={tempStyling.test}
-       onPress={() => navigation.navigate('Messages')}>
-        <Text>Go to my Messages</Text>
-      </TouchableOpacity> */}
-
-      <TouchableOpacity style={tempStyling.test}
-       onPress={() => navigation.navigate('CreateHouse')}>
-        <Text>Create a new House</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={tempStyling.test}
-       onPress={() => navigation.navigate('JoinHouse')}>
-        <Text>Join an existing House</Text>
-       </TouchableOpacity>
-    </View>
     </>
   );
 };

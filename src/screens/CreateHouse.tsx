@@ -25,25 +25,27 @@ export default function CreateHouseScreen() {
       }
     })
   };
-
+  function moveScreen() {
+    navigation.navigate('Home');
+  }
   return (
     <View style={Styles.container}>
       <TouchableOpacity style={{backgroundColor: 'red'}} onPress={userPickImage}>
-        <Image source={image} style={Styles.budew}/>
+        <Image source={image as any} style={Styles.budew}/>
       </TouchableOpacity>
-      <Text style={{fontWeight: 'bold', fontSize: 20}}>Create a New House</Text>
-      <View>
-        <TextInput
-          style = {{borderWidth:1, margin: 10}}
+      <Text style={{fontWeight: 'bold', fontSize: 30}}>Create a New House</Text>
+      <View style={{height: 200, width: 200}}>
+        <TextInput style = {
+          {
+            borderWidth:1, padding: 10,
+            height: 40, color:'grey',
+            marginBottom: 30, marginTop: 10,
+            borderRadius: 5, overflow: 'hidden'
+          }
+        }
           placeholder="My House" />
+        <Button title="Create" onPress={moveScreen} />
       </View>
-      <Button
-        title="Create"
-        onPress={() => {
-          console.log(Platform.OS); //might need to change for other OS
-          navigation.navigate('Home');
-        }}
-      />
     </View>
   )
 }
