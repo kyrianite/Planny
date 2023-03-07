@@ -33,7 +33,7 @@ export default function MainScreen() {
       username: 'Nathanael Tjen',
       time: '2023-03-05',
       topic: 'Don’t use hot water for your plants',
-      photos: ['https://secure.img1-cg.wfcdn.com/im/70455228/scale-w300%5Ecompr-r70/2176/217692118/default_name.jpg', 'https://secure.img1-cg.wfcdn.com/im/59356836/resize-h800-w800%5Ecompr-r85/1434/143429039/Aloe+Vera+Plant+in+Basket.jpg'],
+      photos: ['https://secure.img1-cg.wfcdn.com/im/70455228/scale-w300%5Ecompr-r70/2176/217692118/default_name.jpg', 'https://secure.img1-cg.wfcdn.com/im/59356836/resize-h800-w800%5Ecompr-r85/1434/143429039/Aloe+Vera+Plant+in+Basket.jpg','https://hips.hearstapps.com/hmg-prod/images/766/articles/2016/11/aloe-vera-doesnt-contain-aloe-1494154802.jpeg'],
       plantType: 'Succulent',
       plantName: 'Aloe Vera',
       likes: 10,
@@ -64,13 +64,25 @@ export default function MainScreen() {
     {
       username: 'Sandy Chu',
       time: '2023-02-01',
-      topic: 'This is my first post!',
-      photos: ['https://i.etsystatic.com/16989532/r/il/63b3a3/3421737845/il_1588xN.3421737845_26sl.jpg', 'https://i.etsystatic.com/16989532/r/il/4b15b5/1511638992/il_fullxfull.1511638992_32hu.jpg'],
+      topic: '🌱🔥🌿 Hey fellow trainers! Want to keep your plant Pokémon happy and healthy? Make sure to water them regularly. 🌿🌱💪',
+      photos: ['https://archives.bulbagarden.net/media/upload/5/51/0182Bellossom.png', 'https://archives.bulbagarden.net/media/upload/thumb/b/bf/0590Foongus.png/1200px-0590Foongus.png','https://archives.bulbagarden.net/media/upload/thumb/a/ae/0103Exeggutor.png/1200px-0103Exeggutor.png', 'https://archives.bulbagarden.net/media/upload/thumb/1/15/0591Amoonguss.png/1200px-0591Amoonguss.png'],
       plantType: 'Succulent',
       plantName: 'Aloe Vera',
       likes: 10,
       replies: 1,
     },
+
+    {
+      username: 'William Wong',
+      time: '2023-02-01',
+      topic: '🌱💡 Remember to give your plants a good drink of water only when the top inch of soil is dry to the touch!',
+      photos: ['https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,c_fit,w_730,h_487/at%2Fart%2Fphoto%2F2020-10%2FHow-To-Clean-Plants%2FHow-to-Clean-Plants-1', 'https://hips.hearstapps.com/hmg-prod/images/perennial-flowers-and-plants-1674072475.jpeg'],
+      plantType: 'Succulent',
+      plantName: 'Aloe Vera',
+      likes: 10,
+      replies: 1,
+    },
+
     {
       username: 'Quanjing Chen',
       time: '2023-01-01',
