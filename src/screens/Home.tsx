@@ -31,10 +31,9 @@ export default function HomeScreen() {
         />
       </View>
       <View style={Styles.container}>
-        <Text>Hello from the HOME screen</Text>
         <Image
-          style={Styles.budew}
-          source={require('../../assets/budew.png')}
+          style={Styles.logo}
+          source={require('../../assets/PlannyLogo.png')}
         />
         <Button
           title="Go to MESSAGES"
@@ -47,10 +46,6 @@ export default function HomeScreen() {
         <Button
           title="Join House"
           onPress={() => navigation.navigate('JoinHouse')}
-        />
-        <Button
-          title="Add a New Plant"
-          onPress={() => navigation.navigate('Add New Plant')}
         />
       </View>
     </ScrollView>

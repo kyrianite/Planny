@@ -42,7 +42,6 @@ export default StyleSheet.create({
   plantImage: {
     width: 150,
     height: 150,
-    borderWidth: 3
   },
   plantThumbnail: {
     alignSelf: 'flex-start',
@@ -75,8 +74,8 @@ export default StyleSheet.create({
     width: 250,
     alignSelf: 'center'
   },
-  budew: {
-    width: 210,
-    height: 250,
+  logo: {
+    width: 250,
+    height: 200,
   }
 });
