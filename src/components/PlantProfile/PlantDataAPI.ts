@@ -9,7 +9,9 @@ const axiosOption = {headers: {'content-type': 'application/json'}};
 
 export async function getPlantList (name: string) {
   try {
+    console.log(`${baseURL}species-list?q=${name}&page=1&key=${PERENUAL_API_KEY}`)
     const plants = await axios.get(`${baseURL}species-list?q=${name}&page=1&key=${PERENUAL_API_KEY}`, axiosOption);
+
     return plants.data;
   } catch (err: unknown) {
     console.log('Could not get plant list.', err);
