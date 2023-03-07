@@ -41,7 +41,7 @@ routers.put('/message', controllers.updateMessage)
 // {
 //   messageId:****,
 //   message:{
-//     user: userId,
+//     userId: userId,
 //     time: new Date (),
 //     message:String
 //   },

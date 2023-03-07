@@ -48,22 +48,18 @@ let messagesSchema = mongoose.Schema({
   messages:[{
     count:{
       type:Number,
-      required: true
     },
     userId:{
       type:String,
-      required:true
     },
-    firstName:{type:String, required: true},
-    lastName:{type:String, required:true},
+    firstName:{type:String},
+    lastName:{type:String},
     time:{
       type: Date,
-      required: true
-    },
+},
     message: {
       type: String,
-      required:true
-    }
+}
   }],
 })
 

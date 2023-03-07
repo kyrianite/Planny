@@ -146,36 +146,45 @@ module.exports= {
     })
   },
   makeHousehold: (req, res) => {
-    db.postHousehold(req.body, (err, dataHousehold) => {
+    db.postMessage(null, (err, dataMessage) => {
       if (err) {
-        console.log('this err in postHousehold', err)
+        console.log('make Household err', err)
         res.status(500)
         res.end(err)
       } else {
-        console.log('this is req.body.userId', req.body.userId)
-        db.findUser(req.body.userId, (err, dataUser) => {
+        let bodyHousehold = JSON.parse(JSON.stringify(req.body).slice())
+        bodyHousehold.messageId = dataMessage.messageId
+        db.postHousehold(bodyHousehold, (err, dataHousehold) => {
           if (err) {
-            console.log('this err in findUser')
+            console.log('this err in postHousehold', err)
             res.status(500)
             res.end(err)
           } else {
-            let arrHousehold = dataUser[0].household.slice()
-            arrHousehold.push(dataHousehold.householdId)
-            let objUserUpdate = {
-              userId:req.body.userId,
-              update: {
-                household: arrHousehold
-              }
-            }
-            db.updateUser(objUserUpdate, (err, dataUpdate) => {
+            db.findUser(req.body.userId, (err, dataUser) => {
               if (err) {
-                console.log('err in updateUser', err)
+                console.log('this err in findUser')
                 res.status(500)
                 res.end(err)
               } else {
-                res.json({householdId: dataHousehold.householdId})
-                res.status(205)
-                res.end()
+                let arrHousehold = dataUser[0].household.slice()
+                arrHousehold.push(dataHousehold.householdId)
+                let objUserUpdate = {
+                  userId:req.body.userId,
+                  update: {
+                    household: arrHousehold
+                  }
+                }
+                db.updateUser(objUserUpdate, (err, dataUpdate) => {
+                  if (err) {
+                    console.log('err in updateUser', err)
+                    res.status(500)
+                    res.end(err)
+                  } else {
+                    res.json({householdId: dataHousehold.householdId, messageId:dataMessage.messageId})
+                    res.status(205)
+                    res.end()
+                  }
+                })
               }
             })
           }
@@ -273,15 +282,25 @@ module.exports= {
     })
   },
   postCommunity: (req, res) => {
-    db.postCommunity(req.body, (err, data) => {
+    db.postMessage(null, (err, dataMessage) => {
       if (err) {
-        console.log(err)
+        console.log('make Household err', err)
         res.status(500)
         res.end(err)
       } else {
-        res.json(data)
-        res.status(205)
-        res.end()
+        let objRes = JSON.parse(JSON.stringify(req.body).slice())
+        objRes.messageId = dataMessage.messageId
+        db.postCommunity(objRes, (err, data) => {
+          if (err) {
+            console.log(err)
+            res.status(500)
+            res.end(err)
+          } else {
+            res.json(data)
+            res.status(205)
+            res.end()
+          }
+        })
       }
     })
   },
