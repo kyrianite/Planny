@@ -8,6 +8,11 @@ import { RootStackParamList } from '../../App';
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
+const p = {
+  groupName: 'Existing Group 1',
+  plants: {'cactus': 'living room', 'aloe': 'bathroom'},
+  groupId: '0987654321'
+}
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   return (
@@ -21,6 +26,7 @@ export default function HomeScreen() {
         title="Patrat's House Plants"
         onPress={() => {
           console.log('Pressed Patrat\'s House Plants');
+          navigation.navigate('HouseGroup', {screen:'HouseGroup', p})
         }}
       />
     </View>
