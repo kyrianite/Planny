@@ -15,9 +15,7 @@ const tempStyling = StyleSheet.create({
     textAlign: 'left', fontSize: 20,
     fontWeight: 'bold', padding: 5
   },
-  ViewStyle: {
-    flexDirection: 'column', flex: 1
-  },
+  ViewStyle: { flexDirection: 'column', flex: 1 },
   FloatingMenuStyle: {
     alignSelf: 'flex-end', position: 'absolute',
     bottom: 35
