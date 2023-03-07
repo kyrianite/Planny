@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Image, Button } from 'react-native';
+import { View, Text, Image, Button, ScrollView } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
@@ -19,7 +19,7 @@ const p = {
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   return (
-    <>
+    <ScrollView>
       <View style={Styles.container}>
         <Button
           title="My Plants"
@@ -34,10 +34,9 @@ export default function HomeScreen() {
         />
       </View>
       <View style={Styles.container}>
-        <Text>Hello from the HOME screen</Text>
         <Image
-          style={Styles.budew}
-          source={require('../../assets/budew.png')}
+          style={Styles.logo}
+          source={require('../../assets/PlannyLogo.png')}
         />
         <Button
           title="Go to MESSAGES"
@@ -51,7 +50,8 @@ export default function HomeScreen() {
           title="Join House"
           onPress={() => navigation.navigate('JoinHouse')}
         />
+        <Button title="Sign up" onPress={() => navigation.navigate('SignUp')} />
       </View>
-    </>
+    </ScrollView>
   );
 }
