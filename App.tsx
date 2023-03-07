@@ -18,7 +18,7 @@ export type RootStackParamList = {
   JoinHouse: undefined;
   MyPlants: undefined;
   Messages: undefined;
-  HouseGroup: undefined;
+  HouseGroup: { screen: string, p: object }| undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

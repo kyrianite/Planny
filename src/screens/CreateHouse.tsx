@@ -10,7 +10,7 @@ import { RootStackParamList } from '../../App';
 type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export default function CreateHouseScreen() {
-  const [image, setImage] = React.useState('');
+  const [image, setImage] = React.useState<String>('');
   const navigation = useNavigation<CreateHouseScreenNavigationProp>();
 
   React.useEffect(() => {
@@ -21,9 +21,7 @@ export default function CreateHouseScreen() {
     const image = await launchImageLibrary({mediaType: 'photo'}, (response) => {
       if (response.assets) {
         let source = response.assets[0].uri;
-        if (source) {
-          setImage(source);
-        }
+        if (source) { setImage(source); }
       }
     })
   };

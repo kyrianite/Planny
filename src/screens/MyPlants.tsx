@@ -37,7 +37,9 @@ const p = {
 function capitalize (string) { return string.charAt(0).toUpperCase() + string.slice(1); }
 
 export default function MyPlantsScreen() {
-  const testPlants = [{name: 'aloe', type:'green', location: 'bathroom', image:''}, {name: "cactus", type:"green", location:'living room'}];
+  const testPlants = [
+    {name: 'aloe', type:'green', location: 'bathroom', image:''},
+    {name: "cactus", type:"green", location:'living room', image: ''}];
   const navigation = useNavigation<MyPlantsScreenNavigationProp>();
 
   function makeButtons() {
