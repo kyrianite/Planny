@@ -6,13 +6,16 @@ import { useNavigation } from '@react-navigation/native';
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../App';
 
-type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+type HomeScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
 
 const p = {
   groupName: 'Existing Group 1',
-  plants: {'cactus': 'living room', 'aloe': 'bathroom'},
-  groupId: '0987654321'
-}
+  plants: { cactus: 'living room', aloe: 'bathroom' },
+  groupId: '0987654321',
+};
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   return (
@@ -25,8 +28,8 @@ export default function HomeScreen() {
         <Button
           title="Patrat's House Plants"
           onPress={() => {
-            console.log('Pressed Patrat\'s House Plants');
-            navigation.navigate('HouseGroup', {screen:'HouseGroup', p})
+            console.log("Pressed Patrat's House Plants");
+            navigation.navigate('HouseGroup', { screen: 'HouseGroup', p });
           }}
         />
       </View>
@@ -47,7 +50,8 @@ export default function HomeScreen() {
           title="Join House"
           onPress={() => navigation.navigate('JoinHouse')}
         />
+        <Button title="Sign up" onPress={() => navigation.navigate('SignUp')} />
       </View>
     </ScrollView>
   );
-};
+}
