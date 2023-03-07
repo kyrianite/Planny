@@ -8,9 +8,28 @@ import { RootStackParamList } from '../../App';
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
+const p = {
+  groupName: 'Existing Group 1',
+  plants: {'cactus': 'living room', 'aloe': 'bathroom'},
+  groupId: '0987654321'
+}
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   return (
+    <>
+    <View style={Styles.container}>
+      <Button
+        title="My Plants"
+        onPress={() => navigation.navigate('MyPlants')}
+      />
+      <Button
+        title="Patrat's House Plants"
+        onPress={() => {
+          console.log('Pressed Patrat\'s House Plants');
+          navigation.navigate('HouseGroup', {screen:'HouseGroup', p})
+        }}
+      />
+    </View>
     <View style={Styles.container}>
       <Text>Hello from the HOME screen</Text>
       <Image
@@ -30,5 +49,6 @@ export default function HomeScreen() {
         onPress={() => navigation.navigate('JoinHouse')}
       />
     </View>
+    </>
   );
 };
