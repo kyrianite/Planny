@@ -14,6 +14,7 @@ export default function MessageGroupList() {
 
   const navigation = useNavigation<CreateHouseScreenNavigationProp>();
 
+
   const [homes, setHomes] = useState([{location: 'Mom\'s house', lastMessage: 'I watered your flowers', lastMessager: 'PlantMama040', avatar: placeholder1}, {location:  'Dorm', lastMessage: 'bro my cactus!', lastMessager: 'Todd', avatar: placeholder3}, {location: 'Grandma\'s house', lastMessage: 'How do I care for a succulent?', lastMessager: 'GreenGranny', avatar: placeholder2}])
 
   return (
@@ -24,7 +25,10 @@ export default function MessageGroupList() {
           key={home.location}
           onPress={() => {
             // Navigate to ChatRoomat page
-            navigation.navigate('ChatRoom');
+            navigation.setOptions({
+              title: home.location
+            });
+            navigation.navigate('ChatRoom', { homeLocation: home.location });
             console.log('testing pressing and opacity', home)
           }}
         >

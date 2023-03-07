@@ -5,21 +5,29 @@ import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { SafeAreaView } from 'react-native-safe-area-context';
 const placeholder1 = require('./images/placeholder-1.jpeg')
+import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../../App';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-export default function Chatroom() {
+type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+
+export default function Chatroom({ route }) {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [socket, setSocket] = useState(null);
   const [room, setRoom] = useState(null);
   const [user, setUser] = useState(null);
   const [height, setHeight] = useState(41);
+  // const { homeLocation } = navigation.state.params;
 
   const timeOptions = { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', };
   var room123 = "Mom\'s House"; // this ref will be pulled from DB
   var name123 = "steve" //ref to be pulled from DB
 
   useEffect(() => {
-    console.log(height)
+    console.log(route.name)
+    console.log(route.params.homeLocation) // dynamic house name
     setRoom(room123) // This is where we will set the room from MongoDB
     setUser(name123)
     const socket = io('http://localhost:3420');
@@ -29,6 +37,7 @@ export default function Chatroom() {
       console.log(message)
       setMessages([...messages, message]);
     });
+    navigation.setOptions({ title: route.params.homeLocation})
   }, [messages, room, user]);
 
   const handleSendMessage = () => {
@@ -40,6 +49,8 @@ export default function Chatroom() {
   const onContentSizeChange = (event) => {
     setHeight(event.nativeEvent.contentSize.height);
   };
+
+  const navigation = useNavigation<CreateHouseScreenNavigationProp>();
 
   return (
     <SafeAreaView style={styles.outsideContainer}>
