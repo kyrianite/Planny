@@ -28,8 +28,8 @@ function Home() {
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="CreateHouse" component={CreateHouseScreen} />
       <Stack.Screen name="JoinHouse" component={JoinHouseScreen} />
-      <Stack.Screen name="Messages" component={MessagesScreen} />
-      <Stack.Screen name="ChatRoom" component={Chatroom} />
+      <Stack.Screen name="Messages" component={MessagesScreen} options={{title: 'yo mama'}}/>
+      <Stack.Screen name="ChatRoom" component={Chatroom} options={{title: ''}}/>
     </Stack.Navigator>
   )
 }

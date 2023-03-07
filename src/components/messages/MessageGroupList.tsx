@@ -1,10 +1,10 @@
 import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useState, Component } from 'react'
+import React, { useState, Component, useEffect } from 'react'
 const placeholder1 = require('./images/placeholder-1.jpeg')
 const placeholder2 = require('./images/placeholder-2.webp')
 const placeholder3 = require('./images/placeholder-3.png')
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Chatroom from './chatroom'
 import { RootStackParamList } from '../../../App';
 
@@ -16,6 +16,12 @@ export default function MessageGroupList() {
 
 
   const [homes, setHomes] = useState([{location: 'Mom\'s house', lastMessage: 'I watered your flowers', lastMessager: 'PlantMama040', avatar: placeholder1}, {location:  'Dorm', lastMessage: 'bro my cactus!', lastMessager: 'Todd', avatar: placeholder3}, {location: 'Grandma\'s house', lastMessage: 'How do I care for a succulent?', lastMessager: 'GreenGranny', avatar: placeholder2}])
+
+  useFocusEffect(
+    React.useCallback(() => {
+      navigation.setOptions({ title: 'Your Homes'})
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
