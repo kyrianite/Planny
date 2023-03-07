@@ -10,5 +10,9 @@ export default StyleSheet.create({
   budew: {
     width: 210,
     height: 250,
-  }
+  },
+  logo: {
+    width: 250,
+    height: 200,
+  },
 });
