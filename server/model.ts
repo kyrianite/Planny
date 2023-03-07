@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const uri = 'mongodb://localhost:27017/planny';
 mongoose.connect(uri);
-const db = mongoose.connection;
+const dbs = mongoose.connection;
 
-db.on('error', console.error.bind(console, 'connection error:'))
-db.once('open', function () {
+dbs.on('error', console.error.bind(console, 'connection error:'))
+dbs.once('open', function () {
   console.log('database connected')
 })
 
@@ -13,7 +13,8 @@ db.once('open', function () {
 let userSchema = mongoose.Schema({
   userId: {
     type:String,
-    required:true
+    required:true,
+    index:true,
   },
   firstName: {
     type: String,
@@ -34,36 +35,48 @@ let userSchema = mongoose.Schema({
 });
 
 let householdSchema = mongoose.Schema({
-  houseHoldId:{type:Number},
+  householdId:{type:Number, required: true, index:true},
+  householdName:{type:String, required: true},
   members:[{type:String}], //array of member's id
   plants:[{type:Number}], // array of plant's id
   messageId:{type:Number}
 })
 
 let messagesSchema = mongoose.Schema({
-  messageId: {type:Number},
+  messageId: {type:Number, required: true, index: true},
+  to:{type:String},
   messages:[{
     count:{
       type:Number,
       required: true
     },
-    user:{
+    userId:{
       type:String,
       required:true
     },
+    firstName:{type:String, required: true},
+    lastName:{type:String, required:true},
     time:{
       type: Date,
       required: true
-    }}],
+    },
     message: {
-      type: String
+      type: String,
+      required:true
     }
+  }],
 })
 
 let plantSchema = mongoose.Schema({
+  userId:{
+    type:String,
+    required:true,
+    index:true,
+  },
   plantId:{
     type:Number,
-    required:true
+    required:true,
+    index:true,
   },
   plantName:{
     type:String,
@@ -92,6 +105,20 @@ let plantSchema = mongoose.Schema({
   photo:{type:String}
 })
 
+let communitySchema = mongoose.Schema({
+  communityId: {type: Number, required: true, index: true},
+  firstName:{type:String, required:true},
+  lastName:{type:String, required:true},
+  time:{type:Date, required: true},
+  messageId:{type:Number},
+  photos:[{type:String}],
+  userId: {type:String, required: true},
+  topic:{type:String, required: true},
+  plantName:{type:String},
+  likes:{type:Number, default: 0},
+  plantType:{type:String}
+})
+
 
 
 
@@ -101,6 +128,7 @@ let User = mongoose.model('User', userSchema);
 let Household = mongoose.model('Household', householdSchema)
 let Messages = mongoose.model('Messages', messagesSchema)
 let Plant = mongoose.model('Plants', plantSchema)
+let Community = mongoose.model('Community', communitySchema)
 
 
 
@@ -108,5 +136,6 @@ module.exports = {
   User: User,
   Household: Household,
   Messages: Messages,
-  Plant: Plant
+  Plant: Plant,
+  Community: Community
 }
