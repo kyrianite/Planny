@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, Button, TouchableOpacity } from 'react-native';
+import { View, Button, TouchableOpacity, Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import HomeScreen from './src/screens/Home';
@@ -18,6 +18,7 @@ import MyPlantsScreen from './src/screens/MyPlants';
 import HouseGroupScreen from './src/screens/HouseGroup';
 import ProfileScreen from './src/screens/Profile';
 import SignUpScreen from './src/screens/SignUp';
+import React, { useState, createContext, useEffect } from 'react';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -37,52 +38,109 @@ export type RootStackParamList = {
   SignUp: undefined;
 };
 
+const TabIconOptions = {
+  Home: {
+    headerShown: false,
+    tabBarShowLabel: false,
+    tabBarIcon: () => (
+      <MaterialCommunityIcons name="home" color="grey" size={30} />
+    ),
+  },
+  Messages: {
+    tabBarShowLabel: false,
+    tabBarIcon: () => (
+      <MaterialCommunityIcons name="message" color="grey" size={25} />
+    ),
+  },
+  Community: {
+    tabBarShowLabel: false,
+    tabBarIcon: () => (
+      <Image
+        source={require('./assets/community.png')}
+        style={{ width: 26, height: 26, tintColor: '#5A5A5A' }}
+      />
+    ),
+  },
+  Profile: {
+    tabBarShowLabel: false,
+    tabBarIcon: () => (
+      <MaterialCommunityIcons name="cog" color="grey" size={25} />
+    ),
+  },
+};
+export type RootTabParamList = {
+  Home: undefined;
+  Messages: undefined;
+  Community: undefined;
+  Profile: undefined;
+};
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tabs = createBottomTabNavigator();
 
+export const UserContext = createContext();
+
 function Home() {
+  const [userID, setUserID] = useState({
+    userId: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+  });
+
+  useEffect(() => {
+    console.log('userID', userID);
+  }, [userID]);
+
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="CreateHouse" component={CreateHouseScreen} />
-      <Stack.Screen name="JoinHouse" component={JoinHouseScreen} />
-      <Stack.Screen name="Messages" component={MessagesScreen} options={{title: 'yo mama'}}/>
-      <Stack.Screen name="ChatRoom" component={Chatroom} options={{title: ''}}/>
-      <Stack.Screen
-        name="Add New Plant"
-        component={AddNewPlantScreen}
-        options={({ navigation, route }) => ({
-          headerRight: () => (
-            <TouchableOpacity
-              style={{ padding: 10 }}
-              onPress={() => navigation.navigate('Plant Profile')}
-            >
-              <MaterialCommunityIcons
-                name="content-save-outline"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-          ),
-        })}
-      />
-      <Stack.Screen name="Plant Profile" component={PlantProfileScreen} />
-      <Stack.Screen
-        name="Assign Caretaker"
-        component={AssignPlantCaretakerScreen}
-      />
-      <Stack.Screen
-        name="MyPlants"
-        component={MyPlantsScreen}
-        options={{ headerTitle: 'My Plants' }}
-      />
-      <Stack.Screen
-        name="HouseGroup"
-        component={HouseGroupScreen}
-        options={{ headerTitle: '' }}
-      />
-      <Stack.Screen name="SignUp" component={SignUpScreen} />
-    </Stack.Navigator>
+    <UserContext.Provider value={{ userID, setUserID }}>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen
+          name="CreateHouse"
+          component={CreateHouseScreen}
+          options={{ headerTitle: 'Return to Home' }}
+        />
+        <Stack.Screen
+          name="JoinHouse"
+          component={JoinHouseScreen}
+          options={{ headerTitle: 'Return to Home' }}
+        />
+        <Stack.Screen
+          name="Add New Plant"
+          component={AddNewPlantScreen}
+          options={({ navigation, route }) => ({
+            headerRight: () => (
+              <TouchableOpacity
+                style={{ padding: 10 }}
+                onPress={() => navigation.navigate('Plant Profile')}
+              >
+                <MaterialCommunityIcons
+                  name="content-save-outline"
+                  size={24}
+                  color="black"
+                />
+              </TouchableOpacity>
+            ),
+          })}
+        />
+        <Stack.Screen name="Plant Profile" component={PlantProfileScreen} />
+        <Stack.Screen
+          name="Assign Caretaker"
+          component={AssignPlantCaretakerScreen}
+        />
+        <Stack.Screen
+          name="MyPlants"
+          component={MyPlantsScreen}
+          options={{ headerTitle: 'My Plants' }}
+        />
+        <Stack.Screen
+          name="HouseGroup"
+          component={HouseGroupScreen}
+          options={{ headerTitle: '' }}
+        />
+        <Stack.Screen name="SignUp" component={SignUpScreen} />
+      </Stack.Navigator>
+    </UserContext.Provider>
   );
 }
 
@@ -93,11 +151,23 @@ export default function App() {
         <Tabs.Screen
           name="Home"
           component={Home}
-          options={{ headerShown: false }}
+          options={TabIconOptions.Home}
         />
-        <Tabs.Screen name="Messages" component={MessagesScreen} />
-        <Tabs.Screen name="Community" component={CommunityScreen} />
-        <Tabs.Screen name="Profile" component={ProfileScreen} />
+        <Tabs.Screen
+          name="Messages"
+          component={MessagesScreen}
+          options={TabIconOptions.Messages}
+        />
+        <Tabs.Screen
+          name="Community"
+          component={CommunityScreen}
+          options={TabIconOptions.Community}
+        />
+        <Tabs.Screen
+          name="Profile"
+          component={ProfilePlaceholderScreen}
+          options={TabIconOptions.Profile}
+        />
       </Tabs.Navigator>
     </NavigationContainer>
   );
