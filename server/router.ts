@@ -1,11 +1,10 @@
-import { removePushTokenSubscription } from "expo-notifications";
+import { removePushTokenSubscription } from 'expo-notifications';
 
 const routers = require('express').Router();
 
 const controllers = require('./controllers');
 
-
-routers.post('/user', controllers.createUser)
+routers.post('/user', controllers.createUser);
 // {
 //   "userId": "try1",
 //   "firstName": "tryFN",
@@ -14,7 +13,15 @@ routers.post('/user', controllers.createUser)
 // }
 
 routers.get('/user', controllers.findUser)
-routers.post('/plant', controllers.addPlant)
+routers.put('/user', controllers.updateUser)
+// {
+//   "userId":'try1',
+//   "update": {
+//   "photos":
+//   }
+// }
+
+routers.post('/plant', controllers.addPlant);
 // {
 //   "userId":"try1",
 //   "plant": {
@@ -27,10 +34,10 @@ routers.post('/plant', controllers.addPlant)
 //   }
 // }
 
-routers.get('/plant', controllers.findPlant)
+routers.get('/plant', controllers.findPlant);
 // it can be userId:, or plantId:
 
-routers.post('/dm', controllers.postDm)
+routers.post('/dm', controllers.postDm);
 // {
 // "from": (userId),
 // "to": (userId),
@@ -38,27 +45,27 @@ routers.post('/dm', controllers.postDm)
 // "time":{date}
 // }
 
-routers.put('/message', controllers.updateMessage)
+routers.put('/message', controllers.updateMessage);
 // {
 //   messageId:****,
 //   message:{
-//     userId: userId,
+//     user: userId,
 //     time: new Date (),
 //     message:String
 //   },
 // }
 
-routers.get('/message', controllers.findMessage)
+routers.get('/message', controllers.findMessage);
 // in params
 // {
 //   "messageId":1
 // }
-routers.get('/household', controllers.findHousehold)
+routers.get('/household', controllers.findHousehold);
 // in params
 // {
 //   "householdId": 1
 // }
-routers.post('/household', controllers.makeHousehold)
+routers.post('/household', controllers.makeHousehold);
 // {
 //   "userId":"try1",
 //   "household": {
@@ -67,7 +74,7 @@ routers.post('/household', controllers.makeHousehold)
 //  }
 // }
 
-routers.put('/household', controllers.updateHousehold)
+routers.put('/household', controllers.updateHousehold);
 //in params
 // {
 //   "householdId": 1,
@@ -78,7 +85,7 @@ routers.put('/household', controllers.updateHousehold)
 //   "plants": 1
 // }
 
-routers.post('/householdMessage', controllers.postHouseholdMessage)
+routers.post('/householdMessage', controllers.postHouseholdMessage);
 // in body
 // {
 // "householdId": (householdId),
@@ -87,7 +94,7 @@ routers.post('/householdMessage', controllers.postHouseholdMessage)
 // "time":{date}
 // }
 
-routers.post('/community', controllers.postCommunity)
+routers.post('/community', controllers.postCommunity);
 // in body
 // {
 //   "time": "2023-03-06T01:53:53.001Z",
@@ -98,7 +105,7 @@ routers.post('/community', controllers.postCommunity)
 //   "plantType":"optional"
 // }
 
-routers.post('/communityMessage', controllers.postCommunityMessage)
+routers.post('/communityMessage', controllers.postCommunityMessage);
 // in body
 // {
 // "communityId": (communityId),
@@ -107,14 +114,13 @@ routers.post('/communityMessage', controllers.postCommunityMessage)
 // "time":{date}
 // }
 
-routers.get('/community', controllers.findCommunity)
+routers.get('/community', controllers.findCommunity);
 // no need params
 
-routers.put('/communityLikes', controllers.updateCommunityLikes)
+routers.put('/communityLikes', controllers.updateCommunityLikes);
 // in params
 // {
 //   communityId:
 // }
-
 
 module.exports = routers;

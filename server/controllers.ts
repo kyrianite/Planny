@@ -30,6 +30,18 @@ module.exports= {
       }
     })
   },
+  updateUser: (req, res) => {
+    db.updateUser(req.query, (err, data) => {
+      if (err) {
+        res.status(500)
+        res.end(err)
+      } else {
+        res.json(data)
+        res.status(203)
+        res.end()
+      }
+    })
+  },
   addPlant: (req, res) => {
     db.addPlant(req.body, (err, data) => {
       if (err) {
