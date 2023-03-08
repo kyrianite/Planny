@@ -15,7 +15,7 @@ const Stack = createNativeStackNavigator<CommunityStackParamList>();
 export default function CommunityScreen() {
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false}}>
       <Stack.Screen name="Community" component={MainScreen} />
       <Stack.Screen name="AddPost" component={AddPostScreen} />
       <Stack.Screen name="Comment" component={CommentScreen} />
