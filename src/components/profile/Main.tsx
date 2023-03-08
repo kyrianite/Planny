@@ -128,17 +128,23 @@ export default function MainScreen() {
       onPress={() => setCheckedNotif(!checkedNotif)}
         />
     <Button
-          title="Change Email"
-          onPress={() => {
-            navigation.navigate('ChangePass');
-          }}
+      title="Change Email"
+      onPress={() => {
+      navigation.navigate('ChangePass');
+      }}
     />
-      <Button
-            title="Change Password"
-            onPress={() => {
-              navigation.navigate('ChangePass');
-            }}
-        />
+    <Button
+      title="Change Password"
+      onPress={() => {
+      navigation.navigate('ChangePass');
+      }}
+    />
+    <Button
+      title="Logout"
+      onPress={() => {
+      // navigation.navigate('ChangePass');
+      }}
+    />
 
   </View>
   )
