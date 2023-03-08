@@ -17,7 +17,7 @@ import AssignPlantCaretakerScreen from './src/screens/AssignPlantCaretaker';
 import MyPlantsScreen from './src/screens/MyPlants';
 import HouseGroupScreen from './src/screens/HouseGroup';
 import ProfileScreen from './src/screens/Profile';
-import SignUpScreen from './src/screens/SignUp';
+// import SignUpScreen from './src/screens/SignUp';
 import React, { useState, createContext, useEffect } from 'react';
 
 export type RootStackParamList = {
@@ -138,7 +138,7 @@ function Home() {
           component={HouseGroupScreen}
           options={{ headerTitle: '' }}
         />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
+        {/* <Stack.Screen name="SignUp" component={SignUpScreen} /> */}
       </Stack.Navigator>
     </UserContext.Provider>
   );
@@ -165,7 +165,7 @@ export default function App() {
         />
         <Tabs.Screen
           name="Profile"
-          component={ProfilePlaceholderScreen}
+          component={ProfileScreen}
           options={TabIconOptions.Profile}
         />
       </Tabs.Navigator>

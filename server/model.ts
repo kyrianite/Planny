@@ -28,6 +28,7 @@ let userSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  profilePicture:{type:String, default:'https://res.cloudinary.com/dsiywf70i/image/upload/v1678222821/download_uaih1t.jpg'},
   household:[{type:Number}], //array of houseHold's id
   myPlants:[{type:Number}], //array of plant's id
   assignedPlants:[{type:Number}], //array of plant's id
@@ -92,6 +93,10 @@ let plantSchema = mongoose.Schema({
   },
   wateringSchedule: {
     type:String,
+    required:true
+  },
+  waterCountDown: {
+    type:Number,
     required:true
   },
   lastWater: {

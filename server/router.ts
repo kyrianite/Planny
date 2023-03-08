@@ -12,7 +12,15 @@ routers.post('/user', controllers.createUser);
 //   "email":"nate@gmail.com"
 // }
 
-routers.get('/user', controllers.findUser);
+routers.get('/user', controllers.findUser)
+routers.put('/user', controllers.updateUser)
+// {
+//   "userId":'try1',
+//   "update": {
+//   "photos":
+//   }
+// }
+
 routers.post('/plant', controllers.addPlant);
 // {
 //   "userId":"try1",
