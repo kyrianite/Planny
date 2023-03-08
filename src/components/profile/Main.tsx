@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, ScrollView, Button, TextInput, StyleSheet, TouchableOpacity, Image, CheckBox } from 'react-native';
+import { View, Text, ScrollView, Button, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import {  } from 'react-native-vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
@@ -56,11 +56,11 @@ export default function MainScreen() {
     <Text>Name: {dummyData.firstName} {dummyData.lastName}</Text>
     <Text>Email: {dummyData.email}</Text>
     <Text>Notification
-      <CheckBox
+      {/* <CheckBox
           title='notification'
           value={checkedNotif}
           onValueChange={() => setCheckedNotif(!checkedNotif)}
-        />
+        /> */}
     </Text>
   </View>
   )
