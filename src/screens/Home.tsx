@@ -7,7 +7,10 @@ import { StyleSheet } from 'react-native';
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../App';
 
-type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+type HomeScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
 
 const p = {
   groupName: 'Existing Group 1',
@@ -83,4 +86,4 @@ export default function HomeScreen() {
       </View>
     </>
   );
-};
+}

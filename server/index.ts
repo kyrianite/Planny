@@ -4,7 +4,6 @@
 // import * as path from 'path';
 
 // const app: Express = express();
-// const port = process.env.PORT || 3000;
 
 // app.get('/', (req: Request, res: Response) => {
 //   res.send('Express + TypeScript Server');
@@ -23,13 +22,15 @@ const app = express();
 
 const bodyParser = require('body-parser');
 const router = require('./router');
-app.use(cors())
+app.use(cors());
 app.use(bodyParser());
 app.use(express.json());
+
 // app.use(express.static(path.join(`${__dirname}/../client/dist`)));
 
 app.use('/db', router);
 // app.get('/db', (req, res) => {res.end('this is')})
+
 
 app.listen(process.env.PORT);
 console.log(`Listening at http://localhost:${process.env.PORT}`);

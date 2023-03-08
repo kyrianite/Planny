@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Button, TouchableOpacity, Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import HomeScreen from './src/screens/Home'
+import HomeScreen from './src/screens/Home';
 import MessagesScreen from './src/screens/Messages';
 import CreateHouseScreen from './src/screens/CreateHouse';
 import JoinHouseScreen from './src/screens/JoinHouse';
@@ -15,6 +15,8 @@ import PlantProfileScreen from './src/screens/PlantProfile';
 import AssignPlantCaretakerScreen from './src/screens/AssignPlantCaretaker';
 import MyPlantsScreen from './src/screens/MyPlants';
 import HouseGroupScreen from './src/screens/HouseGroup';
+import ProfileScreen from './src/screens/Profile';
+import SignUpScreen from './src/screens/SignUp';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -22,12 +24,15 @@ export type RootStackParamList = {
   JoinHouse: undefined;
   MyPlants: undefined;
   Messages: undefined;
-  HouseGroup: { screen: string, p: object }| undefined;
+  HouseGroup: { screen: string; p: object } | undefined;
   'Add New Plant': undefined;
   'Plant Profile': undefined;
-  'Assign Caretaker': undefined | {
-    caretakers: Array<string>;
-  };
+  'Assign Caretaker':
+    | undefined
+    | {
+        caretakers: Array<string>;
+      };
+  SignUp: undefined;
 };
 
 const TabIconOptions = {
@@ -73,17 +78,42 @@ function Home() {
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="CreateHouse" component={CreateHouseScreen} options={{headerTitle:"Return to Home"}}/>
       <Stack.Screen name="JoinHouse" component={JoinHouseScreen} options={{headerTitle:"Return to Home"}}/>
-      <Stack.Screen name="Add New Plant" component={AddNewPlantScreen}
-        options={({navigation, route}) => ({headerRight: () => (
-          <TouchableOpacity style={{padding: 10}} onPress={() => navigation.navigate('Plant Profile')}>
-            <MaterialCommunityIcons name="content-save-outline" size={24} color="black" />
-          </TouchableOpacity>)})}/>
+      <Stack.Screen
+        name="Add New Plant"
+        component={AddNewPlantScreen}
+        options={({ navigation, route }) => ({
+          headerRight: () => (
+            <TouchableOpacity
+              style={{ padding: 10 }}
+              onPress={() => navigation.navigate('Plant Profile')}
+            >
+              <MaterialCommunityIcons
+                name="content-save-outline"
+                size={24}
+                color="black"
+              />
+            </TouchableOpacity>
+          ),
+        })}
+      />
       <Stack.Screen name="Plant Profile" component={PlantProfileScreen} />
-      <Stack.Screen name='Assign Caretaker' component={AssignPlantCaretakerScreen} />
-      <Stack.Screen name="MyPlants" component={MyPlantsScreen} options={{headerTitle:"My Plants"}}/>
-      <Stack.Screen name="HouseGroup" component={HouseGroupScreen} options={{headerTitle: ""}}/>
+      <Stack.Screen
+        name="Assign Caretaker"
+        component={AssignPlantCaretakerScreen}
+      />
+      <Stack.Screen
+        name="MyPlants"
+        component={MyPlantsScreen}
+        options={{ headerTitle: 'My Plants' }}
+      />
+      <Stack.Screen
+        name="HouseGroup"
+        component={HouseGroupScreen}
+        options={{ headerTitle: '' }}
+      />
+      <Stack.Screen name="SignUp" component={SignUpScreen} />
     </Stack.Navigator>
-  )
+  );
 }
 
 export default function App() {
@@ -101,4 +131,4 @@ export default function App() {
       </Tabs.Navigator>
     </NavigationContainer>
   );
-};
+}
