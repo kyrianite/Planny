@@ -18,6 +18,7 @@ module.exports = {
     });
   },
   findUser: (req, res) => {
+    console.log('finding user');
     db.findUser(req.query.userId, (err, data) => {
       if (err) {
         console.log('findUser', err);
