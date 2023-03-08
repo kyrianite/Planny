@@ -7,6 +7,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Chatroom from './chatroom'
 import { RootStackParamList } from '../../../App';
+import axios from 'axios'
 
 type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -27,6 +28,7 @@ export default function MessageGroupList() {
     setHouseName(text);
   };
 
+  //ADD NEW MEMBERS
   const handleMemberNameChange = (text) => {
     setMemberName(text);
   };
@@ -36,13 +38,14 @@ export default function MessageGroupList() {
     setMemberName('');
   };
 
-
+  //CREATE NEW HOME
   const createHome = () => {
     setHomes([...homes, {location: houseName, lastMessage: 'test', lastMessager: 'test', avatar: placeholder2, householdMembers: members }])
     setModalVisible(false)
     setHouseName('');
     setMemberName('');
     setMembers([]);
+    axios.post('http://localhost:4000/household', {householdName: houseName})
   }
 
   // CHANGE NAVIGATION TITLE ON BACK
@@ -57,7 +60,7 @@ export default function MessageGroupList() {
     <View style={styles.container}>
       <ScrollView style={{flex: 1, backgroundColor: '#EFDBCA', padding: 10, maxHeight: '90%', position: 'absolute', top: 0, bottom: 0, left: 0, right: 0,}}>
       <Text style={{marginBottom: 25}}>Your Houses</Text>
-      {homes.map(home => (
+      {homes.map((home, index) => (
           <TouchableOpacity
           key={home.location}
           onPress={() => {
@@ -70,7 +73,7 @@ export default function MessageGroupList() {
             console.log(homes)
           }}
         >
-        <View key={home.location} style={{flexDirection: 'row', borderWidth: 0, borderColor: 'black', padding: 10, margin: 10, borderRadius: 20, marginBottom: 25, backgroundColor: '#C6D5BE'}}>
+        <View key={home.location} style={{flexDirection: 'row', borderWidth: 0, borderColor: 'black', padding: 10, margin: 10, borderRadius: 20, marginBottom: 25, backgroundColor: index % 2 === 0 ? '#C6D5BE' : '#B7DBDB'}}>
           <Image source={home.avatar} style={{width: 50, height: 50, borderRadius: 25}} />
           <View style={{marginLeft: 10, marginBottom: 5}}>
             <Text style={{fontWeight: 'bold', textDecoration: 'underline', fontSize: '20px', }}>{home.location}</Text>

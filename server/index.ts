@@ -30,5 +30,16 @@ app.use(express.json());
 app.use('/db', router);
 // app.get('/db', (req, res) => {res.end('this is')})
 
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+app.post('/household', (req, res) => {
+  console.log(req.body)
+})
+
 app.listen(process.env.PORT);
 console.log(`Listening at http://localhost:${process.env.PORT}`);

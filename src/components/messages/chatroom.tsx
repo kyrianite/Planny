@@ -8,6 +8,7 @@ const placeholder1 = require('./images/placeholder-1.jpeg')
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../../App';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Notifications } from 'react-native-notifications';
 
 type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -39,6 +40,20 @@ export default function Chatroom({ route }) {
     });
     navigation.setOptions({ title: route.params.homeLocation})
   }, [messages, room, user]);
+
+  useEffect(() => {
+    Notifications.registerRemoteNotifications();
+
+    Notifications.events().registerNotificationReceivedForeground((notification: Notification, completion) => {
+      console.log(`Notification received in foreground: ${notification.title} : ${notification.body}`);
+      completion({alert: false, sound: false, badge: false});
+    });
+
+    Notifications.events().registerNotificationOpened((notification: Notification, completion) => {
+      console.log(`Notification opened: ${notification.payload}`);
+      completion();
+    });
+  }, [messages]);
 
   const handleSendMessage = () => {
     socket.emit('message', {name: user, message: message, timeStamp: new Date().toLocaleString(undefined, timeOptions)});
