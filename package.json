@@ -41,7 +41,8 @@
     "react-native-web": "~0.18.10",
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.6.1",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "undefined": "react-native-elements/react-native-elements"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -22,7 +22,8 @@ routers.post('/plant', controllers.addPlant)
 //       "plantType":"tryPlant",
 //       "location":"tryPlant",
 //       "careInstructions":"tryPlant",
-//       "wateringSchedule":5
+//       "wateringSchedule":5,
+//       "waterCountDown": (Number)
 //   }
 // }
 
@@ -62,6 +63,7 @@ routers.post('/household', controllers.makeHousehold)
 //   "userId":"try1",
 //   "household": {
 //     "householdName":"try1-house"
+//     "photo":
 //  }
 // }
 
