@@ -8,6 +8,10 @@ import { ProfileStackParamList } from '../../screens/profile';
 import Colors from '../../constants/ColorScheme';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Styles from '../../constants/Styles';
+import axios from 'axios'
+// import dotenv from 'dotenv'
+
+// dotenv.config()
 
 type MainScreenNavigationProp = NativeStackNavigationProp<ProfileStackParamList, 'Profile'>;
 
@@ -15,42 +19,81 @@ type MainScreenNavigationProp = NativeStackNavigationProp<ProfileStackParamList,
 export default function MainScreen() {
   let dummyData = {
     "userId": "try2",
-        "firstName": "try",
-        "lastName": "LN",
-        "email": "nate@gmail.com",
-        "household": [
-            1,
-            1,
-            1
-        ],
-        "myPlants": [],
-        "assignedPlants": [],
-        "messages": [
-            1,
-            2,
-            3,
-            4,
-            5
-        ],
+    "firstName": "try",
+    "lastName": "LN",
+    "email": "nate@gmail.com",
+    "household": [1, 1, 1],
+    "myPlants": [],
+    "assignedPlants": [],
+    "messages": [1, 2, 3, 4, 5],
   }
   const [profilePic, setProfilePic] = useState('https://res.cloudinary.com/dsiywf70i/image/upload/v1678222821/download_uaih1t.jpg')
 
   const navigation = useNavigation<MainScreenNavigationProp>();
 
-  const onPhotoSelect = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync();
-    setProfilePic(result.assets[0].uri)
-    console.log(result);
-    // if (!result.canceled) {
-    //   setNewPost({ ...newPost, photos: [...newPost.photos, result.assets[0].uri] });
-    // }
-  };
-  const [checkedNotif, setCheckedNotif] = useState(false);
-  return (
-  <View style={styles.profileContainer}>
+  function blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.readAsDataURL(blob);
+    });
+  }
 
-    <TouchableOpacity  onPress={onPhotoSelect}>
-      <Image source={profilePic} style={{width: 100, height: 100, borderRadius: 25}} />
+  const onPhotoSelect = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync()
+    let base64Data;
+    if (!result.canceled) {
+      const data = await fetch(result.assets[0].uri);
+      const blob = await data.blob();
+      base64Data = await blobToBase64(blob);
+      // console.log(base64Data);
+    }
+    setProfilePic(base64Data)
+    const formData = new FormData();
+    await formData.append('file', base64Data);
+    await formData.append('upload_preset', 'o9exuyqa');
+    await axios.post('https://api.cloudinary.com/v1_1/dsiywf70i/image/upload', formData)
+    .then((res) => {
+      let objUpdate = {
+        userId: dummyData.userId,
+        update: {
+          photo: res.data.secure_url
+        }
+      }
+      axios.put('http://localhost:3000/db/user', {params:objUpdate})
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err))
+    })
+    .catch((err) => console.log('THIS IS THE ERR', err));
+  };
+
+  const changeDis= () => {
+    setChangeNameDis(!changeNameDis)
+  }
+  const handleChangeName = () => {
+    console.log(fn, ln)
+    let userDataCopy = JSON.parse(JSON.stringify(userData).slice())
+    userDataCopy.firstName = fn;
+    userDataCopy.lastName = ln;
+    setUserData(userDataCopy)
+    setfn('');
+    setln('');
+    setChangeNameDis(false);
+
+  }
+  const [checkedNotif, setCheckedNotif] = useState(false);
+  const [changeNameDis, setChangeNameDis] = useState(false);
+  const [fn, setfn] = useState('');
+  const [ln, setln] = useState('');
+  const [userData, setUserData] = useState(dummyData)
+  return (
+  <View style={styles.profileContainer} >
+
+    <TouchableOpacity  onPress={onPhotoSelect} style={{width:100}}>
+      <Image source={{uri:profilePic}} style={{width: 150, height: 150, borderRadius: 25, marginLeft:-23}} />
     </TouchableOpacity>
 
     <Text>Name: {dummyData.firstName} {dummyData.lastName}</Text>
@@ -71,10 +114,20 @@ const styles = StyleSheet.create({
   profileContainer: {
     flex: 1,
     flexDirection: 'column',
-    alignContent: 'center',
-    // justifyContent: 'center',
-    backgroundColor: '#fff'
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
   },
+  textContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginTop:50,
+    marginBottom:10,
+    marginLeft:20
+  },
+  text: {
+    fontSize:18
+  }
 })
 
 // const styles = StyleSheet.create({
