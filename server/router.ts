@@ -26,6 +26,7 @@ routers.post('/plant', controllers.addPlant);
 // {
 //   "userId":"try1",
 //   "plant": {
+//       "plantImage":"uri"
 //       "plantName":"tryPlant",
 //       "plantType":"tryPlant",
 //       "location":"tryPlant",

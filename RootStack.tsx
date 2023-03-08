@@ -23,7 +23,7 @@ export type RootStackParamList = {
   Messages: undefined;
   HouseGroup: { screen: string; p: object } | undefined;
   'Add New Plant': undefined;
-  'Plant Profile': undefined;
+  'Plant Profile': { plantId: number, } | undefined;
   'Assign Caretaker':
     | undefined
     | {
@@ -63,20 +63,6 @@ export default function RootStack() {
         <Stack.Screen
           name="Add New Plant"
           component={AddNewPlantScreen}
-          options={({ navigation, route }) => ({
-            headerRight: () => (
-              <TouchableOpacity
-                style={{ padding: 10 }}
-                onPress={() => navigation.navigate('Plant Profile')}
-              >
-                <MaterialCommunityIcons
-                  name="content-save-outline"
-                  size={24}
-                  color="black"
-                />
-              </TouchableOpacity>
-            ),
-          })}
         />
         <Stack.Screen name="Plant Profile" component={PlantProfileScreen} />
         <Stack.Screen

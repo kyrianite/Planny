@@ -70,7 +70,21 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
           <Text style={styles.description}>{plantWatering}</Text>
         </View>
         <View style={styles.section}>
-          <Text style={styles.label}>Caretakers:</Text>
+          <View style={styles.caretaker}>
+            <Text style={styles.label}>Caretakers:</Text>
+            <TouchableOpacity>
+              <Ionicons name="md-person-add-outline" size={48} color="black"
+                onPress = {() => {
+                  navigation.navigate('Assign Caretaker');
+                  (async() => {
+                    //const res = await axios.get('http://localhost:3000/db/user?userId=test', axiosOption);
+                    const res = await axios.get(`http://localhost:3000/db/plant?plantId=1`, axiosOption)
+                    console.log("GET request form inside PlantProfile.tsx", res);
+                  })();
+                }}
+              />
+          </TouchableOpacity>
+          </View>
           <FlatList
             style={styles.flatListContainer}
             contentContainerStyle={{flex: 1, justifyContent: 'center', alignItems: 'stretch'}}
@@ -82,18 +96,6 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
               </TouchableOpacity>
             )}
           />
-          <TouchableOpacity>
-            <Ionicons name="md-person-add-outline" size={48} color="black"
-              onPress = {() => {
-                navigation.navigate('Assign Caretaker');
-                (async() => {
-                  //const res = await axios.get('http://localhost:3000/db/user?userId=test', axiosOption);
-                  const res = await axios.get(`http://localhost:3000/db/plant?plantId=1`, axiosOption)
-                  console.log("GET request form inside PlantProfile.tsx", res);
-                })();
-              }}
-            />
-          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
@@ -140,28 +142,28 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   mainContainer: {
-    justifyContent: 'flex-start',
-    alignItems: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: '3%'
   },
   section: {
-    flexDirection: 'row',
-    alignSelf: 'flex-start'
+    flex: 1,
+    alignSelf: 'flex-start',
+    marginLeft: '10%',
+    paddingBottom: '2%'
   },
   label: {
     alignSelf: 'flex-start',
-    marginLeft: '13%',
     fontWeight: 'bold',
   },
   description: {
-    paddingLeft: '3%'
+    // marginLeft: '5%'
   },
   flatListContainer: {
     width: '100%',
   },
   caretaker: {
-    borderWidth: 1,
-    width: '75%',
-    alignSelf: 'center',
-    padding: 5
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   }
 });

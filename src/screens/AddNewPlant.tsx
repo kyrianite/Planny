@@ -75,6 +75,7 @@ export default function AddNewPlantScreen( {navigation, userId='test'}: Props) {
       const plantData = {
         userId: userId,
         plant: {
+          photo: plantImage,
           plantName: plantName,
           plantType: plantType,
           location: plantLocation,
