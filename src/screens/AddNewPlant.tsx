@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Image, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, ScrollView, Image, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -9,6 +9,9 @@ const axiosOption = {headers: {'content-type': 'application/json'}};
 
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
+const {height} = Dimensions.get('window');
+
+import ColorScheme from '../constants/ColorScheme';
 
 const PlantAPI = require('../components/PlantProfile/PlantDataAPI');
 
@@ -28,6 +31,7 @@ export default function AddNewPlantScreen( {navigation, userId='test'}: Props) {
   const [plantLocation, setPlantLocation] = useState<string>('');
   const [plantType, setPlantType] = useState<string>('');
   const [plantCare, setPlantCare] = useState<string>('');
+  const [validationError, setValidationError] = useState<boolean>(false);
 
   const [openWaterDd, setOpenWaterDd] = useState<boolean>(false);
   const [wateringFreq, setWateringFreq] = useState<'string' | null>(null);
@@ -64,33 +68,38 @@ export default function AddNewPlantScreen( {navigation, userId='test'}: Props) {
   };
 
   async function handleSave() {
-    const plantData = {
-      userId: userId,
-      plant: {
-        plantName: plantName,
-        plantType: plantType,
-        location: plantLocation,
-        careInstructions: plantCare,
-        wateringSchedule: wateringFreq,
-        careHistory: [Date.now()]
+    if (!plantName || !plantType || !plantLocation || !plantCare || !wateringFreq) {
+      setValidationError(true);
+    } else {
+      setValidationError(false);
+      const plantData = {
+        userId: userId,
+        plant: {
+          plantName: plantName,
+          plantType: plantType,
+          location: plantLocation,
+          careInstructions: plantCare,
+          wateringSchedule: wateringFreq,
+          careHistory: [Date.now()]
+        }
       }
+      const res = await axios.post(`http://localhost:3000/db/plant`, plantData, axiosOption);
+      const plantId = res.data.plantId;
+      navigation.navigate('Plant Profile', {plantId});
     }
-    const res = await axios.post(`http://localhost:3000/db/plant`, plantData, axiosOption)
-    console.log("POST request form inside AddNewPlant.tsx", res);
-    console.log('mydata?', res.data);
-    navigation.navigate('Plant Profile');
   };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={Styles.container}>
-      <TouchableOpacity style={styles.saveButton} onPress={() => {handleSave();}} >
-        <MaterialCommunityIcons
-          name="content-save-outline"
-          size={24}
-          color="black"
-        />
-      </TouchableOpacity>
+        {validationError ? <Text style={styles.error}>Please fill out all sections</Text> : null}
+        <TouchableOpacity style={styles.saveButton} onPress={() => {handleSave();}} >
+          <MaterialCommunityIcons
+            name="content-save-outline"
+            size={30}
+            color="black"
+          />
+        </TouchableOpacity>
         <View style={Styles.container}>
           <Image source={{ uri: plantImage }} style={styles.plantImage} resizeMode="contain" />
           <TouchableOpacity style={styles.plantImageButtonContainer}>
@@ -98,47 +107,51 @@ export default function AddNewPlantScreen( {navigation, userId='test'}: Props) {
           </TouchableOpacity>
         </View>
         <View style={styles.label}>
-          <Text>Search Plant Name: </Text>
+          <Text style={styles.labelText}>Plant Name: </Text>
         </View>
         <TextInput
           style = {styles.singleLineInput}
           placeholder = "Plant name..."
+          placeholderTextColor='#c0c0c0'
           onChangeText = {name => setPlantName(name)}
           inputMode = 'search'
           onSubmitEditing={handleSearch}
         />
         <View style={styles.label}>
-          <Text>Plant Type: </Text>
+          <Text style={styles.labelText}>Plant Type: </Text>
         </View>
         <TextInput
           style = {styles.singleLineInput}
           placeholder = "Perennial..."
+          placeholderTextColor='#c0c0c0'
           onChangeText = {type => setPlantType(type)}
           value = {plantType}
           inputMode = 'text'
         />
         <View style={styles.label}>
-          <Text>Location: </Text>
+          <Text style={styles.labelText}>Location: </Text>
         </View>
         <TextInput
           style = {styles.singleLineInput}
           placeholder = "Living room..."
+          placeholderTextColor='#c0c0c0'
           onChangeText={location => setPlantLocation(location)}
           inputMode = 'text'
         />
         <View style={styles.label}>
-          <Text>Care Instructions: </Text>
+          <Text style={styles.labelText}>Care Instructions: </Text>
         </View>
         <TextInput
           style = {styles.multilineInput}
           placeholder = "70%+ humidity required..."
+          placeholderTextColor='#c0c0c0'
           value={plantCare}
           onChangeText={care => setPlantCare(care)}
           inputMode = 'text'
           multiline
         />
         <View style={styles.label}>
-          <Text>Watering Frequency: </Text>
+          <Text style={styles.labelText}>Watering Frequency: </Text>
         </View>
         <DropDownPicker
           open={openWaterDd}
@@ -148,6 +161,7 @@ export default function AddNewPlantScreen( {navigation, userId='test'}: Props) {
           setValue={setWateringFreq}
           setItems={setFreq}
           placeholder='Select a frequency...'
+          placeholderStyle={{color: '#c0c0c0'}}
           style={styles.dropdown}
           dropDownContainerStyle={styles.dropdownContainer}
         />
@@ -157,46 +171,70 @@ export default function AddNewPlantScreen( {navigation, userId='test'}: Props) {
 };
 
 const styles = StyleSheet.create({
+  error: {
+    color: '#ff0033'
+  },
   saveButton: {
-    padding: 10,
+    padding: 5,
+    margin: 5,
     top: 0,
     position: 'absolute',
     alignSelf: 'flex-end',
+    borderWidth: 1,
+    borderRadius: 10
   },
   plantImage: {
     width: 150,
     height: 150,
+    borderRadius: 10,
+    padding: 10
   },
   plantImageButtonContainer: {
     position: 'absolute',
-    bottom: 0,
+    bottom: -2,
+    right: -2,
     alignSelf: 'flex-end',
-    padding: 5
+    padding: 5,
+    borderWidth: 1,
+    borderRadius: 10,
+    backgroundColor: '#fff'
   },
   label: {
     alignSelf: 'flex-start',
-    marginLeft: '15%'
+    marginLeft: '13%',
+  },
+  labelText: {
+    fontWeight: 'bold'
   },
   singleLineInput: {
-    height: 40,
-    width: 250,
-    margin: 12,
-    borderWidth: 1,
+    outlineStyle: 'none',
+    borderBottomWidth: 1,
+    height: '5%',
+    width: '75%',
+    margin: '3%',
     padding: 10
   },
   multilineInput: {
-    height: 100,
-    width: 250,
-    margin: 12,
-    borderWidth: 1,
+    outlineStyle: 'none',
+    borderBottomWidth: 1,
+    height: '10%',
+    width: '75%',
+    margin: '3%',
     padding: 10
   },
   dropdown: {
-    width: 250,
-    alignSelf: 'center'
+    outlineStyle: 'none',
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    width: '75%',
+    alignSelf: 'center',
   },
   dropdownContainer: {
-    width: 250,
-    alignSelf: 'center'
+    outlineStyle: 'none',
+    underlineColor: 'transparent',
+    borderWidth: 0,
+    width: '75%',
+    alignSelf: 'center',
+    padding: 10,
   },
 });

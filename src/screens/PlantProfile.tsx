@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, Image, Text, Button, TextInput, TouchableOpacity, FlatList, ListRenderItemInfo, StyleSheet, Dimensions } from 'react-native';
+import { View, ScrollView, Image, Text, Button, TextInput, TouchableOpacity, FlatList, ListRenderItemInfo, StyleSheet, Dimensions, Touchable } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import axios, { AxiosResponse } from 'axios';
@@ -7,11 +7,13 @@ const axiosOption = {headers: {'content-type': 'application/json'}};
 
 
 
-import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
+import { RouteProp } from '@react-navigation/core';
+import Styles from '../constants/Styles';
 
 type PlantProfileNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Plant Profile'>;
-type Props = { navigation: PlantProfileNavigationProp, plantId: number | undefined };
+type PlantProfileScreenRouteProp = RouteProp<RootStackParamList, 'Plant Profile'>;
+type Props = { route: PlantProfileScreenRouteProp; navigation: PlantProfileNavigationProp };
 
 const TESTDATA = [
   { id: 1, name: 'Abby' }, { id: 2, name: 'Brian' }, { id: 3, name: 'Crystal'}
@@ -19,7 +21,7 @@ const TESTDATA = [
 
 const {width} = Dimensions.get('window');
 
-export default function PlantProfileScreen( {navigation, plantId=1}: Props) {
+export default function PlantProfileScreen( {route, navigation}: Props) {
   const [plantImage, setPlantImage] = useState<string>(require('../../assets/AddNewPlantDefaultImage.png'));
   const [plantName, setPlantName] = useState<string>('');
   const [plantLoc, setPlantLoc] = useState<string>('');
@@ -27,22 +29,25 @@ export default function PlantProfileScreen( {navigation, plantId=1}: Props) {
   const [plantWatering, setPlantWatering] = useState<string>('');
   const [caretakers, setCaretakers] = useState<{id: number, name: string}[]>(TESTDATA);
 
+  const plantId = route.params?.plantId;
+
   useEffect(()=> {
     (async() => {
+      console.log('plantId: ', plantId);
       const res = await axios.get(`http://localhost:3000/db/plant?plantId=${plantId}`, axiosOption)
       console.log("GET request form inside PlantProfile.tsx", res);
       setPlantName(res.data[0]?.plantName);
       setPlantLoc(res.data[0]?.location);
       setPlantCare(res.data[0]?.careInstructions);
-      setPlantWatering(res.data[0]?.wateringingSchedule);
+      setPlantWatering(res.data[0]?.wateringSchedule);
       if (res.data[0]?.photo) {
         setPlantImage(res.data[0]?.photo);
       }
     })();
-  }, []);
+  }, [plantId]);
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.plantHeading}>
         <View style={styles.plantInfo}>
           <Image source={{ uri: plantImage }} style={styles.plantThumbnail} />
@@ -52,40 +57,45 @@ export default function PlantProfileScreen( {navigation, plantId=1}: Props) {
           </View>
         </View>
         <TouchableOpacity style={styles.plantWaterIcon}>
-          <Ionicons name="water-outline" size={24} color="black" />
+          <Ionicons name="water-outline" size={36} color="black" />
         </TouchableOpacity>
       </View>
-      <View>
-        <Text>Care Instructions: {plantCare}</Text>
-      </View>
-      <View>
-        <Text>Watering Instructions: {plantWatering}</Text>
-      </View>
-      <View>
-        <Text>Caretakers:</Text>
-        <FlatList
-          style={styles.flatListContainer}
-          contentContainerStyle={{flex: 1, justifyContent: 'center', alignItems: 'stretch'}}
-          keyExtractor={(item) => item.id.toString()}
-          data={caretakers}
-          renderItem={({ item }: ListRenderItemInfo<{id: number, name: string}>) => (
-            <TouchableOpacity style={styles.caretaker}>
-              <Text style={{alignSelf: 'center'}}>{item.name}</Text>
-            </TouchableOpacity>
-          )}
-        />
-        <Button
-          title = "+ New Carer"
-          onPress = {() => {
-            navigation.navigate('Assign Caretaker');
-            (async() => {
-              //const res = await axios.get('http://localhost:3000/db/user?userId=test', axiosOption);
-              const res = await axios.get(`http://localhost:3000/db/plant?plantId=1`, axiosOption)
-              console.log("GET request form inside PlantProfile.tsx", res);
-            })();
-          }}
-        />
+      <View style={styles.mainContainer}>
+        <View style={styles.section}>
+          <Text style={styles.label}>Care Instructions:</Text>
+          <Text style={styles.description}>{plantCare}</Text>
         </View>
+        <View style={styles.section}>
+          <Text style={styles.label}>Watering Instructions:</Text>
+          <Text style={styles.description}>{plantWatering}</Text>
+        </View>
+        <View style={styles.section}>
+          <Text style={styles.label}>Caretakers:</Text>
+          <FlatList
+            style={styles.flatListContainer}
+            contentContainerStyle={{flex: 1, justifyContent: 'center', alignItems: 'stretch'}}
+            keyExtractor={(item) => item.id.toString()}
+            data={caretakers}
+            renderItem={({ item }: ListRenderItemInfo<{id: number, name: string}>) => (
+              <TouchableOpacity style={styles.caretaker}>
+                <Text style={{alignSelf: 'center'}}>{item.name}</Text>
+              </TouchableOpacity>
+            )}
+          />
+          <TouchableOpacity>
+            <Ionicons name="md-person-add-outline" size={48} color="black"
+              onPress = {() => {
+                navigation.navigate('Assign Caretaker');
+                (async() => {
+                  //const res = await axios.get('http://localhost:3000/db/user?userId=test', axiosOption);
+                  const res = await axios.get(`http://localhost:3000/db/plant?plantId=1`, axiosOption)
+                  console.log("GET request form inside PlantProfile.tsx", res);
+                })();
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
     </ScrollView>
   )
 };
@@ -99,39 +109,51 @@ const styles = StyleSheet.create({
   plantInfo: {
     flexDirection: 'row',
     alignItems: 'baseline',
-    padding: 10
+    paddingHorizontal: 20,
+    paddingVertical: 10
   },
   plantNameAndLoc: {
     flex: 1,
     alignSelf: 'center',
-    paddingStart: 10
+    paddingStart: 15
   },
   plantHeadingNameText: {
-    fontSize: 15
+    fontSize: 17,
+    fontWeight: 'bold'
   },
   plantHeadingLocText: {
-    fontSize: 10
+    fontSize: 12
   },
   plantWaterIcon: {
     alignItems: 'baseline',
     alignSelf: 'center',
-    padding: 10
+    paddingHorizontal: 20,
+    paddingVertical: 10
   },
   plantThumbnail: {
     alignSelf: 'flex-start',
-    width: 50,
-    height: 50,
-    padding: 10,
+    width: 60,
+    height: 60,
+    padding: 15,
     borderWidth: 1,
     borderRadius: 50,
     overflow: 'hidden'
   },
-  multilineInput: {
-    height: 100,
-    width: '75%',
-    margin: 12,
-    borderWidth: 1,
-    padding: 10
+  mainContainer: {
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  section: {
+    flexDirection: 'row',
+    alignSelf: 'flex-start'
+  },
+  label: {
+    alignSelf: 'flex-start',
+    marginLeft: '13%',
+    fontWeight: 'bold',
+  },
+  description: {
+    paddingLeft: '3%'
   },
   flatListContainer: {
     width: '100%',
