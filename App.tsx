@@ -44,11 +44,13 @@ const TabIconOptions = {
     ))
   },
   Messages: {
+    tabBarShowLabel: false,
     tabBarIcon: (() => (
       <MaterialCommunityIcons name="message" color="grey" size={25}/>
     ))
   },
   Community: {
+    tabBarShowLabel: false,
     tabBarIcon: () => (
       <Image
         source={require('./assets/community.png')}
@@ -57,6 +59,7 @@ const TabIconOptions = {
     )
   },
   Profile: {
+    tabBarShowLabel: false,
     tabBarIcon: () => (
       <MaterialCommunityIcons name='cog' color='grey' size={25}/>
     )
