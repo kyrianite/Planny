@@ -64,9 +64,9 @@ module.exports = {
               if (err) {
                 console.log(err);
               } else {
-                res.status(205);
-                res.json(dataUpdate);
-                res.end();
+                res.status(201)
+                res.json(data)
+                res.end()
               }
             });
           }

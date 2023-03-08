@@ -31,7 +31,6 @@ module.exports={
   },
   addPlant: (body, callback) => {
     let plant = body.plant
-    console.log(plant)
     model.Plant.findOne().sort({_id: -1})
     // model.Plant.countDocuments()
     .then((lastPlant) => {

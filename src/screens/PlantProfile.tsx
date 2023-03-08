@@ -35,6 +35,9 @@ export default function PlantProfileScreen( {navigation, plantId=1}: Props) {
       setPlantLoc(res.data[0]?.location);
       setPlantCare(res.data[0]?.careInstructions);
       setPlantWatering(res.data[0]?.wateringingSchedule);
+      if (res.data[0]?.photo) {
+        setPlantImage(res.data[0]?.photo);
+      }
     })();
   }, []);
 

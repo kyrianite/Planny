@@ -4,6 +4,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
+import axios, { AxiosResponse } from 'axios';
+const axiosOption = {headers: {'content-type': 'application/json'}};
 
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
@@ -17,9 +19,9 @@ interface WaterDropdown {
 
 type AddNewPlantNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Add New Plant'>;
 
-type Props = { navigation: AddNewPlantNavigationProp; };
+type Props = { navigation: AddNewPlantNavigationProp, userId: string | undefined };
 
-export default function AddNewPlantScreen( {navigation}: Props) {
+export default function AddNewPlantScreen( {navigation, userId='test'}: Props) {
 
   const [plantImage, setPlantImage] = useState<string>(require('../../assets/AddNewPlantDefaultImage.png'));
   const [plantName, setPlantName] = useState<string>('');
@@ -61,12 +63,36 @@ export default function AddNewPlantScreen( {navigation}: Props) {
     }
   };
 
+  async function handleSave() {
+    const plantData = {
+      userId: userId,
+      plant: {
+        plantName: plantName,
+        plantType: plantType,
+        location: plantLocation,
+        careInstructions: plantCare,
+        wateringSchedule: wateringFreq,
+        careHistory: [Date.now()]
+      }
+    }
+    const res = await axios.post(`http://localhost:3000/db/plant`, plantData, axiosOption)
+    console.log("POST request form inside AddNewPlant.tsx", res);
+    console.log('mydata?', res.data);
+    navigation.navigate('Plant Profile');
+  };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={Styles.container}>
+      <TouchableOpacity style={styles.saveButton} onPress={() => {handleSave();}} >
+        <MaterialCommunityIcons
+          name="content-save-outline"
+          size={24}
+          color="black"
+        />
+      </TouchableOpacity>
         <View style={Styles.container}>
-          <Image source={{ uri: plantImage }} style={styles.plantImage} />
+          <Image source={{ uri: plantImage }} style={styles.plantImage} resizeMode="contain" />
           <TouchableOpacity style={styles.plantImageButtonContainer}>
             <MaterialCommunityIcons name="file-image-plus" size={24} color="black" onPress={pickImage}/>
           </TouchableOpacity>
@@ -131,6 +157,12 @@ export default function AddNewPlantScreen( {navigation}: Props) {
 };
 
 const styles = StyleSheet.create({
+  saveButton: {
+    padding: 10,
+    top: 0,
+    position: 'absolute',
+    alignSelf: 'flex-end',
+  },
   plantImage: {
     width: 150,
     height: 150,
