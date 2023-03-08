@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, Button, TouchableOpacity } from 'react-native';
+import { View, Button, TouchableOpacity, Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import HomeScreen from './src/screens/Home'
@@ -30,6 +30,40 @@ export type RootStackParamList = {
   };
 };
 
+const TabIconOptions = {
+  Home: {
+    headerShown: false,
+    tabBarShowLabel: false,
+    tabBarIcon: (() => (
+      <MaterialCommunityIcons name='home' color='grey' size={30}/>
+    ))
+  },
+  Messages: {
+    tabBarIcon: (() => (
+      <MaterialCommunityIcons name="message" color="grey" size={25}/>
+    ))
+  },
+  Community: {
+    tabBarIcon: () => (
+      <Image
+        source={require('./assets/community.png')}
+        style={{width: 26, height: 26, tintColor:'#5A5A5A'}}
+      />
+    )
+  },
+  Profile: {
+    tabBarIcon: () => (
+      <MaterialCommunityIcons name='cog' color='grey' size={25}/>
+    )
+  }
+
+}
+export type RootTabParamList = {
+  Home: undefined;
+  Messages: undefined;
+  Community: undefined;
+  Profile: undefined;
+}
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tabs = createBottomTabNavigator();
 
@@ -56,10 +90,14 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tabs.Navigator initialRouteName="Home">
-        <Tabs.Screen name="Home" component={Home} options={{headerShown:false}} />
-        <Tabs.Screen name="Messages" component={MessagesScreen} />
-        <Tabs.Screen name="Community" component={CommunityScreen} />
-        <Tabs.Screen name="Profile" component={ProfilePlaceholderScreen} />
+        <Tabs.Screen name="Home" component={Home}
+          options={TabIconOptions.Home} />
+        <Tabs.Screen name="Messages" component={MessagesScreen}
+          options={TabIconOptions.Messages}/>
+        <Tabs.Screen name="Community" component={CommunityScreen}
+          options={TabIconOptions.Community}/>
+        <Tabs.Screen name="Profile" component={ProfilePlaceholderScreen}
+        options={TabIconOptions.Profile}/>
       </Tabs.Navigator>
     </NavigationContainer>
   );

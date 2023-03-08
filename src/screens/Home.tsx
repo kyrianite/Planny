@@ -16,9 +16,9 @@ const p = {
 }
 //temporary styling
 const tempStyling = StyleSheet.create({
-  test: {
+  groups: {
     backgroundColor: '#B4CCE1',
-    width: 150, margin: 5,
+    width: 250, margin: 5,
     height: 50, borderRadius: 50,
     alignItems: 'center', justifyContent: 'center'
   },
@@ -27,6 +27,13 @@ const tempStyling = StyleSheet.create({
     flexDirection: 'row', bottom: 0,
     alignItems: 'center', justifyContent:'center',
     backgroundColor: 'white'
+  },
+
+  FloatingButtons: {
+    backgroundColor: '#B4CCE1',
+    width: 125, margin: 5,
+    height: 50, borderRadius: 50,
+    alignItems:'center', justifyContent:'center'
   },
 
   LandingPageImage: {
@@ -50,12 +57,12 @@ export default function HomeScreen() {
         </View>
 
         <View style={{alignItems:'center', justifyContent:'center'}}>
-          <TouchableOpacity style={tempStyling.test}
+          <TouchableOpacity style={tempStyling.groups}
           onPress={() => navigation.navigate('MyPlants')}>
             <Text>My Plants</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={tempStyling.test}
+          <TouchableOpacity style={tempStyling.groups}
           onPress={() => navigation.navigate('HouseGroup', {screen: 'HouseGroup', p})}>
             <Text>Patrat's House Plants</Text>
           </TouchableOpacity>
@@ -64,12 +71,12 @@ export default function HomeScreen() {
       </ScrollView>
       <View style={tempStyling.FloatingMenuStyle}>
 
-        <TouchableOpacity style={tempStyling.test}
+        <TouchableOpacity style={tempStyling.FloatingButtons}
         onPress={() => navigation.navigate('CreateHouse')}>
-          <Text>Create a new House</Text>
+          <Text style={{width: 100, textAlign:'center'}}>Create a new House</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={tempStyling.test}
+        <TouchableOpacity style={tempStyling.FloatingButtons}
         onPress={() => navigation.navigate('JoinHouse')}>
           <Text>Join a House</Text>
         </TouchableOpacity>

@@ -14,16 +14,15 @@ const tempStyling = StyleSheet.create({
   TouchableOpacityStyle: {
     backgroundColor: '#C6D5BE',
     marginTop: 50, borderWidth: 1,
-    height: 100, width: 400,
+    height: 100, width: 300,
     alignItems:'center', justifyContent: 'center',
     borderRadius: 50, flexDirection:'row'
   },
   ImageStyle: {
     height: 50, width: 50,
-    right: 100, resizeMode: 'contain'
+    right: 50, resizeMode: 'contain'
   },
   TextStyle: {
-    backgroundColor: 'lightgreen',
     right: 100
   }
 })
@@ -48,17 +47,17 @@ export default function MyPlantsScreen() {
   function makeButtons() {
     return testPlants.map((plant) => {
       return (
-        <TouchableOpacity activeOpacity={0.5}
-          style={tempStyling.TouchableOpacityStyle} onPress={moveScreen}>
+        <TouchableOpacity style={tempStyling.TouchableOpacityStyle}
+         onPress={moveScreen}>
           <View>
             <Image style={tempStyling.ImageStyle}
               source={require('../../assets/budew.png')}/>
           </View>
-          <View style={{right: 80, bottom: 10}}>
-            <Text style={{fontWeight:'bold', backgroundColor:'lightgreen'}}>
+          <View style={{right: 40, bottom: 10}}>
+            <Text style={{fontWeight:'bold'}}>
               {capitalize(plant.name)}
             </Text>
-            <Text style={tempStyling.TextStyle}>
+            <Text>
               {capitalize(plant.location)}
               </Text>
           </View>

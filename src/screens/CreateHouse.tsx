@@ -3,6 +3,7 @@ import { View, Text, Image, Button, TextInput, TouchableOpacity, Platform} from 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../App';
@@ -30,10 +31,16 @@ export default function CreateHouseScreen() {
   }
   return (
     <View style={Styles.container}>
-      <TouchableOpacity style={{backgroundColor: 'red'}} onPress={userPickImage}>
-        <Image source={image as any} style={Styles.budew}/>
-      </TouchableOpacity>
-      <Text style={{fontWeight: 'bold', fontSize: 30}}>Create a New House</Text>
+      <View>
+        <Image source={image as any} style={{height: 200, width: 200, borderRadius: 100, overflow:"hidden", resizeMode:'contain', borderWidth: 1}}/>
+        <TouchableOpacity style={{height: 50, width: 50, borderRadius:25, overflow:'hidden', backgroundColor: '#B4CCE1', zIndex: 1, position: 'absolute', alignItems:'center', justifyContent:'center', bottom: 0, right: 30}}>
+          <MaterialCommunityIcons name="file-image-plus" size={24} color='black'
+          onPress={userPickImage}/>
+        </TouchableOpacity>
+      </View>
+      <Text style={{fontWeight: 'bold', fontSize: 30}}>
+        Create a New House
+      </Text>
       <View style={{height: 200, width: 200}}>
         <TextInput style = {
           {

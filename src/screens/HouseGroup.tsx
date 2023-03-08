@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { View, Text, Image, Button, TouchableOpacity } from 'react-native';
+import { View, Text, Image, Button, TouchableOpacity, ScrollView } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
 import { StyleSheet } from 'react-native';
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../App';
+import { isPropertySignature } from 'typescript';
 
 type HouseGroupNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 //temporary styling, will clean up after prototyping
@@ -15,7 +16,10 @@ const tempStyling = StyleSheet.create({
     textAlign: 'left', fontSize: 20,
     fontWeight: 'bold', padding: 5
   },
-  ViewStyle: { flexDirection: 'column', flex: 1 },
+  ViewStyle: {
+    flexDirection: 'column', flex: 1,
+    backgroundColor: 'white'
+  },
   FloatingMenuStyle: {
     alignSelf: 'flex-end', position: 'absolute',
     bottom: 35
@@ -24,8 +28,21 @@ const tempStyling = StyleSheet.create({
     height: 100, width: 150,
     borderRadius:100, margin: 15,
     backgroundColor: '#EFDBCA', justifyContent: 'center'
+  },
+  PlantStyle: {
+    height: 100, width: 300,
+    borderRadius: 100, margin: 20,
+    backgroundColor: '#C6D5BE', borderWidth: 1,
+    justifyContent: 'center', alignContent:'center',
+    flexDirection: 'row'
+  },
+  ImageStyle: {
+    height: 80, width: 80,
+    right: 50, resizeMode: 'contain'
   }
 })
+
+function capitalize(str) { return str.charAt(0).toUpperCase() + str.slice(1)};
 
 export default function HouseGroupScreen({navigation, route}) {
   const nav = useNavigation<HouseGroupNavigationProp>();
@@ -37,26 +54,58 @@ export default function HouseGroupScreen({navigation, route}) {
           No plants added yet
         </Text>
       )
-    } else {
-      console.log(props.plants);
     }
+    return (
+      Object.keys(props.plants).map((plant) => {
+        return (
+          <TouchableOpacity style={tempStyling.PlantStyle}>
+            <View style={{alignContent:'center', justifyContent:'center'}}>
+              <Image style={tempStyling.ImageStyle}
+              source={require('../../assets/PlannyLogo.png')}/>
+            </View>
+            <View style={{alignContent:'center', justifyContent:'center', right: 45, width: 100}}>
+              <Text style={{textAlign:'left', fontWeight: 'bold'}}>
+                {capitalize(plant)}
+                {'\n'}
+              </Text>
+              <Text style={{textAlign:'left'}}>
+                {capitalize(props.plants[plant])}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )
+      })
+    )
   }
   return (
-    <View style={tempStyling.ViewStyle}>
-      <Text style={tempStyling.HouseGroupStyle}>
-        {props.groupName}
-        <Text style = {{textAlign: 'right'}}>{props.groupId}</Text>
-      </Text>
-      {plantTouch()}
-      <TouchableOpacity style={tempStyling.AddPlantStyle} onPress={() => navigation.navigate('Add New Plant')}>
-        <Text style={{textAlign:'center', justifyContent:'center'}}>
-          Add a new plant
+    <>
+    <ScrollView style={tempStyling.ViewStyle}>
+      <View style={{width: '100%', flexDirection:'row', justifyContent:'space-between', backgroundColor: 'lightgreen'}}>
+        <Text style={{fontWeight:'bold', fontSize: 25, marginLeft: 5, marginBottom: 5}}>
+          {props.groupName}
         </Text>
-      </TouchableOpacity>
-      <View style={{bottom: 0}}>
-        <Button title="Return to all groups" onPress={() => {navigation.goBack()}}/>
+        <Text style={{ textAlign:'right', marginRight: 5, fontWeight: 'bold'}}>
+          HouseID:
+          {'\n'}
+          <Text style={{fontWeight:'normal'}}>
+            {props.groupId}
+          </Text>
+        </Text>
       </View>
-    </View>
+      {plantTouch()}
+    </ScrollView>
+    <View style={{backgroundColor: 'white'}}>
+        <TouchableOpacity style={tempStyling.AddPlantStyle} onPress={() => navigation.navigate('Add New Plant')}>
+          <Text style={{ textAlign: 'center', justifyContent: 'center' }}>
+            Add a new plant
+          </Text>
+        </TouchableOpacity>
+        <View style={{ bottom: 0 }}>
+          <Button title="Return to all groups"
+          onPress={() => { navigation.goBack(); } } />
+        </View>
+      </View>
+      </>
   )
 
 }
