@@ -18,7 +18,7 @@ import MyPlantsScreen from './src/screens/MyPlants';
 import HouseGroupScreen from './src/screens/HouseGroup';
 import ProfileScreen from './src/screens/Profile';
 // import SignUpScreen from './src/screens/SignUp';
-import React, { useState, createContext, useEffect } from 'react';
+import React, { useState, createContext, useEffect, useContext } from 'react';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -77,7 +77,12 @@ export type RootTabParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tabs = createBottomTabNavigator();
 
-export const UserContext = createContext();
+export const UserContext = createContext({
+  userId: '1',
+  firstName: 'test',
+  lastName: 't',
+  email: 't@email.com'
+});
 
 function Home() {
   const [userID, setUserID] = useState({

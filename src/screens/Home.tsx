@@ -4,12 +4,11 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
 import { StyleSheet } from 'react-native';
-import { RootStackParamList } from '../../App';
+import { RootStackParamList, UserContext } from '../../App';
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'Home'
 >;
-
 const p = {
   groupName: 'Existing Group 1',
   plants: {'cactus': 'living room', 'aloe': 'bathroom'},
@@ -44,6 +43,8 @@ const tempStyling = StyleSheet.create({
 
 })
 export default function HomeScreen({navigation, route}) {
+  const { userId } = React.useContext(UserContext);
+  console.log(userId);
   return (
     <>
       <ScrollView style={{backgroundColor: 'white', flexDirection: 'column'}}>
