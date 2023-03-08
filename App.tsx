@@ -10,6 +10,7 @@ import CreateHouseScreen from './src/screens/CreateHouse';
 import JoinHouseScreen from './src/screens/JoinHouse';
 import CommunityScreen from './src/screens/Community';
 import ProfilePlaceholderScreen from './src/screens/ProfilePlaceholder';
+import Chatroom from './src/components/messages/chatroom'
 import AddNewPlantScreen from './src/screens/AddNewPlant';
 import PlantProfileScreen from './src/screens/PlantProfile';
 import AssignPlantCaretakerScreen from './src/screens/AssignPlantCaretaker';
@@ -25,6 +26,7 @@ export type RootStackParamList = {
   JoinHouse: undefined;
   MyPlants: undefined;
   Messages: undefined;
+  ChatRoom: undefined;
   HouseGroup: { screen: string; p: object } | undefined;
   'Add New Plant': undefined;
   'Plant Profile': undefined;
