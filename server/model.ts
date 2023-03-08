@@ -56,7 +56,7 @@ let messagesSchema = mongoose.Schema({
     firstName:{type:String},
     lastName:{type:String},
     time:{
-      type: Date,
+      type: String,
 },
     message: {
       type: String,
