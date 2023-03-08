@@ -4,7 +4,7 @@ import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-naviga
 import { useNavigation } from '@react-navigation/native';
 import MessageGroupList from '../components/messages/MessageGroupList'
 import Styles from '../constants/Styles';
-import { RootStackParamList } from '../../App';
+import { RootStackParamList } from '../../RootStack';
 
 type MessagesScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 

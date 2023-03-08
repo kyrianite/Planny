@@ -14,7 +14,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Styles from '../constants/Styles';
-import { RootStackParamList } from '../../App';
+import { RootStackParamList } from '../../RootStack';
 
 type CreateHouseScreenNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;

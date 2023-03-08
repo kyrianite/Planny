@@ -1,10 +1,15 @@
 import * as React from 'react';
+import { useContext } from 'react';
+import { UserContext } from '../../App';
 import { View, Text, Image, Button, TouchableOpacity, ScrollView} from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
 import { StyleSheet } from 'react-native';
-import { RootStackParamList, UserContext } from '../../App';
+import Styles from '../constants/Styles';
+import { RootStackParamList } from '../../RootStack';
+
+
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'Home'
@@ -42,9 +47,10 @@ const tempStyling = StyleSheet.create({
   }
 
 })
-export default function HomeScreen({navigation, route}) {
-  const { userId } = React.useContext(UserContext);
-  console.log(userId);
+export default function HomeScreen() {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
+  const { user } = useContext(UserContext);
+  console.log('user info in home: ', user);
   return (
     <>
       <ScrollView style={{backgroundColor: 'white', flexDirection: 'column'}}>
