@@ -1,4 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useContext } from 'react';
+import { UserContext } from '../../../App';
+
 import { View, Text, ScrollView, Button, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
@@ -8,7 +11,7 @@ import PostEntry from './PostEntry';
 import Colors from '../../constants/ColorScheme';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-type MainScreenNavigationProp = NativeStackNavigationProp<CommunityStackParamList, 'Community'>;
+type MainScreenNavigationProp = NativeStackNavigationProp<CommunityStackParamList, 'Main'>;
 
 type post = {
   username: string;
@@ -19,41 +22,49 @@ type post = {
   plantName: string;
   likes: number;
   replies: number;
+
 };
 
 export default function MainScreen() {
+  const { user } = useContext(UserContext);
+  console.log('user info in community: ', user);
+
   const navigation = useNavigation<MainScreenNavigationProp>();
   const [searchText, setSearchText] = useState('');
   const onSearchTextChange = (text: string) => {
     setSearchText(text);
   };
 
+  const showComment = () => {
+    navigation.navigate('Comment');
+  };
+
   const [posts, setPosts] = useState<post[]>([
     {
       username: 'Nathanael Tjen',
       time: '2023-03-05',
-      topic: 'Don’t use hot water for your plants',
-      photos: ['https://secure.img1-cg.wfcdn.com/im/70455228/scale-w300%5Ecompr-r70/2176/217692118/default_name.jpg', 'https://secure.img1-cg.wfcdn.com/im/59356836/resize-h800-w800%5Ecompr-r85/1434/143429039/Aloe+Vera+Plant+in+Basket.jpg'],
+      topic: '🌿🌸Don’t use hot water for your plants',
+      photos: ['https://secure.img1-cg.wfcdn.com/im/70455228/scale-w300%5Ecompr-r70/2176/217692118/default_name.jpg', 'https://secure.img1-cg.wfcdn.com/im/59356836/resize-h800-w800%5Ecompr-r85/1434/143429039/Aloe+Vera+Plant+in+Basket.jpg','https://hips.hearstapps.com/hmg-prod/images/766/articles/2016/11/aloe-vera-doesnt-contain-aloe-1494154802.jpeg'],
       plantType: 'Succulent',
       plantName: 'Aloe Vera',
       likes: 10,
-      replies: 1,
+      replies: 3,
     },
     {
       username: 'Jessica Vu',
       time: '2023-03-03',
-      topic: 'Put your plants in the sun or something idk',
+      topic: 'Put your plants in the sun🌹',
       photos: ['https://jayscotts.com/wp-content/uploads/2020/12/indoor-flowers-for-beginners-3.jpg','https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1653591340-christmas-cactus-royalty-free-image-1568922653.jpg'],
-      plantType: 'Succulent',
-      plantName: 'Aloe Vera',
+      plantType: 'Rosaceae',
+      plantName: 'Rose',
       likes: 10,
-      replies: 1,
+      replies: 3,
     },
 
     {
       username: 'Erik Newland',
       time: '2023-03-02',
-      topic: 'Check out my awesome Cactus!',
+      topic: 'Check out my awesome Cactus🌵🌵🌵!',
       photos: ['https://contentgrid.homedepot-static.com/hdus/en_US/DTCCOMNEW/Articles/types-of-cactus-section-1.jpg', 'https://www.ftd.com/blog/wp-content/uploads/2018/07/types-of-cactus-hero.jpg', 'https://secure.img1-cg.wfcdn.com/im/56520246/resize-h445%5Ecompr-r85/2247/224789930/14%27%27+Faux+Cactus+Tree+in+Ceramic+Pot.jpg','https://secure.img1-fg.wfcdn.com/im/36176888/resize-h445%5Ecompr-r85/1209/120991332/14%27%27+Faux+Cactus+Tree+in+Ceramic+Pot.jpg'],
       plantType: 'Succulent',
       plantName: 'Cactus',
@@ -64,13 +75,25 @@ export default function MainScreen() {
     {
       username: 'Sandy Chu',
       time: '2023-02-01',
-      topic: 'This is my first post!',
-      photos: ['https://i.etsystatic.com/16989532/r/il/63b3a3/3421737845/il_1588xN.3421737845_26sl.jpg', 'https://i.etsystatic.com/16989532/r/il/4b15b5/1511638992/il_fullxfull.1511638992_32hu.jpg'],
+      topic: '🌱🔥🌿 Hey fellow trainers! Want to keep your plant Pokémon happy and healthy? Make sure to water them regularly. 🌿🌱💪',
+      photos: ['https://archives.bulbagarden.net/media/upload/5/51/0182Bellossom.png', 'https://archives.bulbagarden.net/media/upload/thumb/b/bf/0590Foongus.png/1200px-0590Foongus.png','https://archives.bulbagarden.net/media/upload/thumb/a/ae/0103Exeggutor.png/1200px-0103Exeggutor.png', 'https://archives.bulbagarden.net/media/upload/thumb/1/15/0591Amoonguss.png/1200px-0591Amoonguss.png'],
+      plantType: 'Pokemon',
+      plantName: 'Pokemon',
+      likes: 10,
+      replies: 2,
+    },
+
+    {
+      username: 'William Wong',
+      time: '2023-02-01',
+      topic: '🌱💡 Remember to give your plants a good drink of water only when the top inch of soil is dry to the touch!',
+      photos: ['https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,c_fit,w_730,h_487/at%2Fart%2Fphoto%2F2020-10%2FHow-To-Clean-Plants%2FHow-to-Clean-Plants-1', 'https://hips.hearstapps.com/hmg-prod/images/perennial-flowers-and-plants-1674072475.jpeg'],
       plantType: 'Succulent',
       plantName: 'Aloe Vera',
       likes: 10,
       replies: 1,
     },
+
     {
       username: 'Quanjing Chen',
       time: '2023-01-01',
@@ -79,11 +102,20 @@ export default function MainScreen() {
       plantType: 'Succulent',
       plantName: 'Aloe Vera',
       likes: 10,
-      replies: 1,
+      replies: 3,
     },
+
   ]);
+
   posts.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
 
+  // const filterItems = posts.filter(item => {
+  //   if (curItem === '') {
+  //     return true;
+  //   } else {
+  //     return item.plantType.toLowerCase().includes(curItem.toLowerCase());
+  //   }
+  // });
 
   return (
     <View style={styles.container} >
@@ -112,14 +144,10 @@ export default function MainScreen() {
             plantName={post.plantName}
             likes={post.likes}
             replies={post.replies}
+            showComment={showComment}
           />
         ))}
       </ScrollView>
-
-      <Button
-        title="Show Comment"
-        onPress={() => navigation.navigate('Comment')}
-      />
     </View>
   )
 }

@@ -4,7 +4,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 
 import Styles from '../constants/Styles';
-import { RootStackParamList } from '../../App';
+import { RootStackParamList } from '../../RootStack';
 
 type PlantProfileNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Plant Profile'>;
 type Props = { navigation: PlantProfileNavigationProp; };

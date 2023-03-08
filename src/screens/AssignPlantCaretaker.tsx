@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import Styles from '../constants/Styles';
-import { RootStackParamList } from '../../App';
+import { RootStackParamList } from '../../RootStack';
 
 type AssignPlantCaretakerProp = NativeStackNavigationProp<RootStackParamList>;
 type Props = NativeStackScreenProps<RootStackParamList, 'Assign Caretaker'>;

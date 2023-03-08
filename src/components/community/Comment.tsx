@@ -9,13 +9,11 @@ import Colors from '../../constants/ColorScheme';
 
 type MainScreenNavigationProp = NativeStackNavigationProp<CommunityStackParamList, 'Comment'>;
 
-
 type comment = {
   username: string;
   time: string;
   message: string;
 };
-
 
 export default function CommentScreen() {
   const navigation = useNavigation<MainScreenNavigationProp>();
@@ -33,24 +31,26 @@ export default function CommentScreen() {
 
   const [comments, setComments] = useState<comment[]>([
     {
-      username: 'James Doe',
+      username: 'William Wong',
       time: '2022-03-03',
       message: 'so cute!!',
     },
     {
       username: 'Quanjing Chen',
       time: '2022-03-03',
-      message: 'thx!',
+      message: 'nice!',
     },
     {
-      username: 'James Doe',
+      username: 'Sandy Chu',
       time: '2022-03-04',
       message: 'Where did you get it?',
     }
   ]);
 
   return (
-    <View>
+    <View style={{ marginTop: 20 }}>
+              <Text style={styles.title}>New Comment</Text>
+
       {comments.map((comment, index) => (
         <View key={index} style={styles.commentContainer}>
           <View style={styles.commentHeader}>
@@ -82,7 +82,7 @@ export default function CommentScreen() {
       <Button
         title="< Back"
         onPress={() => {
-          navigation.navigate('Community');
+          navigation.navigate('Main');
         }}
       />
     </View>
@@ -90,6 +90,12 @@ export default function CommentScreen() {
 }
 
 const styles = StyleSheet.create({
+  title: {
+    marginLeft: 10,
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
   commentContainer: {
     backgroundColor: Colors.sage,
     padding: 10,
