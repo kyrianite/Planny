@@ -15,6 +15,7 @@ import PlantProfileScreen from './src/screens/PlantProfile';
 import AssignPlantCaretakerScreen from './src/screens/AssignPlantCaretaker';
 import MyPlantsScreen from './src/screens/MyPlants';
 import HouseGroupScreen from './src/screens/HouseGroup';
+import ProfileScreen from './src/screens/Profile';
 import SignUpScreen from './src/screens/SignUp';
 
 export type RootStackParamList = {
@@ -92,7 +93,7 @@ export default function App() {
         />
         <Tabs.Screen name="Messages" component={MessagesScreen} />
         <Tabs.Screen name="Community" component={CommunityScreen} />
-        <Tabs.Screen name="Profile" component={ProfilePlaceholderScreen} />
+        <Tabs.Screen name="Profile" component={ProfileScreen} />
       </Tabs.Navigator>
     </NavigationContainer>
   );

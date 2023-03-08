@@ -154,6 +154,7 @@ let message = {
       .then((lastHousehold) => {
         let objHousehold = {
           householdName: body.household.householdName,
+          photo: body.household.photo || null,
           members:[body.userId],
           messageId: body.messageId,
           householdId:1
