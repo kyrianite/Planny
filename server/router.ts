@@ -14,6 +14,13 @@ routers.post('/user', controllers.createUser)
 // }
 
 routers.get('/user', controllers.findUser)
+routers.put('/user', controllers.updateUser)
+// {
+//   "userId":'try1',
+//   "update": {
+//   "photos":
+//   }
+// }
 routers.post('/plant', controllers.addPlant)
 // {
 //   "userId":"try1",

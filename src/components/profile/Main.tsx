@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { View, Text, ScrollView, Button, TextInput, StyleSheet, TouchableOpacity, Image, CheckBox } from 'react-native';
-import {  } from 'react-native-vector-icons';
+import { View, Text, ScrollView, Button, TextInput, StyleSheet, TouchableOpacity, Image  } from 'react-native';
+import {CheckBox} from '@rneui/themed'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
@@ -8,6 +8,10 @@ import { ProfileStackParamList } from '../../screens/profile';
 import Colors from '../../constants/ColorScheme';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Styles from '../../constants/Styles';
+import axios from 'axios'
+// import dotenv from 'dotenv'
+
+// dotenv.config()
 
 type MainScreenNavigationProp = NativeStackNavigationProp<ProfileStackParamList, 'Profile'>;
 
@@ -38,30 +42,46 @@ export default function MainScreen() {
   const navigation = useNavigation<MainScreenNavigationProp>();
 
   const onPhotoSelect = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync();
-    setProfilePic(result.assets[0].uri)
-    console.log(result);
-    // if (!result.canceled) {
-    //   setNewPost({ ...newPost, photos: [...newPost.photos, result.assets[0].uri] });
+    let result = await ImagePicker.launchImageLibraryAsync()
+    const formData = new FormData();
+    await formData.append('file', result.assets[0].uri);
+    await formData.append('upload_preset', 'o9exuyqa');
+    await axios.post('https://api.cloudinary.com/v1_1/dsiywf70i/image/upload', formData)
+    .then((res) => {
+      setProfilePic(res.data.secure_url)
+      let objUpdate = {
+        userId: dummyData.userId,
+        update: {
+          photo: res.data.secure_url
+        }
+      }
+      axios.put('http://localhost:3000/db/user', {params:objUpdate})
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err))
+    })
+    .catch((err) => console.log('THIS IS THE ERR', err));
+    // if (result.canceled) {
+    //   // setNewPost({ ...newPost, photos: [...newPost.photos, result.assets[0].uri] });
+    //   console.log('hel')
     // }
   };
   const [checkedNotif, setCheckedNotif] = useState(false);
   return (
-  <View style={styles.profileContainer}>
+  <View style={styles.profileContainer} >
 
-    <TouchableOpacity  onPress={onPhotoSelect}>
-      <Image source={profilePic} style={{width: 100, height: 100, borderRadius: 25}} />
+    <TouchableOpacity  onPress={onPhotoSelect} style={{width:100}}>
+      <Image source={{uri:profilePic}} style={{width: 100, height: 100, borderRadius: 25}} />
     </TouchableOpacity>
 
-    <Text>Name: {dummyData.firstName} {dummyData.lastName}</Text>
-    <Text>Email: {dummyData.email}</Text>
-    <Text>Notification
-      <CheckBox
-          title='notification'
-          value={checkedNotif}
-          onValueChange={() => setCheckedNotif(!checkedNotif)}
+    <View style={styles.textContainer}>
+      <Text style={{marginBottom:20}}>Name: {dummyData.firstName} {dummyData.lastName}</Text>
+      <Text>Email: {dummyData.email}</Text>
+    </View>
+    <CheckBox
+      title="notification"
+      checked={checkedNotif}
+      onPress={() => setCheckedNotif(!checkedNotif)}
         />
-    </Text>
   </View>
   )
 }
@@ -71,10 +91,17 @@ const styles = StyleSheet.create({
   profileContainer: {
     flex: 1,
     flexDirection: 'column',
-    alignContent: 'center',
-    // justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#fff'
   },
+  textContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginTop:50,
+    marginBottom:10,
+    marginLeft:20
+  }
 })
 
 // const styles = StyleSheet.create({
