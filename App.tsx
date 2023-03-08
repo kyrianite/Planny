@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import RootStack from './RootStack';
 import MessagesScreen from './src/screens/Messages';
 import CommunityScreen from './src/screens/Community';
-import ProfilePlaceholderScreen from './src/screens/ProfilePlaceholder';
+import ProfileScreen from './src/screens/Profile';
 import React, { useState, createContext } from 'react';
 import { Image } from 'react-native';
 
@@ -84,7 +84,7 @@ export default function App() {
           />
           <Tabs.Screen
             name="Profile"
-            component={ProfilePlaceholderScreen}
+            component={ProfileScreen}
             options={TabIconOptions.Profile}
           />
         </Tabs.Navigator>
