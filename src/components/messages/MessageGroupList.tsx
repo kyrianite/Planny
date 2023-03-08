@@ -45,8 +45,8 @@ export default function MessageGroupList() {
     setModalVisible(false)
     //setHouseName('');
     setMemberName('');
-    setMembers([]);
-    axios.post('http://localhost:3100/db/household', {userId: 'try2', household: {
+    setMembers([]); //userId below will be from auth context
+    axios.post('http://localhost:3100/db/household', {userId: 'try1', household: {
       householdName: houseName,
       photo: '',
     }
@@ -68,8 +68,8 @@ export default function MessageGroupList() {
     // in params
 // {
 //   "householdId": 1
-// }
-  axios.get('http://localhost:3100/db/household', {params: {householdId: 4}}).then(({data}) => {
+// }                       //this householdID is returned when we create room
+  axios.get('http://localhost:3100/db/household', {params: {householdId: 10}}).then(({data}) => {
     setHomes([...homes, ...data])
   })
   }, [])
