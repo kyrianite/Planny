@@ -82,7 +82,7 @@ export default function CommentScreen() {
       <Button
         title="< Back"
         onPress={() => {
-          navigation.navigate('Community');
+          navigation.navigate('Main');
         }}
       />
     </View>

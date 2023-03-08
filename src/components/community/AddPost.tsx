@@ -17,16 +17,16 @@ type NewPost = {
   plantName: string;
 };
 
-const formData = new FormData();
-    await formData.append(‘file’, ppFile);
-    await formData.append(‘upload_preset’, ‘o9exuyqa’);
-    if (ppFile !== ‘’) {
-      await axios.post(’https://api.cloudinary.com/v1_1/dsiywf70i/image/upload', formData)
-      .then((res) => {
-        sitterObject.profilePicture = res.data.secure_url;
-      })
-      .catch((err) => console.log(err));
-    }
+// const formData = new FormData();
+//     await formData.append(‘file’, ppFile);
+//     await formData.append(‘upload_preset’, ‘o9exuyqa’);
+//     if (ppFile !== ‘’) {
+//       await axios.post(’https://api.cloudinary.com/v1_1/dsiywf70i/image/upload', formData)
+//       .then((res) => {
+//         sitterObject.profilePicture = res.data.secure_url;
+//       })
+//       .catch((err) => console.log(err));
+//     }
 
 export default function AddPostScreen() {
 
@@ -103,7 +103,7 @@ export default function AddPostScreen() {
         <Button
           title="< Back"
           onPress={() => {
-            navigation.navigate('Community');
+            navigation.navigate('Main');
           }}
         />
       </View>

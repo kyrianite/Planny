@@ -1,4 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useContext } from 'react';
+import { UserContext } from '../../../App';
+
 import { View, Text, ScrollView, Button, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
@@ -8,7 +11,7 @@ import PostEntry from './PostEntry';
 import Colors from '../../constants/ColorScheme';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-type MainScreenNavigationProp = NativeStackNavigationProp<CommunityStackParamList, 'Community'>;
+type MainScreenNavigationProp = NativeStackNavigationProp<CommunityStackParamList, 'Main'>;
 
 type post = {
   username: string;
@@ -23,6 +26,9 @@ type post = {
 };
 
 export default function MainScreen() {
+  const { user } = useContext(UserContext);
+  console.log('user info in community: ', user);
+
   const navigation = useNavigation<MainScreenNavigationProp>();
   const [searchText, setSearchText] = useState('');
   const onSearchTextChange = (text: string) => {
@@ -100,15 +106,16 @@ export default function MainScreen() {
     },
 
   ]);
+
   posts.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
 
-  const filterItems = posts.filter(item => {
-    if (curItem === '') {
-      return true;
-    } else {
-      return item.plantType.toLowerCase().includes(curItem.toLowerCase());
-    }
-  });
+  // const filterItems = posts.filter(item => {
+  //   if (curItem === '') {
+  //     return true;
+  //   } else {
+  //     return item.plantType.toLowerCase().includes(curItem.toLowerCase());
+  //   }
+  // });
 
   return (
     <View style={styles.container} >
