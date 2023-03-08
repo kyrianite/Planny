@@ -23,13 +23,15 @@ const app = express();
 
 const bodyParser = require('body-parser');
 const router = require('./router');
-app.use(cors())
+app.use(cors());
 app.use(bodyParser());
 app.use(express.json());
+
 // app.use(express.static(path.join(`${__dirname}/../client/dist`)));
 
 app.use('/db', router);
 // app.get('/db', (req, res) => {res.end('this is')})
 
-app.listen(port);
-console.log(`Listening at http://localhost:${port}`);
+
+app.listen(process.env.PORT);
+console.log(`Listening at http://localhost:${process.env.PORT}`);
