@@ -13,8 +13,8 @@ import {
   REACT_APP_FIREBASE_SENDER_ID,
   REACT_APP_FIREBASE_STORAGE_BUCKET,
 } from '@env';
-
-export const fb = initializeApp({
+console.log('REACT_APP_FIREBASE_API_KEY: ', REACT_APP_FIREBASE_API_KEY);
+const fb = initializeApp({
   apiKey: REACT_APP_FIREBASE_API_KEY,
   authDomain: REACT_APP_FIREBASE_AUTH_DOMAIN,
   projectId: REACT_APP_FIREBASE_PROJECT_ID,
