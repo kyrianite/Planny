@@ -3,7 +3,7 @@ import { View, Text, Image, Button, TextInput } from 'react-native';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import Styles from '../constants/Styles';
-import { RootStackParamList } from '../../App';
+import { RootStackParamList } from '../../RootStack';
 import MainScreen from '../components/profile/Main';
 import ChangePass from '../components/profile/ChangePass'
 import ChangeEmail from '../components/profile/ChangeEmail'

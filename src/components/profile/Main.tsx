@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { View, Text, ScrollView, Button, TextInput, StyleSheet, TouchableOpacity, Image  } from 'react-native';
-import {CheckBox} from '@rneui/themed'
+import { View, Text, ScrollView, Button, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {  } from 'react-native-vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
@@ -145,7 +145,6 @@ export default function MainScreen() {
       // navigation.navigate('ChangePass');
       }}
     />
-
   </View>
   )
 }

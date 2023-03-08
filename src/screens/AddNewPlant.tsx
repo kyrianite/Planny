@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import Styles from '../constants/Styles';
-import { RootStackParamList } from '../../App';
+import { RootStackParamList } from '../../RootStack';
 
 const PlantAPI = require('../components/PlantProfile/PlantDataAPI');
 
