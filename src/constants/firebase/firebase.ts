@@ -14,7 +14,7 @@ import {
   REACT_APP_FIREBASE_STORAGE_BUCKET,
 } from '@env';
 
-const fb = initializeApp({
+export const fb = initializeApp({
   apiKey: REACT_APP_FIREBASE_API_KEY,
   authDomain: REACT_APP_FIREBASE_AUTH_DOMAIN,
   projectId: REACT_APP_FIREBASE_PROJECT_ID,
