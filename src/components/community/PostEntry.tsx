@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import Colors from '../../constants/ColorScheme';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 type PostProps = {
@@ -12,6 +13,8 @@ type PostProps = {
   plantName: string;
   likes: number;
   replies: number;
+  showComment: () => void;
+
 };
 
 export default function PostEntry(props: PostProps) {
@@ -24,12 +27,14 @@ export default function PostEntry(props: PostProps) {
     plantName,
     likes,
     replies,
+    showComment,
   } = props;
 
   const onLikePress = () => {
     console.log('like + 1')
   };
   const onReplyPress = () => {
+    showComment();
     console.log('reply + 1')
   };
   const onSharePress = () => {
@@ -53,18 +58,19 @@ export default function PostEntry(props: PostProps) {
 
       </View>
       <View style={styles.postFooter}>
-        <TouchableOpacity onPress={onLikePress}>
-          <Text>{likes} Likes</Text>
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={onLikePress}>
+          <Icon name="flower" size={20} color={Colors.sage} />
+          <Text style={{ marginLeft: 5 }}>{likes}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onReplyPress}>
-          <Text>{replies} Reply</Text>
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center'  }} onPress={onReplyPress}>
+        <Icon name="reply" size={20} color={Colors.sage} />
+          <Text style={{ marginLeft: 5 }}>{replies}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onSharePress}>
-          <Text>Share</Text>
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center'  }} onPress={onSharePress}>
+        <Icon name="share-variant" size={20} color={Colors.sage} />
         </TouchableOpacity>
       </View>
       <Text style={styles.posttime}>{time}</Text>
-
     </View>
   );
 }

@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { StyleSheet } from 'react-native';
 import Styles from '../constants/Styles';
-import { RootStackParamList } from '../../App';
+import { RootStackParamList } from '../../RootStack';
 import { isPropertySignature } from 'typescript';
 
 type HouseGroupNavigationProp = NativeStackNavigationProp<RootStackParamList>;
