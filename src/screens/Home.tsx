@@ -4,9 +4,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
 import { StyleSheet } from 'react-native';
-import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../App';
-
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'Home'
@@ -45,8 +43,7 @@ const tempStyling = StyleSheet.create({
   }
 
 })
-export default function HomeScreen() {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
+export default function HomeScreen({navigation, route}) {
   return (
     <>
       <ScrollView style={{backgroundColor: 'white', flexDirection: 'column'}}>

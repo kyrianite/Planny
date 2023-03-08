@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../App';
-import { isPropertySignature } from 'typescript';
 
 type HouseGroupNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 //temporary styling, will clean up after prototyping
@@ -18,7 +17,8 @@ const tempStyling = StyleSheet.create({
   },
   ViewStyle: {
     flexDirection: 'column', flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    showsVerticalScrollIndicator: false
   },
   FloatingMenuStyle: {
     alignSelf: 'flex-end', position: 'absolute',
