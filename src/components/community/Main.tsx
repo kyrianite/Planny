@@ -102,6 +102,14 @@ export default function MainScreen() {
   ]);
   posts.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
 
+  const filterItems = posts.filter(item => {
+    if (curItem === '') {
+      return true;
+    } else {
+      return item.plantType.toLowerCase().includes(curItem.toLowerCase());
+    }
+  });
+
   return (
     <View style={styles.container} >
       <View style={styles.searchContainer}>
