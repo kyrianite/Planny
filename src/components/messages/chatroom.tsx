@@ -1,3 +1,4 @@
+
 import React, { Component, useEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, View, ScrollView, Image } from 'react-native';
 import io from 'socket.io-client';
@@ -9,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../../App';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Notifications } from 'react-native-notifications';
+import axios from 'axios'
 
 type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -27,6 +29,18 @@ export default function Chatroom({ route }) {
   var name123 = "steve" //ref to be pulled from DB
 
   useEffect(() => {
+    axios.get('http://localhost:3100/db/message', {params: { messageId: route.params.homeLocation === 'Dorm' ? 4 : 5 }}).then(({data}) => {
+      console.log(data[0].messages)
+      setMessages(data[0].messages)
+    })
+  }, [])
+
+  useEffect(() => {
+    // in params
+// {
+//   "messageId":1
+// }
+
     console.log(route.name)
     console.log(route.params.homeLocation) // dynamic house name
     if (route.params.homeLocation) setRoom(route.params.homeLocation) // This is where we will set the room from MongoDB
@@ -41,25 +55,44 @@ export default function Chatroom({ route }) {
     navigation.setOptions({ title: route.params.homeLocation})
   }, [messages, room, user]);
 
-  useEffect(() => {
-    Notifications.registerRemoteNotifications();
+  // useEffect(() => {
+  //   Notifications.registerRemoteNotifications();
 
-    Notifications.events().registerNotificationReceivedForeground((notification: Notification, completion) => {
-      console.log(`Notification received in foreground: ${notification.title} : ${notification.body}`);
-      completion({alert: false, sound: false, badge: false});
-    });
+  //   Notifications.events().registerNotificationReceivedForeground((notification: Notification, completion) => {
+  //     console.log(`Notification received in foreground: ${notification.title} : ${notification.body}`);
+  //     completion({alert: false, sound: false, badge: false});
+  //   });
 
-    Notifications.events().registerNotificationOpened((notification: Notification, completion) => {
-      console.log(`Notification opened: ${notification.payload}`);
-      completion();
-    });
-  }, [messages]);
+  //   Notifications.events().registerNotificationOpened((notification: Notification, completion) => {
+  //     console.log(`Notification opened: ${notification.payload}`);
+  //     completion();
+  //   });
+  // }, [messages]);
 
   const handleSendMessage = () => {
-    socket.emit('message', {name: user, message: message, timeStamp: new Date().toLocaleString(undefined, timeOptions)});
+    socket.emit('message', {userId: user, message: message, timeStamp: new Date().toLocaleString(undefined, timeOptions)});
+    //axios stuff
+    axios.put('http://localhost:3100/db/message', {
+      messageId: route.params.homeLocation === 'Dorm' ? 4 : 5,
+      message: { //messageId is like the name of the room
+        userId: 'try1',
+        time: new Date().toLocaleString(undefined, timeOptions),
+        message: message,
+      },
+  }
+  ).then((data) => console.log(data))
     setMessage('');
     setHeight(41)
   };
+
+  // {
+//   messageId:****,
+//   message:{
+//     userId: userId,
+//     time: new Date (),
+//     message:String
+//   },
+// }
 
   const onContentSizeChange = (event) => {
     setHeight(event.nativeEvent.contentSize.height);
@@ -78,8 +111,8 @@ export default function Chatroom({ route }) {
       <ScrollView style={styles.messagesContainer}>
         {messages.map((message, index) => (
           <View key={index * 10} style={{maxWidth: '100%', marginBottom: 10}}>
-            <Text style={{fontSize: 9}} key={message.timeStamp}>{message.timeStamp}</Text>
-            <Text style={{fontSize: 14, fontWeight: 'bold', maxWidth: '105%'}} key={index}>{message.name}:<Text style={{fontSize: 12, fontWeight: 'normal', marginLeft: 5, marginRight: 5}} key={message.message}>{message.message}</Text></Text>
+            <Text style={{fontSize: 9}} key={message.timeStamp}>{message.time}</Text>
+            <Text style={{fontSize: 14, fontWeight: 'bold', maxWidth: '105%'}} key={index}>{message.firstName}{' '}{message.lastName.slice(0,1).toUpperCase() + '.'}:<Text style={{fontSize: 12, fontWeight: 'normal', marginLeft: 5, marginRight: 5}} key={message.message}>{message.message}</Text></Text>
           </View>
         ))}
       </ScrollView>

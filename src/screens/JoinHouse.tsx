@@ -13,15 +13,15 @@ export default function JoinHouseScreen() {
 
   return (
     <View style={Styles.container}>
-      <Text>Join an House</Text>
+      <Text style={{fontWeight:'bold', fontSize:20}}>Join a House</Text>
       <View style={Styles.container}>
         <TextInput
+          style={{borderWidth: 1, margin: 10}}
           placeholder="Enter HouseID" />
       </View>
       <Button
         title="Join"
         onPress={() => {
-          console.log('Join House Button');
           navigation.navigate('Home');
         }}
         />

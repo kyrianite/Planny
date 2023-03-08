@@ -39,7 +39,8 @@ let householdSchema = mongoose.Schema({
   householdName:{type:String, required: true},
   members:[{type:String}], //array of member's id
   plants:[{type:Number}], // array of plant's id
-  messageId:{type:Number}
+  messageId:{type:Number},
+  photo:{type:String}
 })
 
 let messagesSchema = mongoose.Schema({
@@ -48,22 +49,18 @@ let messagesSchema = mongoose.Schema({
   messages:[{
     count:{
       type:Number,
-      required: true
     },
     userId:{
       type:String,
-      required:true
     },
-    firstName:{type:String, required: true},
-    lastName:{type:String, required:true},
+    firstName:{type:String},
+    lastName:{type:String},
     time:{
-      type: Date,
-      required: true
-    },
+      type: String,
+},
     message: {
       type: String,
-      required:true
-    }
+}
   }],
 })
 
@@ -94,7 +91,7 @@ let plantSchema = mongoose.Schema({
     type:String
   },
   wateringSchedule: {
-    type:Number,
+    type:String,
     required:true
   },
   lastWater: {

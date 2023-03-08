@@ -16,12 +16,13 @@ export default function MessageGroupList() {
   const navigation = useNavigation<CreateHouseScreenNavigationProp>();
 
 
-  const [homes, setHomes] = useState([{location: 'Mom\'s house', lastMessage: 'I watered your flowers', lastMessager: 'PlantMama040', avatar: placeholder1}, {location:  'Dorm', lastMessage: 'bro my cactus!', lastMessager: 'Todd', avatar: placeholder3}, {location: 'Grandma\'s house', lastMessage: 'How do I care for a succulent?', lastMessager: 'GreenGranny', avatar: placeholder2}])
+  const [homes, setHomes] = useState([{householdName: 'Mom\'s house', lastMessage: 'I watered your flowers', lastMessager: 'PlantMama040', avatar: placeholder1}, {householdName:  'Dorm', lastMessage: 'bro my cactus!', lastMessager: 'Todd', avatar: placeholder3}, {householdName: 'Grandma\'s house', lastMessage: 'How do I care for a succulent?', lastMessager: 'GreenGranny', avatar: placeholder2}])
   // ADD NEW HOUSE
   const [modalVisible, setModalVisible] = useState(false);
   const [houseName, setHouseName] = useState('');
   const [members, setMembers] = useState([]);
   const [memberName, setMemberName] = useState('');
+  const [dbMessageId, setDbMesageId] = useState(null);
 
   //ADD NEW HOUSE
   const handleHouseNameChange = (text) => {
@@ -40,12 +41,19 @@ export default function MessageGroupList() {
 
   //CREATE NEW HOME
   const createHome = () => {
-    setHomes([...homes, {location: houseName, lastMessage: 'test', lastMessager: 'test', avatar: placeholder2, householdMembers: members }])
+    setHomes([...homes, {householdName: houseName, lastMessage: 'test', lastMessager: 'test', avatar: placeholder2, householdMembers: members }])
     setModalVisible(false)
-    setHouseName('');
+    //setHouseName('');
     setMemberName('');
     setMembers([]);
-    axios.post('http://localhost:4000/household', {householdName: houseName})
+    axios.post('http://localhost:3100/db/household', {userId: 'try2', household: {
+      householdName: houseName,
+      photo: '',
+    }
+  }).then(({data}) => {
+    console.log(data.messageId);
+    setDbMesageId(data.messageId)
+  })
   }
 
   // CHANGE NAVIGATION TITLE ON BACK
@@ -56,27 +64,37 @@ export default function MessageGroupList() {
     }, [])
   );
 
+  useEffect(() => {
+    // in params
+// {
+//   "householdId": 1
+// }
+  axios.get('http://localhost:3100/db/household', {params: {householdId: 4}}).then(({data}) => {
+    setHomes([...homes, ...data])
+  })
+  }, [])
+
   return (
     <View style={styles.container}>
       <ScrollView style={{flex: 1, backgroundColor: '#EFDBCA', padding: 10, maxHeight: '90%', position: 'absolute', top: 0, bottom: 0, left: 0, right: 0,}}>
       <Text style={{marginBottom: 25}}>Your Houses</Text>
       {homes.map((home, index) => (
           <TouchableOpacity
-          key={home.location}
+          key={home.householdName}
           onPress={() => {
             // Navigate to ChatRoomat page
             navigation.setOptions({
-              title: home.location
+              title: home.householdName
             });
-            navigation.navigate('ChatRoom', { homeLocation: home.location });
+            navigation.navigate('ChatRoom', { homeLocation: home.householdName });
             console.log('testing pressing and opacity', home)
             console.log(homes)
           }}
         >
-        <View key={home.location} style={{flexDirection: 'row', borderWidth: 0, borderColor: 'black', padding: 10, margin: 10, borderRadius: 20, marginBottom: 25, backgroundColor: index % 2 === 0 ? '#C6D5BE' : '#B7DBDB'}}>
+        <View key={home.householdName} style={{flexDirection: 'row', borderWidth: 0, borderColor: 'black', padding: 10, margin: 10, borderRadius: 20, marginBottom: 25, backgroundColor: index % 2 === 0 ? '#C6D5BE' : '#B7DBDB'}}>
           <Image source={home.avatar} style={{width: 50, height: 50, borderRadius: 25}} />
           <View style={{marginLeft: 10, marginBottom: 5}}>
-            <Text style={{fontWeight: 'bold', textDecoration: 'underline', fontSize: '20px', }}>{home.location}</Text>
+            <Text style={{fontWeight: 'bold', textDecoration: 'underline', fontSize: '20px', }}>{home.householdName}</Text>
             <View style={{maxWidth: 200}}>
               <Text style={{fontSize: '16px'}}>{home.lastMessager}</Text>
               <Text>{home.lastMessage}</Text>
