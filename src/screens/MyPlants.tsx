@@ -9,23 +9,6 @@ import { RootStackParamList } from '../../RootStack';
 
 type MyPlantsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-//temporary styling
-const tempStyling = StyleSheet.create({
-  TouchableOpacityStyle: {
-    backgroundColor: '#C6D5BE',
-    marginTop: 50, borderWidth: 1,
-    height: 100, width: 300,
-    alignItems:'center', justifyContent: 'center',
-    borderRadius: 50, flexDirection:'row'
-  },
-  ImageStyle: {
-    height: 50, width: 50,
-    right: 50, resizeMode: 'contain'
-  },
-  TextStyle: {
-    right: 100
-  }
-})
 const p = {
   groupName: 'Group Test 1',
   plants: {},
@@ -39,6 +22,9 @@ export default function MyPlantsScreen() {
     {name: 'aloe', type:'green', location: 'bathroom', image:''},
     {name: "cactus", type:"green", location:'living room', image: ''}];
   const navigation = useNavigation<MyPlantsScreenNavigationProp>();
+  const [myPlants, setMyPlants] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
 
   function moveScreen() {
     navigation.navigate('HouseGroup', {screen: 'HouseGroup', p});
@@ -71,3 +57,21 @@ export default function MyPlantsScreen() {
     </View>
   )
 }
+
+//temporary styling
+const tempStyling = StyleSheet.create({
+  TouchableOpacityStyle: {
+    backgroundColor: '#C6D5BE',
+    marginTop: 50, borderWidth: 1,
+    height: 100, width: 300,
+    alignItems:'center', justifyContent: 'center',
+    borderRadius: 50, flexDirection:'row'
+  },
+  ImageStyle: {
+    height: 50, width: 50,
+    right: 50, resizeMode: 'contain'
+  },
+  TextStyle: {
+    right: 100
+  }
+})
