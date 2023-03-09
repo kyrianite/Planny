@@ -11,9 +11,11 @@ import {auth} from './src/constants/firebase/firebase'
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from './RootStack';
 
+
 export type AuthStackParamList = {
   Login: undefined;
   SignUp: undefined;
+  ForgotPassword: undefined;
 };
 
 
@@ -43,6 +45,7 @@ export default function AuthStack() {
     <Stack.Navigator>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="SignUp" component={SignUpScreen} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
     </Stack.Navigator>
   );
 }
