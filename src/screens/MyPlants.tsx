@@ -108,7 +108,7 @@ export default function MyPlantsScreen() {
   };
 
   return (
-    <ScrollView style={tempStyling.ScrollStyle}>
+    <ScrollView showsVerticalScrollIndicator={false} style={tempStyling.ScrollStyle}>
       <View style={{alignSelf: 'center'}}>
         {makeButtons()}
       </View>

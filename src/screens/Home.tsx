@@ -85,7 +85,7 @@ export default function HomeScreen() {
   }
   return (
     <>
-      <ScrollView style={{backgroundColor: 'white', flexDirection: 'column'}}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: 'white', flexDirection: 'column'}}>
 
         <View style={{alignItems:'center', justifyContent:'center'}}>
           {/* <Text style={{fontSize: 30 }}>Welcome Back</Text> */}
@@ -96,14 +96,14 @@ export default function HomeScreen() {
         </View>
 
         <View style={{alignItems:'center'}}>
-          <TouchableOpacity style={tempStyling.groups}
+          {/* <TouchableOpacity style={tempStyling.groups}
           onPress={() => navigation.navigate('MyPlants')}>
             <Text>My Plants</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           {makeHouseGroups()}
         </View>
 
-      </ScrollView>
+      </ScrollView  >
       <View style={tempStyling.FloatingMenuStyle}>
         <TouchableOpacity style={tempStyling.FloatingButtons}
           onPress={() => navigation.navigate('MyPlants')}>
@@ -139,10 +139,17 @@ export default function HomeScreen() {
 //temporary styling
 const tempStyling = StyleSheet.create({
   groups: {
-    backgroundColor: '#B4CCE1',
-    width: 300, margin: 5,
-    height: 75, borderRadius: 50,
-    alignItems: 'center', justifyContent: 'center'
+    // backgroundColor: '#B4CCE1',
+    // width: 300, margin: 5,
+    // height: 75, borderRadius: 50,
+    alignItems: 'center', justifyContent: 'center',
+    width: '70%',
+    height: '15%',
+    // padding: '7%',
+    marginVertical: '3%',
+    borderWidth: 2,
+    borderRadius: 25,
+    borderColor: ColorScheme.lightBlue
   },
 
   FloatingMenuStyle: {
