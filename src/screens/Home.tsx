@@ -32,7 +32,7 @@ export default function HomeScreen() {
   useEffect(() => {
     // setUser({id: 'entry1', email: 'test@gmail.com', firstName: 'John', lastName: 'Doe'});
     async function getUserId () {
-      const data = await axios.get(`${SERVER}/user`, { params: {userId: 'entry1'}});
+      const data = await axios.get(`${SERVER}/user`, { params: {userId: user['userId']}});
       const householdArr = data.data[0].household.flat();
       const copy : HomeGroupsProp[] = [];
       for (const householdId of householdArr) {
