@@ -10,7 +10,7 @@ import axios from 'axios';
 import { StyleSheet } from 'react-native';
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
-
+import { PORT } from '@env';
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'Home'
@@ -20,11 +20,8 @@ type HomeGroupsProp = {
   householdName: string;
   householdId: string;
 }
-const p = {
-  groupName: 'Existing Group 1',
-  plants: {'cactus': 'living room', 'aloe': 'bathroom'},
-  groupId: '0987654321'
-}
+const SERVER = `http://localhost:${PORT}/db`;
+
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const [groups, setGroups]= React.useState<HomeGroupsProp[]>([]);
@@ -35,22 +32,20 @@ export default function HomeScreen() {
   useEffect(() => {
     setUser({id: 'entry1', email: 'test@gmail.com', firstName: 'John', lastName: 'Doe'});
     async function getUserId () {
-      const data = await axios.get(`http://localhost:8080/db/user`, { params: {userId: 'entry1'}});
-      const householdArr = data.data[0].household;
+      const data = await axios.get(`${SERVER}/user`, { params: {userId: 'entry1'}});
+      const householdArr = data.data[0].household.flat();
       const copy : HomeGroupsProp[] = [];
-      householdArr.forEach(async (householdId) => {
-        let output = await axios.get(`http://localhost:8080/db/household`, {params: {householdId}});
-        if (output.data.length > 0) {
-          output.data.forEach((houseObj) => {
-            let groupObj = {
-              householdName: houseObj.householdName,
-              householdId: houseObj.householdId
-            };
-            copy.push(groupObj);
-          });
-          setGroups(copy);
+      for (const householdId of householdArr) {
+        const contents = await axios.get(`${SERVER}/household`, {params: {householdId}});
+        if (contents.data[0]) {
+          let groupObj = {
+            householdName: contents.data[0].householdName,
+            householdId: contents.data[0].householdId
+          }
+          copy.push(groupObj);
         }
-      })
+      }
+      setGroups(copy);
       setLoading(false);
     }
     getUserId();
