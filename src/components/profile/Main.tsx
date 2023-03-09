@@ -66,7 +66,7 @@ export default function MainScreen() {
           photo: res.data.secure_url
         }
       }
-      axios.put('http://localhost:3000/db/user', {params:objUpdate})
+      axios.put('http://localhost:3000/db/user', objUpdate)
         .then((data) => console.log(data))
         .catch((err) => console.log(err))
     })
@@ -82,9 +82,22 @@ export default function MainScreen() {
     userDataCopy.firstName = fn;
     userDataCopy.lastName = ln;
     setUserData(userDataCopy)
-    setfn('');
-    setln('');
-    setChangeNameDis(false);
+    let objUpdate = {
+      userId: userData.userId,
+      update: {
+        firstName:fn,
+        lastName:ln
+      }
+    }
+    axios.put('http://localhost:3000/db/user', objUpdate)
+      .then((data) => {
+        console.log(data);
+        setfn('');
+        setln('');
+        setChangeNameDis(false);
+      })
+      .catch((err) => {console.log(err)})
+
 
   }
   const [checkedNotif, setCheckedNotif] = useState(false);
@@ -105,7 +118,7 @@ export default function MainScreen() {
         </Text>
       </TouchableOpacity>
       {changeNameDis && (
-        <View style={{marginLeft:17}}>
+        <View style={{marginLeft:57}}>
           <TextInput
             style={{ width:130, height: 20, borderColor: 'gray', borderWidth: 1 }}
             onChangeText={(text) => setfn(text)}

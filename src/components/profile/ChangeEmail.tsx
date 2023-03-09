@@ -31,33 +31,25 @@ export default function ChangeEmail() {
   const [loading, setLoading] = useState(false);
   const [warning, setWarning] = useState(false);
 
-  // const updateEmail = (newEmail: string) => {
-  //   const user:any = auth.currentUser;
-  //     user.updateEmail(newEmail)
-  //       .then(() => {
-  //         console.log('email updated successfully')
-  //       })
-  //       .catch((err) => {
-  //         console.log(err)
-  //       })
-  // }
 
   const onCurrentEmailChange = (text: string) => {
     setEmail({ ...email, currentEmail: text });
+    setWarning(false)
   };
 
   const onPasswordChange = (text: string) => {
     setEmail({ ...email, password: text });
+    setWarning(false)
   };
 
   const onNewEmailChange = (text: string) => {
     setEmail({ ...email, newEmail: text });
+    setWarning(false)
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() =>setLoading(false), 3000)
     const user = auth.currentUser;
     console.log('this user', user)
     const credential = EmailAuthProvider.credential(email.currentEmail, email.password)
@@ -71,30 +63,21 @@ export default function ChangeEmail() {
             let userContextCopy = JSON.parse(JSON.stringify(userContext).slice())
             userContextCopy.email=email.newEmail
             setUser(userContextCopy)
+            setLoading(false)
+            navigation.navigate('Profile')
             console.log('Email address updated successfully!');
           })
           .catch((error) => {
             console.error(error);
+            setLoading(false)
+            setWarning(true)
           });
       })
       .catch((error) => {
         console.error(error);
+        setLoading(false)
+        setWarning(true)
       });
-    // const credential = EmailAuthProvider.credential(email.currentEmail, email.password);
-    // user.reauthenticateWithCredential(credential)
-    // .then(() => {
-    //   // user has been reauthenticated, update email address
-    //   user.updateEmail(email.newEmail)
-    //     .then(() => {
-    //       console.log('Email updated successfully!');
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
   }
 
   return (
@@ -136,7 +119,7 @@ export default function ChangeEmail() {
         />
       </View>
       {warning && (
-        <Text style={{color:'red'}}>Email or Password is incorrect</Text>
+        <Text style={{color:'red'}}>Email or Password is incorrect/Email is already in used</Text>
       )}
       {loading && (
         <ActivityIndicator/>
