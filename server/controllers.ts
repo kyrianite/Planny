@@ -18,6 +18,7 @@ module.exports = {
     });
   },
   findUser: (req, res) => {
+    console.log('finding user');
     db.findUser(req.query.userId, (err, data) => {
       if (err) {
         console.log('findUser', err);
@@ -63,9 +64,9 @@ module.exports = {
               if (err) {
                 console.log(err);
               } else {
-                res.status(205);
-                res.json(dataUpdate);
-                res.end();
+                res.status(201)
+                res.json(data)
+                res.end()
               }
             });
           }
@@ -84,6 +85,30 @@ module.exports = {
         res.end();
       }
     });
+  },
+  updateWater: (req, res) => {
+    db.updateWater(req.query, (err, data) => {
+      if (err) {
+        res.status(500)
+        res.end(err)
+      } else {
+        res.json(data)
+        res.status(203)
+        res.end()
+      }
+    })
+  },
+  updateCaretaker: (req, res) => {
+    db.updateCaretaker(req.body, (err, data) => {
+      if (err) {
+        res.status(500)
+        res.end(err)
+      } else {
+        res.json(data)
+        res.status(203)
+        res.end()
+      }
+    })
   },
   postDm: (req, res) => {
     let postObj = {
@@ -225,48 +250,64 @@ module.exports = {
   updateHousehold: (req, res) => {
     req.body.householdId = Number(req.body.householdId)
     console.log(typeof req.body.householdId)
-    db.findUser(req.body.userId, (err, dataUser) => {
-      if (err) {
-        console.log('this err in findUser');
-        res.status(500);
-        res.end(err);
-      } else {
-        console.log(dataUser)
-        let arrHousehold = dataUser[0].household.slice()
-        arrHousehold.push(req.body.householdId)
-        let objUserUpdate = {
-          userId:req.body.userId,
-
-          update: {
-            household: arrHousehold,
-          },
-        };
-        db.updateUser(objUserUpdate, (err, dataUpdate) => {
-          if (err) {
-            console.log('err in updateUser', err);
-            res.status(500);
-            res.end(err);
-          } else {
-            let objBody = {
-              householdId: req.body.householdId,
-              update: { members: req.body.userId },
-            };
-
-            db.updateHousehold(objBody, (err, dataUpdate) => {
-              if (err) {
-                console.log(err);
-                res.status(500);
-                res.end(err);
-              } else {
-                res.json(dataUpdate);
-                res.status(205);
-                res.end();
-              }
-            });
-          }
-        });
-      }
-    });
+    if (req.body.userId) {
+      db.findUser(req.body.userId, (err, dataUser) => {
+        if (err) {
+          console.log('this err in findUser');
+          res.status(500);
+          res.end(err);
+        } else {
+          console.log(dataUser)
+          let arrHousehold = dataUser[0].household.slice()
+          arrHousehold.push(req.body.householdId)
+          let objUserUpdate = {
+            userId:req.body.userId,
+            update: {
+              household: arrHousehold,
+            },
+          };
+          db.updateUser(objUserUpdate, (err, dataUpdate) => {
+            if (err) {
+              console.log('err in updateUser', err);
+              res.status(500);
+              res.end(err);
+            } else {
+              let objBody = {
+                householdId: req.body.householdId,
+                update: { members: req.body.userId },
+              };
+              db.updateHousehold(objBody, (err, dataUpdate) => {
+                if (err) {
+                  console.log(err);
+                  res.status(500);
+                  res.end(err);
+                } else {
+                  res.json(dataUpdate);
+                  res.status(201);
+                  res.end();
+                }
+              });
+            }
+          });
+        }
+      });
+    } else {
+      let objBody = {
+        householdId: req.body.householdId,
+        update: { plants: req.body.plants },
+      };
+      db.updateHousehold(objBody, (err, dataUpdate) => {
+        if (err) {
+          console.log(err);
+          res.status(500);
+          res.end(err);
+        } else {
+          res.json(dataUpdate);
+          res.status(201);
+          res.end();
+        }
+      });
+    }
   },
   postHouseholdMessage: (req, res) => {
     let postObj = {
