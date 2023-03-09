@@ -41,6 +41,7 @@ const TabIconOptions = {
     ),
   },
   Community: {
+    headerShown: false,
     tabBarShowLabel: false,
     tabBarIcon: () => (
       <Image

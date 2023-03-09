@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import Colors from '../../constants/ColorScheme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { formatDistanceToNow } from 'date-fns';
 
 
 type PostProps = {
-  username: string;
+  communityId: Number,
+  messageId: Number,
+  firstName: string;
+  lastName: string;
   time: string;
   topic: string;
   photos: string[];
@@ -14,12 +18,14 @@ type PostProps = {
   likes: number;
   replies: number;
   showComment: () => void;
-
 };
 
 export default function PostEntry(props: PostProps) {
   const {
-    username,
+    communityId,
+    messageId,
+    firstName,
+    lastName,
     time,
     topic,
     photos,
@@ -44,16 +50,18 @@ export default function PostEntry(props: PostProps) {
   return (
     <View style={styles.postContainer}>
       <View style={styles.postHeader}>
-        <Text style={styles.postUsername}>{username}</Text>
+        <Text style={styles.postUsername}>{firstName} {lastName}</Text>
       </View>
+      {photos.length ? <View style={styles.postPhotoContainer}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          {photos.map((photo, index) => (
+            <Image source={{ uri: photo }} style={styles.postPhoto} key={index} />
+          ))}
+        </ScrollView>
+      </View> : null}
+
       <View style={styles.posttopic}>
-        <View style={styles.postPhotoContainer}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {photos.map((photo, index) => (
-              <Image source={{ uri: photo }} style={styles.postPhoto} key={index} />
-            ))}
-          </ScrollView>
-        </View>
+
         <Text>{topic}</Text>
 
       </View>
@@ -62,15 +70,15 @@ export default function PostEntry(props: PostProps) {
           <Icon name="flower" size={20} color={Colors.sage} />
           <Text style={{ marginLeft: 5 }}>{likes}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center'  }} onPress={onReplyPress}>
-        <Icon name="reply" size={20} color={Colors.sage} />
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={onReplyPress}>
+          <Icon name="reply" size={20} color={Colors.sage} />
           <Text style={{ marginLeft: 5 }}>{replies}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center'  }} onPress={onSharePress}>
-        <Icon name="share-variant" size={20} color={Colors.sage} />
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={onSharePress}>
+          <Icon name="share-variant" size={20} color={Colors.sage} />
         </TouchableOpacity>
       </View>
-      <Text style={styles.posttime}>{time}</Text>
+      <Text style={styles.posttime}>{formatDistanceToNow(new Date(time), { addSuffix: true })}</Text>
     </View>
   );
 }
@@ -92,7 +100,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   posttime: {
-    marginTop:5
+    marginTop: 5
 
   },
   posttopic: {
@@ -103,13 +111,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height:210,
-    marginBottom:5
+    height: 210,
+    marginBottom: 5
   },
   postPhoto: {
     height: 200,
     width: 200,
-    marginRight:20,
+    marginRight: 20,
     borderRadius: 10
   },
   postFooter: {
