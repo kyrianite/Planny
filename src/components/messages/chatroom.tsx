@@ -72,7 +72,7 @@ export default function Chatroom({ route }) {
   const handleSendMessage = () => {
     socket.emit('message', {userId: user, message: message, timeStamp: new Date().toLocaleString(undefined, timeOptions)});
     //axios stuff
-    axios.put('http://localhost:3100/db/message', {
+    axios.put('http://localhost:3000/db/message', {
       messageId: route.params.homeLocation === 'Dorm' ? 4 : 5,
       message: { //messageId is like the name of the room
         userId: 'try1',

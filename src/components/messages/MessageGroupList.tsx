@@ -46,7 +46,7 @@ export default function MessageGroupList() {
     //setHouseName('');
     setMemberName('');
     setMembers([]);
-    axios.post('http://localhost:3100/db/household', {userId: 'try2', household: {
+    axios.post('http://localhost:3000/db/household', {userId: 'try2', household: {
       householdName: houseName,
       photo: '',
     }
