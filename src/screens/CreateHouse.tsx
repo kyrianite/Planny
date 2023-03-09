@@ -61,16 +61,7 @@ export default function CreateHouseScreen() {
     await formData.append('upload_preset', 'o9exuyqa');
     await axios.post('https://api.cloudinary.com/v1_1/dsiywf70i/image/upload', formData)
       .then((res) => {
-        // let objUpdate = {
-        //   userId: user['id'],
-        //   update: {
-        //     photo: res.data.secure_url
-        //   }
-        // }
         setImage(res.data.secure_url);
-        // axios.put(`${SERVER}/households`, {params: objUpdate})
-        //   .then((data) => console.log(data))
-        //   .catch((err) => console.log('put request err', err));
       })
       .catch((err) => {
         console.log('post request to cloudinary err', err)
@@ -92,6 +83,7 @@ export default function CreateHouseScreen() {
   }
   async function buttonHandler() {
     setLoading(true);
+    if (!user) { return }
     const bod = {
       "userId": user['userId'],
       "household": {

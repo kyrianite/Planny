@@ -10,6 +10,7 @@ import { UserContext } from '../../App';
 
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
+import { assert } from 'console';
 
 type JoinHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -30,6 +31,7 @@ export default function JoinHouseScreen() {
     if (test.data.length === 0) {
       setExistingHouseId(true);
     } else {
+      if (!user) { return }
       axios.put(`${SERVER}/household`, {householdId: joinId, userId: user['userId']});
       navigation.navigate('HouseGroup', {screen:'HouseGroup', p: {groupName: test.data[0]['householdName'], groupId: joinId}});
     }
