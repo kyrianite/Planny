@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -7,7 +7,7 @@ import AddPostScreen from '../components/community/AddPost';
 import CommentScreen from '../components/community/Comment';
 
 export type CommunityStackParamList = {
-  Main: undefined;
+  Community: undefined;
   AddPost: undefined;
   Comment: undefined;
 };
@@ -15,12 +15,22 @@ export type CommunityStackParamList = {
 const Stack = createNativeStackNavigator<CommunityStackParamList>();
 
 export default function CommunityScreen() {
+  const [update, setUpdate] = useState(false);
+
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false}}>
-      <Stack.Screen name="Main" component={MainScreen} />
-      <Stack.Screen name="AddPost" component={AddPostScreen} />
-      <Stack.Screen name="Comment" component={CommentScreen} />
+    <Stack.Navigator screenOptions={{ headerShown: true}}>
+      <Stack.Screen name="Community">
+        {(props) => <MainScreen {...props} update={update} setUpdate={setUpdate} />}
+      </Stack.Screen>
+      <Stack.Screen name="AddPost">
+      {(props) => <AddPostScreen {...props} update={update} setUpdate={setUpdate} />}
+      </Stack.Screen>
+
+      <Stack.Screen name="Comment">
+      {(props) => <CommentScreen {...props} update={update} setUpdate={setUpdate} />}
+      </Stack.Screen>
+
     </Stack.Navigator>
   )
 }

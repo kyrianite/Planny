@@ -31,7 +31,7 @@ module.exports = {
     });
   },
   updateUser: (req, res) => {
-    db.updateUser(req.query, (err, data) => {
+    db.updateUser(req.body, (err, data) => {
       if (err) {
         res.status(500);
         res.end(err);
@@ -223,20 +223,20 @@ module.exports = {
     });
   },
   updateHousehold: (req, res) => {
-    console.log('THIS IS FROM THIS', req.body);
-    req.body.householdId = Number(req.body.householdId);
-    console.log(typeof req.body.householdId);
+    req.body.householdId = Number(req.body.householdId)
+    console.log(typeof req.body.householdId)
     db.findUser(req.body.userId, (err, dataUser) => {
       if (err) {
         console.log('this err in findUser');
         res.status(500);
         res.end(err);
       } else {
-        console.log(dataUser);
-        let arrHousehold = dataUser[0].household.slice();
-        arrHousehold.push(req.body.householdId);
+        console.log(dataUser)
+        let arrHousehold = dataUser[0].household.slice()
+        arrHousehold.push(req.body.householdId)
         let objUserUpdate = {
-          userId: req.body.userId,
+          userId:req.body.userId,
+
           update: {
             household: arrHousehold,
           },
@@ -251,6 +251,7 @@ module.exports = {
               householdId: req.body.householdId,
               update: { members: req.body.userId },
             };
+
             db.updateHousehold(objBody, (err, dataUpdate) => {
               if (err) {
                 console.log(err);
@@ -366,19 +367,16 @@ module.exports = {
     });
   },
   updateCommunityLikes: (req, res) => {
-    db.updateCommunityLikes(
-      { communityId: req.query.communityId },
-      (err, data) => {
-        if (err) {
-          console.log(err);
-          res.status(500);
-          res.end(err);
-        } else {
-          res.json(data);
-          res.status(203);
-          res.end();
-        }
-      }
+    db.updateCommunityLikes({communityId: req.body.communityId}, (err, data) => {
+      if (err) {
+        console.log(err)
+        res.status(500)
+        res.end(err)
+      } else {
+        res.json(data)
+        res.status(203)
+        res.end()
+      }}
     );
   },
 };

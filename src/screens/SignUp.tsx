@@ -99,6 +99,8 @@ const SignUpScreen = () => {
                   setUser(userCopy);
                 })
                 .catch((err) => console.log(err));
+            } else {
+              setUser(success.data)
             }
           })
           .catch((error) => {
