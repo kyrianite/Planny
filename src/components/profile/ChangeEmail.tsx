@@ -8,6 +8,7 @@ import Colors from '../../constants/ColorScheme';
 import { UserContext } from '../../../App';
 import {auth} from '../../constants/firebase/firebase'
 import { EmailAuthProvider, reauthenticateWithCredential, updateEmail } from 'firebase/auth';
+import axios from 'axios'
 
 type ChangeEmailScreenNavigationProp = NativeStackNavigationProp<ProfileStackParamList, 'ChangeEmail'>;
 
@@ -64,6 +65,15 @@ export default function ChangeEmail() {
             userContextCopy.email=email.newEmail
             setUser(userContextCopy)
             setLoading(false)
+            let objUpdate = {
+              userId: user.userId,
+              update: {
+                email: email.newEmail
+              }
+            }
+            axios.put('http://localhost:3000/db/user', objUpdate)
+              .then((data) => console.log(data, 'email successfully updated'))
+              .catch((err) => console.log(err, 'itis err'))
             navigation.navigate('Profile')
             console.log('Email address updated successfully!');
           })
