@@ -6,6 +6,9 @@ import AuthStack from './AuthStack';
 import MessagesScreen from './src/screens/Messages';
 import CommunityScreen from './src/screens/Community';
 import ProfileScreen from './src/screens/Profile';
+import SignUpScreen from './src/screens/SignUp';
+import LoginScreen from './src/screens/Login'
+import ForgotPasswordScreen from './src/screens/ForgotPassword';
 import React, { useState, createContext, useInsertionEffect, useEffect } from 'react';
 import { Image } from 'react-native';
 import ColorScheme from './src/constants/ColorScheme';
@@ -51,9 +54,28 @@ const TabIconOptions = {
       <MaterialCommunityIcons name="cog" color={color} size={25} focused={focused} />
     ),
   },
+  Login: {
+    // tabBarShowLabel: false,
+    tabBarIcon: ({focused, color}) => (
+      <MaterialCommunityIcons name="login" color={color} size={25} focused={focused} />
+    ),
+  },
+  ForgotPassword: {
+    // tabBarShowLabel: false,
+    tabBarIcon: ({focused, color}) => (
+      <MaterialCommunityIcons name="file-question-outline" color={color} size={25} focused={focused} />
+    ),
+  },
+  SignUp: {
+    // tabBarShowLabel: false,
+    tabBarIcon: ({focused, color}) => (
+      <MaterialCommunityIcons name="file-sign" color={color} size={25} focused={focused} />
+    ),
+  },
 };
 
 const Tabs = createBottomTabNavigator();
+const LoginTabs = createBottomTabNavigator();
 
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -85,7 +107,24 @@ export default function App() {
               options={TabIconOptions.Profile}
             />
           </Tabs.Navigator> )
-          : ( <AuthStack /> )
+          : (
+          <LoginTabs.Navigator initialRouteName="Log In" screenOptions={{tabBarActiveTintColor: 'green', tabBarInactiveTintColor: ColorScheme.sage}}>
+            <Tabs.Screen
+              name="Forgot Password"
+              component={ForgotPasswordScreen}
+              options={TabIconOptions.ForgotPassword}
+            />
+            <Tabs.Screen
+              name="Log In"
+              component={LoginScreen}
+              options={TabIconOptions.Login}
+            />
+            <Tabs.Screen
+              name="Sign Up"
+              component={SignUpScreen}
+              options={TabIconOptions.SignUp}
+            />
+          </LoginTabs.Navigator> )
         }
       </NavigationContainer>
 

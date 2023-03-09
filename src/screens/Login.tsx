@@ -170,7 +170,7 @@ const LoginScreen = () => {
           <Text style={{ color: 'red' }}>{errorMessage}</Text>
         )}
       </View>
-      <View style={styles.noAccount}>
+      {/* <View style={styles.noAccount}>
         <Text
           onPress={() => {
             navigation.navigate('ForgotPassword');
@@ -187,7 +187,7 @@ const LoginScreen = () => {
         >
           Sign up
         </Text>
-      </View>
+      </View> */}
     </>
   );
 };
