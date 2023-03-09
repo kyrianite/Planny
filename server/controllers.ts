@@ -220,18 +220,19 @@ module.exports= {
     })
   },
   updateHousehold: (req, res) => {
-    req.query.householdId = Number(req.query.householdId)
-    console.log(typeof req.query.householdId)
-    db.findUser(req.query.userId, (err, dataUser) => {
+    req.body.householdId = Number(req.body.householdId)
+    console.log(typeof req.body.householdId)
+    db.findUser(req.body.userId, (err, dataUser) => {
       if (err) {
         console.log('this err in findUser')
         res.status(500)
         res.end(err)
       } else {
+        console.log(dataUser)
         let arrHousehold = dataUser[0].household.slice()
-        arrHousehold.push(req.query.householdId)
+        arrHousehold.push(req.body.householdId)
         let objUserUpdate = {
-          userId:req.query.userId,
+          userId:req.body.userId,
           update: {
             household: arrHousehold
           }
@@ -243,8 +244,8 @@ module.exports= {
             res.end(err)
           } else {
             let objBody = {
-              householdId: req.query.householdId,
-              update:{members: req.query.userId}
+              householdId: req.body.householdId,
+              update:{members: req.body.userId}
             }
             db.updateHousehold(objBody, (err, dataUpdate) => {
               if (err) {
