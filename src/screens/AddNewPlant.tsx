@@ -78,11 +78,11 @@ export default function AddNewPlantScreen( {route, navigation}: Props) {
       setValidationError(false);
 
       // for fake data purposes: setting userId to John Doe
-      let userId;
-      !user?.id ? userId = 'Ri6EMybFD2bLEGrbtVQ6itZGqP42' : userId=user.id;
+      // let userId;
+      // !user?.id ? userId = 'Ri6EMybFD2bLEGrbtVQ6itZGqP42' : userId=user.id;
 
       const plantData = {
-        userId: userId, //change to user.id once context is working
+        userId: user.userId, //change to user.id once context is working
         plant: {
           photo: plantImage,
           plantName: plantName,

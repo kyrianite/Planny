@@ -33,9 +33,13 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
   const getCommunity = async () => {
     await axios.get(`http://localhost:${PORT}/db/community`)
     .then(async (res) => {
+      console.log('community length', res.data.length);
+      if (res.data.length === 0) {
+        return;
+      }
       const newData = await Promise.all(res.data.map(async (item) => {
         const messageRes = await axios.get(`http://localhost:${PORT}/db/message/?messageId=${item.messageId}`);
-        // console.log('message id in main: ', item.messageId)
+        console.log('message id in main: ', item.messageId)
         return {
           communityId: item.communityId,
           messageId: item.messageId,
@@ -141,13 +145,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 10,
+    marginBottom: 10,
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     height: 50,
     zIndex: 1,
+    backgroundColor:'white'
   },
   searchIcon: {
     marginLeft: 10,

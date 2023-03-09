@@ -118,8 +118,6 @@ export default function CommentScreen({ update, setUpdate, route, navigation }: 
       ))}
 
       <View style={Styles.container}>
-        <TextInput
-          placeholder="Enter comment" />
       </View>
       <View style={styles.addCommentContainer}>
         <TextInput
