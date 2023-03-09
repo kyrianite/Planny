@@ -20,7 +20,7 @@ type MainScreenProps = {
 
 export default function MainScreen({ update, setUpdate }: MainScreenProps) {
   const { user } = useContext(UserContext);
-  console.log('user info in community: ', user);
+  // console.log('user info in community: ', user);
 
   const navigation = useNavigation<MainScreenNavigationProp>();
   const [queryType, setQueryType] = useState('');

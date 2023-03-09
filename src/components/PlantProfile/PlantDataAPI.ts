@@ -21,7 +21,7 @@ export async function getPlantList (name: string) {
 
 export async function getPlantDetails (id: number) {
   try {
-    const plantDetails = await axios.get(`${baseURL}species/details/${id}?key=${process.env.PERENUAL_API_KEY}`);
+    const plantDetails = await axios.get(`${baseURL}species/details/${id}?key=${PERENUAL_API_KEY}`);
     return plantDetails.data;
   } catch (err: unknown) {
     console.log('Could not get plant details.');
