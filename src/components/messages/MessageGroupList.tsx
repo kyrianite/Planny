@@ -17,8 +17,8 @@ type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamL
 export default function MessageGroupList() {
 
   const navigation = useNavigation<CreateHouseScreenNavigationProp>();
-
-
+  const [searchTerm, setSearchTerm] = useState('');
+  const [messages, setMessages] = useState([]);
   const [homes, setHomes] = useState([{householdName: 'Mom\'s house', lastMessage: 'I watered your flowers', lastMessager: 'PlantMama040', avatar: placeholder1}, {householdName:  'Dorm', lastMessage: 'bro my cactus!', lastMessager: 'Todd', avatar: placeholder3}, {householdName: 'Grandma\'s house', lastMessage: 'How do I care for a succulent?', lastMessager: 'GreenGranny', avatar: placeholder2}])
   // ADD NEW HOUSE
   const [modalVisible, setModalVisible] = useState(false);
@@ -50,7 +50,7 @@ export default function MessageGroupList() {
     //setHouseName('');
     setMemberName('');
     setMembers([]); //userId below will be from auth context
-    axios.post('http://localhost:3100/db/household', {userId: 'try1', household: {
+    axios.post('http://localhost:3000/db/household', {userId: 'try1', household: {
       householdName: houseName,
       photo: '',
     }
@@ -97,13 +97,12 @@ export default function MessageGroupList() {
     }, [])
   );
 
-  // useEffect(() => {
-  //   axios.get('http://localhost:3100/db/message', {params: { messageId: 4}})
-  //     .then(({data}) => {
-  //     // console.log(data[0].messages)
-  //     // setMessages(data[0].messages)
-  //   })
-  // }, [])
+  useEffect(() => {
+    axios.get('http://localhost:3000/db/message', {params: { messageId: 4}}).then(({data}) => {
+      console.log(data[0].messages)
+      setMessages(data[0].messages)
+    })
+  }, [])
 
   useEffect(() => {
     // console.log(auth)
@@ -111,11 +110,22 @@ export default function MessageGroupList() {
 // {
 //   "householdId": 1
 // }                       //this householdID is returned when we create room
-  axios.get('http://localhost:3100/db/household', {params: {householdId: 4}}).then(({data}) => {
+  axios.get('http://localhost:3000/db/household', {params: {householdId: 4}}).then(({data}) => {
     console.log(data)
     setHomes([...homes, ...data])
   })
   }, [])
+
+  const handleSearchSubmit = () => {
+    setSearchTerm('')
+    const foundMessage = messages.find(item => item.message.includes(searchTerm));
+    console.log(messages)
+    if (foundMessage) {
+      navigation.navigate('ChatRoom', { homeLocation: 'Dorm'});
+    }
+  };
+
+
 
   return (
     <View style={styles.container}>
@@ -129,12 +139,12 @@ export default function MessageGroupList() {
             navigation.setOptions({
               title: home.householdName
             });
-            navigation.navigate('ChatRoom', { homeLocation: home.householdName });
+            navigation.navigate('ChatRoom', { homeLocation: home.householdName,});
             console.log('testing pressing and opacity', home)
             console.log(homes)
           }}
         >
-        <View key={home.householdName} style={{flexDirection: 'row', borderWidth: 0, borderColor: 'black', padding: 10, margin: 10, borderRadius: 20, marginBottom: 25, backgroundColor: index % 2 === 0 ? '#C6D5BE' : '#B7DBDB'}}>
+        <View key={home.householdName} style={{flexDirection: 'row', borderWidth: 2, backgroundColor: 'white', padding: 10, margin: 10, borderRadius: 20, marginBottom: 25, borderColor: index % 2 === 0 ? '#C6D5BE' : '#B7DBDB'}}>
           <Image source={home.avatar} style={{width: 50, height: 50, borderRadius: 25}} />
           <View style={{marginLeft: 10, marginBottom: 5}}>
             <Text style={{fontWeight: 'bold', textDecoration: 'underline', fontSize: '20px', }}>{home.householdName}</Text>
@@ -146,7 +156,7 @@ export default function MessageGroupList() {
           <View style={{position: 'absolute',  right: 20, bottom: 22}}>
           {/* {index === 1 &&
           // <MaterialCommunityIcons
-          //         name="circle-medium"
+          //         name="magnify"
           //         size={40}
           //         color={offlineRoom}
           //       />
@@ -214,12 +224,28 @@ export default function MessageGroupList() {
           </View>
         </View>
       </Modal>
-      <View style={{position: 'absolute', bottom: 10, left: 0, right: 0, backgroundColor: '#B7DBDB'}}>
-      <Pressable
+      <View style={{position: 'absolute', bottom: 10, left: 0, right: 0, backgroundColor: 'white'}}>
+      {/* <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => setModalVisible(true)}>
         <Text style={styles.textStyle}>Create Home</Text>
-      </Pressable>
+      </Pressable> */}
+      <View style={{display: 'flex', flexDirection: 'row'}}>
+      <TextInput
+        placeholder="Search messages"
+        value={searchTerm}
+        onChangeText={setSearchTerm}
+        style={{maxWidth: '80%', borderBottomWidth: 2, borderBottomColor: 'black', margin: 'auto', marginBottom: 5, marginRight: 0, textAlign: 'center'}}
+      />
+      <Pressable style={[styles.button, styles.buttonOpen, {marginRight: 100, marginLeft: 0}]} title="Search" onPress={handleSearchSubmit}>
+      {/* <Text style={styles.textStyle}>Hello world</Text> */}
+       <MaterialCommunityIcons
+                  name="magnify"
+                  size={40}
+                  color={offlineRoom}
+                />
+        </Pressable>
+        </View>
       </View>
     </View>
   )
@@ -231,7 +257,7 @@ const styles = StyleSheet.create({
         // all the available vertical space will be occupied by it
     // justifyContent: 'space-between', // will create the gutter between body and footer
     position: 'relative',
-    backgroundColor: '#B7DBDB'
+    backgroundColor: '#C6D5BE'
   },
   modalView: {
     margin: 20,
@@ -249,17 +275,15 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
+    width: 100,
     borderRadius: 20,
-    padding: 10,
-    elevation: 2,
+    padding: 5,
   },
   buttonOpen: {
-    backgroundColor: '#C6D5BE',
     flex: 0.2,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10,
+    padding: 5,
   },
   buttonClose: {
     backgroundColor: '#C6D5BE',

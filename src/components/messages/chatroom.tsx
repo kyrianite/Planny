@@ -30,7 +30,8 @@ export default function Chatroom({ route }) {
   var name123 = "steve" //ref to be pulled from DB
 
   useEffect(() => {
-    axios.get('http://localhost:3100/db/message', {params: { messageId: route.params.homeLocation === 'Dorm' ? 4 : 5 }}).then(({data}) => {
+    console.log(route)
+    axios.get('http://localhost:3000/db/message', {params: { messageId: route.params.homeLocation === 'Dorm' ? 4 : 5 }}).then(({data}) => {
       console.log(data[0].messages)
       setMessages(data[0].messages)
     })
@@ -88,7 +89,7 @@ export default function Chatroom({ route }) {
   const handleSendMessage = () => {
     socket.emit('message', {userId: user, firstName: 'Ash', lastName: 'Ketchum', message: message, time: new Date().toLocaleString(undefined, timeOptions)});
     //axios stuff
-    axios.put('http://localhost:3100/db/message', {
+    axios.put('http://localhost:3000/db/message', {
       messageId: route.params.homeLocation === 'Dorm' ? 4 : 5,
       message: { //messageId is like the name of the room
         userId: 'try1',
