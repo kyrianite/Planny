@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { launchImageLibraryAsync } from 'expo-image-picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import ReactLoading from 'react-loading';
 
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
@@ -76,13 +77,23 @@ export default function CreateHouseScreen() {
       })
   }
 
+  function loadingScreen() {
+    if (loading) {
+      return (
+      <View style={{alignItems:'center', justifyContent:'center'}}>
+        <ReactLoading type="bars" color='#2F7A3E' height={'30%'} width={'30%'}/>
+      </View>
+      )
+    }
+  }
+
   function textInputHandler(e) {
     setNewGroup(e.target.value);
   }
   async function buttonHandler() {
-    // navigation.navigate('Home');
+    setLoading(true);
     const bod = {
-      "userId": user['id'],
+      "userId": user['userId'],
       "household": {
         "householdName": newGroup
       }
@@ -115,6 +126,7 @@ export default function CreateHouseScreen() {
           onChange={textInputHandler}
         />
         <Button title="Create" color='#2F7A3E' onPress={buttonHandler}/>
+        {loadingScreen()}
       </View>
     </View>
   );

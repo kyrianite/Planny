@@ -30,7 +30,7 @@ export default function MyPlantsScreen() {
   React.useEffect(() => {
     async function getMyPlants() {
       if (user) {
-        const data = await axios.get(`${SERVER}/plant`, {params: {userId: user.id}});
+        const data = await axios.get(`${SERVER}/plant`, {params: {userId: user['userId']}});
         let output : MyPlantsObj[] = [];
         data.data.forEach((plantObj) => {
           let scrub = {

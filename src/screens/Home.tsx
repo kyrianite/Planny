@@ -3,7 +3,7 @@ import { useContext, useEffect } from 'react';
 import { UserContext } from '../../App';
 import { View, Text, Image, Button, TouchableOpacity, ScrollView} from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import ReactLoading from 'react-loading';
 import axios from 'axios';
 
@@ -29,27 +29,28 @@ export default function HomeScreen() {
   const { user, setUser } = useContext(UserContext);
   console.log('user info in home: ', user);
 
-  useEffect(() => {
-    // setUser({id: 'entry1', email: 'test@gmail.com', firstName: 'John', lastName: 'Doe'});
-    async function getUserId () {
-      const data = await axios.get(`${SERVER}/user`, { params: {userId: 'entry1'}});
-      const householdArr = data.data[0].household.flat();
-      const copy : HomeGroupsProp[] = [];
-      for (const householdId of householdArr) {
-        const contents = await axios.get(`${SERVER}/household`, {params: {householdId}});
-        if (contents.data[0]) {
-          let groupObj = {
-            householdName: contents.data[0].householdName,
-            householdId: contents.data[0].householdId
+  useFocusEffect(
+    React.useCallback(() => {
+      async function getUserId () {
+        const data = await axios.get(`${SERVER}/user`, { params: {userId: user['userId']}});
+        const householdArr = data.data[0].household.flat();
+        const copy : HomeGroupsProp[] = [];
+        for (const householdId of householdArr) {
+          const contents = await axios.get(`${SERVER}/household`, {params: {householdId}});
+          if (contents.data[0]) {
+            let groupObj = {
+              householdName: contents.data[0].householdName,
+              householdId: contents.data[0].householdId
+            }
+            copy.push(groupObj);
           }
-          copy.push(groupObj);
         }
+        setGroups(copy);
+        setLoading(false);
       }
-      setGroups(copy);
-      setLoading(false);
-    }
-    getUserId();
-  }, [])
+      getUserId();
+    }, [])
+  )
 
   function press(groupName, groupId) {
     navigation.navigate('HouseGroup', {screen: 'HouseGroup', p: {groupName, groupId}});
