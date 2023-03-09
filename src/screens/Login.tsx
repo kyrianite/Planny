@@ -57,7 +57,7 @@ type AuthScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 const LoginScreen = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const navigationAuth = useNavigation<AuthScreenNavigationProp>();
-  const { user, setUser, setDis } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   console.log('userinfo in Login', user);
 
   useEffect(() => {
