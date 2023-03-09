@@ -41,7 +41,6 @@ export default function PostEntry(props: PostProps) {
   };
   const onReplyPress = () => {
     showComment();
-    console.log('reply + 1')
   };
   const onSharePress = () => {
     console.log('share + 1')

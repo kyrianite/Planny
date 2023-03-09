@@ -79,6 +79,10 @@ export default function CommentScreen({ update, setUpdate, route, navigation }: 
   };
 
   const getComments = async () => {
+    if (messageId > 1000000) {
+      //demo data with messageId > 1000000, no need to make axios call
+      return;
+    }
     await axios.get(`http://localhost:${PORT}/db/message/?messageId=${messageId}`)
       .then(res => {
         const newData = res.data[0].messages.map(item => {
