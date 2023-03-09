@@ -6,10 +6,13 @@ const placeholder3 = require('./images/placeholder-3.png')
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Chatroom from './chatroom'
-import { RootStackParamList } from '../../../App';
+import { RootStackParamList } from '../../../RootStack';
 import axios from 'axios'
+import auth from '../../constants/firebase/firebase'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
-type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Your Homes'>;
 
 export default function MessageGroupList() {
 
@@ -23,6 +26,7 @@ export default function MessageGroupList() {
   const [members, setMembers] = useState([]);
   const [memberName, setMemberName] = useState('');
   const [dbMessageId, setDbMesageId] = useState(null);
+  const [offlineRoom, setOfflineRoom] = useState('')
 
   //ADD NEW HOUSE
   const handleHouseNameChange = (text) => {
@@ -56,6 +60,35 @@ export default function MessageGroupList() {
   })
   }
 
+  const convertToUnixTimestamp = (dateTimeString) => {
+    let dateTimeStringArray = dateTimeString.split(" ");
+    let month = dateTimeStringArray[1];
+    let day = dateTimeStringArray[2];
+    let time = dateTimeStringArray[4];
+    let year = new Date().getFullYear();
+
+    let dateTimeStringFormatted = `${month} ${day} ${year} ${time}`;
+
+    return Date.parse(dateTimeStringFormatted);
+  }
+
+  const evaluateDataArray = (dataArray) => {
+    const lastObjectTime = convertToUnixTimestamp(dataArray[dataArray.length - 1].time);
+    console.log(dataArray)
+    const currentTime = Date.now();
+    const timeDifference = currentTime - lastObjectTime;
+    console.log('current time', currentTime)
+    console.log('last message time:', lastObjectTime)
+    console.log('difference', timeDifference)
+    if (timeDifference > 66412630) {
+      console.log('user is offline');
+      setOfflineRoom(true);
+    } else {
+      setOfflineRoom(false);
+    }
+  };
+
+
   // CHANGE NAVIGATION TITLE ON BACK
 
   useFocusEffect(
@@ -64,19 +97,29 @@ export default function MessageGroupList() {
     }, [])
   );
 
+  // useEffect(() => {
+  //   axios.get('http://localhost:3100/db/message', {params: { messageId: 4}})
+  //     .then(({data}) => {
+  //     // console.log(data[0].messages)
+  //     // setMessages(data[0].messages)
+  //   })
+  // }, [])
+
   useEffect(() => {
+    // console.log(auth)
     // in params
 // {
 //   "householdId": 1
 // }                       //this householdID is returned when we create room
-  axios.get('http://localhost:3100/db/household', {params: {householdId: 10}}).then(({data}) => {
+  axios.get('http://localhost:3100/db/household', {params: {householdId: 4}}).then(({data}) => {
+    console.log(data)
     setHomes([...homes, ...data])
   })
   }, [])
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{flex: 1, backgroundColor: '#EFDBCA', padding: 10, maxHeight: '90%', position: 'absolute', top: 0, bottom: 0, left: 0, right: 0,}}>
+      <ScrollView style={{flex: 1, backgroundColor: 'white', padding: 10, maxHeight: '90%', position: 'absolute', top: 0, bottom: 0, left: 0, right: 0,}}>
       <Text style={{marginBottom: 25}}>Your Houses</Text>
       {homes.map((home, index) => (
           <TouchableOpacity
@@ -99,6 +142,21 @@ export default function MessageGroupList() {
               <Text style={{fontSize: '16px'}}>{home.lastMessager}</Text>
               <Text>{home.lastMessage}</Text>
             </View>
+          </View>
+          <View style={{position: 'absolute',  right: 20, bottom: 22}}>
+          {/* {index === 1 &&
+          // <MaterialCommunityIcons
+          //         name="circle-medium"
+          //         size={40}
+          //         color={offlineRoom}
+          //       />
+          <LinearGradient
+          colors={offlineRoom ? ['#5AFF15', '#5AFF15', '#5AFF15D8'] : ['#FF0000', '#FF0000', '#FF0000D8']}
+          start={{ x: 0.0, y: 0.25 }}
+          end={{ x: 0.5, y: 1.0 }}
+          style={styles.circle}
+        />
+          } */}
           </View>
         </View>
         </TouchableOpacity>
@@ -225,5 +283,11 @@ const styles = StyleSheet.create({
     padding: 5,
     margin: 5,
     backgroundColor: 'none'
+  },
+  circle: {
+    width: 30,
+    height: 30,
+    borderRadius: 100,
+    backgroundColor: 'linear-gradient(45deg, #5AFF15 0%, #5AFF15 40%, #5AFF15D8 100%)',
   }
 })

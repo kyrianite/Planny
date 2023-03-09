@@ -1,18 +1,18 @@
 
 import React, { Component, useEffect, useState } from 'react';
-import { StyleSheet, Text, TextInput, View, ScrollView, Image } from 'react-native';
+import { StyleSheet, Text, TextInput, View, ScrollView, Image, BackHandler } from 'react-native';
 import io from 'socket.io-client';
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { SafeAreaView } from 'react-native-safe-area-context';
 const placeholder1 = require('./images/placeholder-1.jpeg')
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../../../App';
+import { RootStackParamList } from '../../../RootStack';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Notifications } from 'react-native-notifications';
 import axios from 'axios'
 
-type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Messages'>;
 
 
 export default function Chatroom({ route }) {
@@ -23,6 +23,7 @@ export default function Chatroom({ route }) {
   const [user, setUser] = useState(null);
   const [height, setHeight] = useState(41);
   // const { homeLocation } = navigation.state.params;
+  const navigation = useNavigation<CreateHouseScreenNavigationProp>();
 
   const timeOptions = { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', };
   var room123 = "Mom\'s House"; // this ref will be pulled from DB
@@ -34,6 +35,21 @@ export default function Chatroom({ route }) {
       setMessages(data[0].messages)
     })
   }, [])
+
+
+
+  useEffect(() => {
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        navigation
+          .push('Your Homes')
+        return true;
+      }
+    );
+
+    //return () => backHandler.remove();
+  }, []);
 
   useEffect(() => {
     // in params
@@ -70,7 +86,7 @@ export default function Chatroom({ route }) {
   // }, [messages]);
 
   const handleSendMessage = () => {
-    socket.emit('message', {userId: user, message: message, timeStamp: new Date().toLocaleString(undefined, timeOptions)});
+    socket.emit('message', {userId: user, firstName: 'Ash', lastName: 'Ketchum', message: message, time: new Date().toLocaleString(undefined, timeOptions)});
     //axios stuff
     axios.put('http://localhost:3100/db/message', {
       messageId: route.params.homeLocation === 'Dorm' ? 4 : 5,
@@ -98,7 +114,7 @@ export default function Chatroom({ route }) {
     setHeight(event.nativeEvent.contentSize.height);
   };
 
-  const navigation = useNavigation<CreateHouseScreenNavigationProp>();
+
 
   return (
     <SafeAreaView style={styles.outsideContainer}>
@@ -111,7 +127,7 @@ export default function Chatroom({ route }) {
       <ScrollView style={styles.messagesContainer}>
         {messages.map((message, index) => (
           <View key={index * 10} style={{maxWidth: '100%', marginBottom: 10}}>
-            <Text style={{fontSize: 9}} key={message.timeStamp}>{message.time}</Text>
+            <Text style={{fontSize: 9}} key={message.time}>{message.time}</Text>
             <Text style={{fontSize: 14, fontWeight: 'bold', maxWidth: '105%'}} key={index}>{message.firstName}{' '}{message.lastName.slice(0,1).toUpperCase() + '.'}:<Text style={{fontSize: 12, fontWeight: 'normal', marginLeft: 5, marginRight: 5}} key={message.message}>{message.message}</Text></Text>
           </View>
         ))}

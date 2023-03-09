@@ -12,6 +12,9 @@ import AssignPlantCaretakerScreen from './src/screens/AssignPlantCaretaker';
 import MyPlantsScreen from './src/screens/MyPlants';
 import HouseGroupScreen from './src/screens/HouseGroup';
 import SignUpScreen from './src/screens/SignUp';
+import Chatroom from './src/components/messages/chatroom'
+import MessageGroupList from './src/components/messages/MessageGroupList'
+import Messages from './src/screens/Messages'
 
 export type RootStackParamList = {
   Home: undefined;
@@ -73,6 +76,17 @@ export default function RootStack() {
             ),
           })}
         />
+        <Stack.Group>
+        <Stack.Screen
+          name="Your Homes"
+          component={MessageGroupList}
+        />
+        <Stack.Screen name="Messages" component={Messages}/>
+        <Stack.Screen
+          name="ChatRoom"
+          component={Chatroom}
+        />
+        </Stack.Group>
         <Stack.Screen name="Plant Profile" component={PlantProfileScreen} />
         <Stack.Screen
           name="Assign Caretaker"
