@@ -14,6 +14,7 @@ routers.post('/user', controllers.createUser);
 
 routers.get('/user', controllers.findUser)
 routers.put('/user', controllers.updateUser)
+//in body
 // {
 //   "userId":'try1',
 //   "update": {
@@ -75,7 +76,7 @@ routers.post('/household', controllers.makeHousehold);
 // }
 
 routers.put('/household', controllers.updateHousehold);
-//in params
+//in body
 // {
 //   "householdId": 1,
 //   "userId": "try1"
@@ -118,7 +119,7 @@ routers.get('/community', controllers.findCommunity);
 // no need params
 
 routers.put('/communityLikes', controllers.updateCommunityLikes);
-// in params
+// in body
 // {
 //   communityId:
 // }

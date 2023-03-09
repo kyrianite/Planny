@@ -15,8 +15,10 @@ import SignUpScreen from './src/screens/SignUp';
 import Chatroom from './src/components/messages/chatroom'
 import MessageGroupList from './src/components/messages/MessageGroupList'
 import Messages from './src/screens/Messages'
+import LoginScreen from './src/screens/Login'
 
 export type RootStackParamList = {
+  // Login: undefined;
   Home: undefined;
   CreateHouse: undefined;
   JoinHouse: undefined;
@@ -30,7 +32,7 @@ export type RootStackParamList = {
     | {
         caretakers: Array<string>;
       };
-  SignUp: undefined;
+  // SignUp: undefined;
 };
 
 export type RootTabParamList = {
@@ -46,8 +48,11 @@ export default function RootStack() {
 
   return (
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+        {/* <Stack.Screen name="Login" component={LoginScreen} options={{ tabBarVisible: false }}/>
+        <Stack.Screen name="SignUp" component={SignUpScreen} /> */}
+        {/* <Stack.Screen name="Home" component={HomeScreen} options={{ headerLeft: null }}/> */}
+        <Stack.Screen name="Home" component={HomeScreen}/>
+
         <Stack.Screen
           name="CreateHouse"
           component={CreateHouseScreen}

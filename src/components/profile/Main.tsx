@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, Button, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import {  } from 'react-native-vector-icons';
+import {CheckBox} from '@rneui/themed'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
-import { ProfileStackParamList } from '../../screens/profile';
+import { ProfileStackParamList } from '../../screens/Profile';
 import Colors from '../../constants/ColorScheme';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Styles from '../../constants/Styles';
 import axios from 'axios'
+import {auth} from '../../constants/firebase/firebase'
 // import dotenv from 'dotenv'
 
 // dotenv.config()
@@ -96,15 +97,56 @@ export default function MainScreen() {
       <Image source={{uri:profilePic}} style={{width: 150, height: 150, borderRadius: 25, marginLeft:-23}} />
     </TouchableOpacity>
 
-    <Text>Name: {dummyData.firstName} {dummyData.lastName}</Text>
-    <Text>Email: {dummyData.email}</Text>
-    <Text>Notification
-      {/* <CheckBox
-          title='notification'
-          value={checkedNotif}
-          onValueChange={() => setCheckedNotif(!checkedNotif)}
-        /> */}
-    </Text>
+    <View style={styles.textContainer}>
+      <TouchableOpacity onPress={changeDis}>
+        <Text style={styles.text}>Name: {userData.firstName} {userData.lastName}    <Icon name="create" size={15} color="#000" />
+        </Text>
+      </TouchableOpacity>
+      {changeNameDis && (
+        <View style={{marginLeft:17}}>
+          <TextInput
+            style={{ width:130, height: 20, borderColor: 'gray', borderWidth: 1 }}
+            onChangeText={(text) => setfn(text)}
+            value={fn}
+            placeholder="First name"
+          />
+          <TextInput
+          style={{ width:130, height: 20, borderColor: 'gray', borderWidth: 1 }}
+          onChangeText={(text) => setln(text)}
+          value={ln}
+          placeholder="Last name"
+          />
+          <TouchableOpacity style={{paddingHorizontal: 16, paddingVertical: 8 }}>
+            <Button title="Submit" color='green' onPress={handleChangeName} />
+          </TouchableOpacity>
+        </View>
+      )}
+      <Text style={styles.text}>Email: {userData.email}</Text>
+    </View>
+    <CheckBox
+      title="notification"
+      checked={checkedNotif}
+      onPress={() => setCheckedNotif(!checkedNotif)}
+        />
+    <Button
+      title="Change Email"
+      onPress={() => {
+      navigation.navigate('ChangeEmail');
+      }}
+    />
+    <Button
+      title="Change Password"
+      onPress={() => {
+      navigation.navigate('ChangePass');
+      }}
+    />
+    <Button
+      title="Logout"
+      onPress={() => {
+        auth.signOut()
+      // navigation.navigate('ChangePass');
+      }}
+    />
   </View>
   )
 }

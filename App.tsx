@@ -2,18 +2,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import RootStack from './RootStack';
+import AuthStack from './AuthStack';
 import MessagesScreen from './src/screens/Messages';
 import CommunityScreen from './src/screens/Community';
 import ProfileScreen from './src/screens/Profile';
 import React, { useState, createContext } from 'react';
 import { Image } from 'react-native';
 
-type User = {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-};
+type User = undefined;
 
 type UserContextType = {
   user: User | null;
@@ -24,7 +20,6 @@ export const UserContext = createContext<UserContextType>({
   user: null,
   setUser: () => { },
 });
-
 
 const TabIconOptions = {
   Home: {
@@ -41,6 +36,7 @@ const TabIconOptions = {
     ),
   },
   Community: {
+    headerShown: false,
     tabBarShowLabel: false,
     tabBarIcon: () => (
       <Image
@@ -59,37 +55,39 @@ const TabIconOptions = {
 
 const Tabs = createBottomTabNavigator();
 
-
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <NavigationContainer>
-        <Tabs.Navigator initialRouteName="RootStack">
-          <Tabs.Screen
-            name="RootStack"
-            component={RootStack}
-            options={TabIconOptions.Home}
-          />
-          <Tabs.Screen
-            name="Messages"
-            component={MessagesScreen}
-            options={TabIconOptions.Messages}
-          />
-          <Tabs.Screen
-            name="Community"
-            component={CommunityScreen}
-            options={TabIconOptions.Community}
-          />
-          <Tabs.Screen
-            name="Profile"
-            component={ProfileScreen}
-            options={TabIconOptions.Profile}
-          />
-        </Tabs.Navigator>
+        {user ? (
+          <Tabs.Navigator initialRouteName="RootStack">
+            <Tabs.Screen
+              name="RootStack"
+              component={RootStack}
+              options={TabIconOptions.Home}
+            />
+            <Tabs.Screen
+              name="Messages"
+              component={MessagesScreen}
+              options={TabIconOptions.Messages}
+            />
+            <Tabs.Screen
+              name="Community"
+              component={CommunityScreen}
+              options={TabIconOptions.Community}
+            />
+            <Tabs.Screen
+              name="Profile"
+              component={ProfileScreen}
+              options={TabIconOptions.Profile}
+            />
+          </Tabs.Navigator> )
+          : ( <AuthStack /> )
+        }
       </NavigationContainer>
-    </UserContext.Provider>
 
+    </UserContext.Provider>
   );
 }
