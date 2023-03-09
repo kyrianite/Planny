@@ -47,7 +47,9 @@ export default function RootStack() {
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerLeft: null }}
+
+        />
         <Stack.Screen
           name="CreateHouse"
           component={CreateHouseScreen}
