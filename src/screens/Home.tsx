@@ -98,12 +98,6 @@ export default function HomeScreen() {
             <Text>My Plants</Text>
           </TouchableOpacity>
           {makeHouseGroups()}
-
-          <TouchableOpacity style={tempStyling.groups}
-          onPress={() => navigation.navigate('SignUp')}>
-            <Text>Sign Up</Text>
-          </TouchableOpacity>
-
         </View>
 
       </ScrollView>

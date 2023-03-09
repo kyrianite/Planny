@@ -4,8 +4,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
-// import {PlaceholderContainer, Placeholder } from 'react-native-loading-placeholder';
-// import LinearGradient from 'react-native-linear-gradient';
 import axios, { AxiosResponse } from 'axios';
 const axiosOption = {headers: {'content-type': 'application/json'}};
 
@@ -19,30 +17,6 @@ import ColorScheme from '../constants/ColorScheme';
 import { RouteProp } from '@react-navigation/native';
 
 const PlantAPI = require('../components/PlantProfile/PlantDataAPI');
-
-// const Gradient = () => {
-//   return (
-//     <LinearGradient
-//       colors={['#eeeeee', '#dddddd', '#eeeeee']}
-//       start={{ x: 1.0, y: 0.0 }}
-//       end={{ x: 0.0, y: 0.0 }}
-//       style={{
-//         flex: 1,
-//         width: 120
-//       }}
-//     />
-//   );
-// }
-
-// const imageLoadingPlaceholder = () => {
-//   return (
-//     <PlaceholderContainer
-//       animatedCommponent={<Gradient />}
-//     >
-
-//     </PlaceholderContainer>
-//   )
-// }
 
 interface WaterDropdown {
   label: string;
@@ -108,7 +82,7 @@ export default function AddNewPlantScreen( {route, navigation}: Props) {
       !user?.id ? userId = 'Ri6EMybFD2bLEGrbtVQ6itZGqP42' : userId=user.id;
 
       const plantData = {
-        userId: userId,
+        userId: userId, //change to user.id once context is working
         plant: {
           photo: plantImage,
           plantName: plantName,

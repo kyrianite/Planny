@@ -7,7 +7,8 @@ const axiosOption = {headers: {'content-type': 'application/json'}};
 
 import { RootStackParamList } from '../../RootStack';
 import { RouteProp, useFocusEffect } from '@react-navigation/core';
-import { UserContext } from '../../App';
+// import { UserContext } from '../../App';
+import ColorScheme from '../constants/ColorScheme';
 
 type PlantProfileNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Plant Profile'>;
 type PlantProfileScreenRouteProp = RouteProp<RootStackParamList, 'Plant Profile'>;
@@ -91,6 +92,10 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
           />
         </TouchableOpacity>
       </View>
+      <View style={{
+        borderBottomColor: ColorScheme.porcelain,
+        borderBottomWidth: StyleSheet.hairlineWidth
+      }} />
       <View style={styles.mainContainer}>
         <View style={styles.section}>
           <Text style={styles.label}>Last Watered:</Text>
@@ -107,14 +112,17 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
         <View style={styles.section}>
           <View style={styles.caretaker}>
             <Text style={{fontWeight: 'bold'}}>Caretakers:</Text>
-            <TouchableOpacity>
-              <Ionicons name="md-person-add-outline" size={24} color="black"
-                style={{alignSelf: 'flex-end'}}
-                onPress = {() => {
-                  navigation.navigate('Assign Caretaker', {plantId, houseId, currentCaretakerIds: caretakerIds});
-                }}
-              />
-            </TouchableOpacity>
+            {houseId
+              ? <TouchableOpacity>
+                  <Ionicons name="md-person-add-outline" size={24} color={ColorScheme.lightBlue}
+                    style={{alignSelf: 'flex-end'}}
+                    onPress = {() => {
+                      navigation.navigate('Assign Caretaker', {plantId, houseId, currentCaretakerIds: caretakerIds});
+                    }}
+                  />
+                </TouchableOpacity>
+              : null
+            }
           </View>
           <View style={styles.description}>
             <FlatList
@@ -144,7 +152,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'baseline',
     marginHorizontal: '10%',
-    marginVertical: '5%'
+    marginVertical: '5%',
   },
   plantInfo: {
     flexDirection: 'row',

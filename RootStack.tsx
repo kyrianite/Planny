@@ -23,7 +23,7 @@ export type RootStackParamList = {
   Messages: undefined;
   HouseGroup: { screen: string; p: object } | undefined;
   'Add New Plant': { houseId: number };
-  'Plant Profile': { plantId: number, houseId: number};
+  'Plant Profile': { plantId: number, houseId: number | null};
   'Assign Caretaker': { plantId: number, houseId: number, currentCaretakerIds: string[]};
   // SignUp: undefined;
 };
