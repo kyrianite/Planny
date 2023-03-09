@@ -6,7 +6,7 @@ import AuthStack from './AuthStack';
 import MessagesScreen from './src/screens/Messages';
 import CommunityScreen from './src/screens/Community';
 import ProfileScreen from './src/screens/Profile';
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useInsertionEffect, useEffect } from 'react';
 import { Image } from 'react-native';
 
 type User = undefined;
@@ -18,7 +18,7 @@ type UserContextType = {
 
 export const UserContext = createContext<UserContextType>({
   user: null,
-  setUser: () => { },
+  setUser: () => { }
 });
 
 const TabIconOptions = {
@@ -59,7 +59,7 @@ export default function App() {
   const [user, setUser] = useState<User | null>(null);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser}}>
       <NavigationContainer>
         {user ? (
           <Tabs.Navigator initialRouteName="RootStack">
