@@ -91,9 +91,10 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
           : <Icon name="search" size={20} color="#555" style={styles.searchIcon} onPress={onSearchIconPress} />}
         <TextInput
           style={styles.searchInput}
-          placeholder="Search a plant type"
+          placeholder="Search a plant e.g., rose"
           value={searchText}
           onChangeText={setSearchText}
+          onSubmitEditing={onSearchIconPress}
         />
         <TouchableOpacity style={styles.addPost} onPress={() => navigation.navigate('AddPost')}>
           <Text style={styles.addPostText}>+</Text>
@@ -141,13 +142,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 10,
+    marginBottom: 10,
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     height: 50,
     zIndex: 1,
+    backgroundColor:'white'
   },
   searchIcon: {
     marginLeft: 10,
