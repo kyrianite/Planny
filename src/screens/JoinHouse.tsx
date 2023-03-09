@@ -28,9 +28,9 @@ export default function JoinHouseScreen() {
       <Text style={{fontWeight:'bold', fontSize:30, position: 'absolute', top: '45%'}}>Join a House</Text>
       <View style={{height: 200, width: 200, position: 'absolute', top: '50%'}}>
         <TextInput
-          style={{borderWidth: 1, padding: 10, height: 40, color: 'grey', marginBottom: 30, borderRadius: 5, overflow:"hidden"}}
-          placeholder="Enter HouseID" />
-        <Button title="Join" onPress={moveScreen} />
+          style={{borderWidth: 1, padding: 10, height: 40, marginBottom: 30, borderRadius: 5, overflow:"hidden"}}
+          placeholder="Enter HouseID" placeholderTextColor={'grey'} />
+        <Button title="Join" color='#2F7A3E' onPress={moveScreen} />
       </View>
     </View>
   )
