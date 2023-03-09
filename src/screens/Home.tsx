@@ -28,8 +28,6 @@ export default function HomeScreen() {
   const [groups, setGroups]= React.useState<HomeGroupsProp[]>([]);
   const [loading, setLoading] = React.useState(true);
   const { user, setUser } = useContext(UserContext);
-  console.log('user info in home: ', user);
-
 
   useFocusEffect(
     React.useCallback(() => {
