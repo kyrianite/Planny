@@ -6,9 +6,10 @@ import ReactLoading from 'react-loading';
 import axios from 'axios';
 import { StyleSheet } from 'react-native';
 import Styles from '../constants/Styles';
+import ColorScheme from '../constants/ColorScheme';
 import { RootStackParamList } from '../../RootStack';
 import { UserContext } from '../../App';
-
+import { PORT } from '@env';
 type MyPlantsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 type MyPlantsObj = {
@@ -16,9 +17,10 @@ type MyPlantsObj = {
   plantName: string;
   plantType: string | undefined;
   location: string;
+  lastWater: string;
   photo: string | undefined;
 };
-
+const SERVER = `http://localhost:${PORT}/db`;
 function cap (str) { return str.charAt(0).toUpperCase() + str.slice(1); }
 
 export default function MyPlantsScreen() {
@@ -30,7 +32,7 @@ export default function MyPlantsScreen() {
   React.useEffect(() => {
     async function getMyPlants() {
       if (user) {
-        const data = await axios.get(`http://localhost:8080/db/plant`, {params: {userId: user.id}});
+        const data = await axios.get(`${SERVER}/plant`, {params: {userId: user['userId']}});
         let output : MyPlantsObj[] = [];
         data.data.forEach((plantObj) => {
           let scrub = {
@@ -38,12 +40,18 @@ export default function MyPlantsScreen() {
             plantName: '',
             plantType: '',
             location: '',
+            lastWater: '',
             photo: require('../../assets/budew.png')
           };
           scrub.plantId = plantObj.plantId;
           scrub.plantName = plantObj.plantName;
           scrub.plantType = plantObj.plantType;
           scrub.location = plantObj.location;
+          if (plantObj.lastWater) {
+            scrub.lastWater = new Date(plantObj.lastWater).toDateString();
+          } else {
+            scrub.lastWater = 'Unknown';
+          }
           if (plantObj.photo) { scrub.photo = plantObj.photo; }
           output.push(scrub);
         })
@@ -52,11 +60,8 @@ export default function MyPlantsScreen() {
       }
     }
     getMyPlants();
-  }, [])
-  function moveScreen() {
-    // navigation.navigate('HouseGroup', {screen: 'HouseGroup', p});
-    console.log('Connect me to the plant profile screen');
-  }
+  }, []);
+
 
   function makeButtons() {
     if (loading) {
@@ -65,7 +70,7 @@ export default function MyPlantsScreen() {
         <Text style={{fontSize: 30, fontWeight:'bold'}}>
           Loading
         </Text>
-        <ReactLoading type={'bubbles'} color='#2F7A3E' height={'30%'} width={'30%'}/>
+        <ReactLoading type={'bubbles'} color={ColorScheme.sage} height={'30%'} width={'30%'}/>
       </View>
       )
     }
@@ -77,18 +82,25 @@ export default function MyPlantsScreen() {
     return myPlants.map((plant) => {
       return (
         <TouchableOpacity style={tempStyling.TouchableOpacityStyle}
-         onPress={moveScreen}>
-          <View style={{alignContent: 'center', justifyContent: 'center'}}>
-            <Image style={tempStyling.ImageStyle}
-              source={plant.photo as any}/>
+          onPress={(() => {
+            navigation.navigate('Plant Profile', {plantId: +plant.plantId, houseId: null})
+          })} key={plant.plantId}>
+          <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
+            <Image style={tempStyling.ImageStyle} source={plant.photo as any}/>
+            <View style={{alignSelf: 'flex-start', marginLeft: '3%'}}>
+              <Text style={{fontWeight:'bold'}}>
+                {cap(plant.plantName)}
+              </Text>
+              <Text>
+                {cap(plant.location)}
+              </Text>
+              <Text>
+                {cap(plant.lastWater)}
+              </Text>
+            </View>
           </View>
           <View style={{right: 40, bottom: 10}}>
-            <Text style={{fontWeight:'bold'}}>
-              {cap(plant.plantName)}
-            </Text>
-            <Text>
-              {cap(plant.location)}
-              </Text>
+
           </View>
         </TouchableOpacity>
       )
@@ -97,7 +109,7 @@ export default function MyPlantsScreen() {
 
   return (
     <ScrollView style={tempStyling.ScrollStyle}>
-      <View>
+      <View style={{alignSelf: 'center'}}>
         {makeButtons()}
       </View>
     </ScrollView>
@@ -107,15 +119,19 @@ export default function MyPlantsScreen() {
 //temporary styling
 const tempStyling = StyleSheet.create({
   TouchableOpacityStyle: {
-    height: 100, width: 350,
-    backgroundColor: '#C6D5BE', borderWidth: 1,
-    borderRadius: 100, margin: 20,
-    justifyContent: 'center', alignItems:'center',
-    flexDirection:'row'
+    // height: 100,
+    // width: 350,
+    alignSelf: 'flex-start',
+    justifyContent: 'center',
+    alignItems:'baseline',
+    flexDirection:'row',
+    // marginHorizontal: '7%',
+    paddingVertical: '3%'
   },
   ImageStyle: {
-    height: 80, width: 80,
-    right: 80, resizeMode: 'contain'
+    height: 80,
+    width: 80,
+    resizeMode: 'contain'
   },
   TextStyle: {
     right: 100

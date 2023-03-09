@@ -26,6 +26,7 @@ routers.post('/plant', controllers.addPlant);
 // {
 //   "userId":"try1",
 //   "plant": {
+//       "plantImage":"uri"
 //       "plantName":"tryPlant",
 //       "plantType":"tryPlant",
 //       "location":"tryPlant",
@@ -37,6 +38,11 @@ routers.post('/plant', controllers.addPlant);
 
 routers.get('/plant', controllers.findPlant);
 // it can be userId:, or plantId:
+
+routers.put('/plant/water', controllers.updateWater);
+// plantId
+
+routers.put('/plant/caretaker', controllers.updateCaretaker);
 
 routers.post('/dm', controllers.postDm);
 // {

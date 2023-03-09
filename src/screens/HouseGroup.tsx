@@ -3,13 +3,14 @@ import { UserContext } from '../../App';
 import { View, Text, Image, Button, TouchableOpacity, ScrollView } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
+import { PORT } from '@env';
 import axios from 'axios';
 
 import { StyleSheet } from 'react-native';
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
 
-const SERVER = 'http://localhost:8080/db/plant';
+const SERVER = `http://localhost:${PORT}/db`;
 type HouseGroupNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 function cap(str) { return str.charAt(0).toUpperCase() + str.slice(1)};
@@ -22,16 +23,24 @@ export default function HouseGroupScreen({navigation, route}) {
   const [loading, setLoading] = React.useState(true);
 
   const { user } = React.useContext(UserContext);
-  console.log('does this pass on', user);
 
   React.useEffect(() => {
     setGroupId(route.params.p.groupId);
     setGroupName(route.params.p.groupName);
     async function makePlants() {
       if (user) {
-        const data = await axios.get(SERVER, { params : {userId: user['id']}});
+        let test = await axios.get(`${SERVER}/household`,
+        {params: {householdId: route.params.p.groupId}});
+        let housePlants = test.data[0].plants;
+        let data : any = [];
+        for (const plantId of housePlants) {
+          const contents = await axios.get(`${SERVER}/plant`, {
+            params: {plantId}
+          });
+          data.push(contents.data[0]);
+        }
         const copy = {...props};
-        data.data.forEach((arrObj) => {
+        data.forEach((arrObj) => {
           copy[arrObj.plantName] = arrObj.location;
         });
         setProps(copy);
@@ -101,14 +110,15 @@ export default function HouseGroupScreen({navigation, route}) {
       {plantTouch()}
     </ScrollView>
     <View style={{backgroundColor: 'white'}}>
-        <TouchableOpacity style={tempStyling.AddPlantStyle} onPress={() => nav.navigate('Add New Plant')}>
+    {/* Remove hard coded group */}
+        <TouchableOpacity style={tempStyling.AddPlantStyle} onPress={() => navigation.navigate('Add New Plant', {houseId: 1234})}>
           <Text style={{ textAlign: 'center', justifyContent: 'center' }}>
             Add a new plant
           </Text>
         </TouchableOpacity>
         <View style={{ bottom: 0 }}>
           <Button title="Return to all groups"
-          onPress={() => { nav.goBack(); } } />
+          onPress={() => { navigation.navigate('Home'); } } />
         </View>
       </View>
       </>

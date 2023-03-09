@@ -105,8 +105,7 @@ let plantSchema = mongoose.Schema({
     required: true,
   },
   waterCountDown: {
-    type: Number,
-    required: true,
+    type:Number,
   },
   lastWater: {
     type: Date,
