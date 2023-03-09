@@ -377,7 +377,7 @@ module.exports = {
         res.status(203)
         res.end()
 
-      }
+      }}
     );
   },
 };

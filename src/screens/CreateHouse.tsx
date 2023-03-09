@@ -16,7 +16,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
-import { text } from 'express';
+import axios from 'axios';
 
 type CreateHouseScreenNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;
@@ -29,7 +29,16 @@ export default function CreateHouseScreen() {
   React.useEffect(() => {
     setImage(require('../../assets/budew.png'));
   }, []);
-
+  function blobToBase64(blob) {
+    return new Promise((res, rej) => {
+      const reader = new FileReader();
+      reader.onerror = rej;
+      reader.onload = () => {
+        res(reader.result);
+      };
+      reader.readAsDataURL(blob);
+    })
+  }
   async function userPickImage() {
     const image = await launchImageLibrary(
       { mediaType: 'photo' },
@@ -42,10 +51,33 @@ export default function CreateHouseScreen() {
         }
       }
     );
+    // let base64Data;
+    // if (!image.didCancel) {
+    //   const data = await fetch(result.assets[0].url);
+    //   const blob = await data.blob();
+    //   base64Data = await blobToBase64(blob);
+    // }
+    // const formData = new FormData();
+    // await formData.append('file', base64Data);
+    // await formData.append('upload_preset', 'o9exuyqa');
+    // await axios.post('https://api.cloudinary.com/v1_1/dsiywf70i/image/upload', formData)
+    //   .then((res) => {
+    //     let objUpdate = {
+    //       userId: 'entry1',
+    //       update: {
+    //         photo: res.data.secure_url
+    //       }
+    //     }
+    //     axios.put('http://localhost:8080/db/households', {params: objUpdate})
+    //       .then((data) => console.log(data))
+    //       .catch((err) => console.log('put request err', err));
+    //   })
+    //   .catch((err) => {
+    //     console.log('post request to cloudinary err', err)
+    //   })
   }
 
   function textInputHandler(e) {
-    console.log(e.target.value);
     setNewGroup(e.target.value);
   }
 

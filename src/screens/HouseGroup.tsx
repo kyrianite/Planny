@@ -9,7 +9,7 @@ import { StyleSheet } from 'react-native';
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
 
-
+const SERVER = 'http://localhost:8080/db/plant';
 type HouseGroupNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 function cap(str) { return str.charAt(0).toUpperCase() + str.slice(1)};
@@ -29,8 +29,7 @@ export default function HouseGroupScreen({navigation, route}) {
     setGroupName(route.params.p.groupName);
     async function makePlants() {
       if (user) {
-        const data = await axios.get(`http://localhost:8080/db/plant`,
-        { params : {userId: user['id']}});
+        const data = await axios.get(SERVER, { params : {userId: user['id']}});
         const copy = {...props};
         data.data.forEach((arrObj) => {
           copy[arrObj.plantName] = arrObj.location;
