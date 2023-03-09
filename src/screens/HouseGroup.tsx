@@ -18,7 +18,7 @@ export default function HouseGroupScreen({navigation, route}) {
   const nav = useNavigation<HouseGroupNavigationProp>();
   const [props, setProps] = React.useState({});
   const [groupName, setGroupName] = React.useState('Loading');
-  const [groupId, setGroupId] = React.useState(null);
+  const [groupId, setGroupId] = React.useState('Loading');
   const [loading, setLoading] = React.useState(true);
 
   const { user } = React.useContext(UserContext);
@@ -50,7 +50,7 @@ export default function HouseGroupScreen({navigation, route}) {
           <Text style={{fontSize: 30, fontWeight:'bold'}}>
             Loading
           </Text>
-          <Image style={{height: 300, width: 300, borderRadius: 100, overflow: 'hidden'}}
+          <Image style={{height: 300, width: 300, borderRadius: 150, overflow: 'hidden'}}
           source={'https://media.tenor.com/yU_koH5kItwAAAAd/budew-sleepy.gif' as any}/>
         </View>
       )
@@ -95,7 +95,7 @@ export default function HouseGroupScreen({navigation, route}) {
           HouseID:
           {'\n'}
           <Text style={{fontWeight:'normal'}}>
-            {groupId === null ? 'Loading' : groupId}
+            {groupId}
           </Text>
         </Text>
       </View>

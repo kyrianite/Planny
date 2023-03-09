@@ -63,7 +63,7 @@ export default function HomeScreen() {
   function makeHouseGroups() {
     if (loading) {
       return (
-        <ReactLoading type={'bubbles'} color='green' height={'30%'} width={'30%'}/>
+        <ReactLoading type={'bubbles'} color='#2F7A3E' height={'30%'} width={'30%'}/>
       )
     }
     if (groups.length > 0) {

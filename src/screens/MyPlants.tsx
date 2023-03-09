@@ -61,7 +61,12 @@ export default function MyPlantsScreen() {
   function makeButtons() {
     if (loading) {
       return (
-        <ReactLoading type={'bubbles'} color='green' height={'30%'} width={'30%'}/>
+      <View style={{justifyContent:'center', alignItems:'center'}}>
+        <Text style={{fontSize: 30, fontWeight:'bold'}}>
+          Loading
+        </Text>
+        <ReactLoading type={'bubbles'} color='#2F7A3E' height={'30%'} width={'30%'}/>
+      </View>
       )
     }
     if (myPlants.length === 0) {
@@ -110,7 +115,7 @@ const tempStyling = StyleSheet.create({
   },
   ImageStyle: {
     height: 80, width: 80,
-    right: 50, resizeMode: 'contain'
+    right: 80, resizeMode: 'contain'
   },
   TextStyle: {
     right: 100
