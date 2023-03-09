@@ -68,7 +68,7 @@ const LoginScreen = () => {
         let params = {params:{userId:user.uid}}
         axios.get(url, params)
           .then((response) => {
-            console.log('user info from exios call', response.data[0]);
+            console.log('user info from axios call', response.data[0]);
             setUser(response.data[0]);
             // navigation.navigate('Home');
           })
@@ -144,11 +144,6 @@ const LoginScreen = () => {
           style={styles.logo}
           source={require('../../assets/PlannyLogo.png')}
         />
-        <Text
-          style={{ alignSelf: 'flex-start', fontSize: 20, paddingLeft: '10%' }}
-        >
-          Sign In
-        </Text>
         <Text style={styles.labelText}>Email</Text>
         <TextInput
           style={styles.singleLineInput}

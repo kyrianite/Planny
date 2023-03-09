@@ -18,6 +18,7 @@ module.exports = {
     });
   },
   findUser: (req, res) => {
+    console.log('finding user');
     db.findUser(req.query.userId, (err, data) => {
       if (err) {
         console.log('findUser', err);
@@ -63,9 +64,9 @@ module.exports = {
               if (err) {
                 console.log(err);
               } else {
-                res.status(205);
-                res.json(dataUpdate);
-                res.end();
+                res.status(201)
+                res.json(data)
+                res.end()
               }
             });
           }
@@ -84,6 +85,30 @@ module.exports = {
         res.end();
       }
     });
+  },
+  updateWater: (req, res) => {
+    db.updateWater(req.query, (err, data) => {
+      if (err) {
+        res.status(500)
+        res.end(err)
+      } else {
+        res.json(data)
+        res.status(203)
+        res.end()
+      }
+    })
+  },
+  updateCaretaker: (req, res) => {
+    db.updateCaretaker(req.body, (err, data) => {
+      if (err) {
+        res.status(500)
+        res.end(err)
+      } else {
+        res.json(data)
+        res.status(203)
+        res.end()
+      }
+    })
   },
   postDm: (req, res) => {
     let postObj = {

@@ -110,7 +110,8 @@ export default function HouseGroupScreen({navigation, route}) {
       {plantTouch()}
     </ScrollView>
     <View style={{backgroundColor: 'white'}}>
-        <TouchableOpacity style={tempStyling.AddPlantStyle} onPress={() => nav.navigate('Add New Plant')}>
+    {/* Remove hard coded group */}
+        <TouchableOpacity style={tempStyling.AddPlantStyle} onPress={() => navigation.navigate('Add New Plant', {houseId: 1234})}>
           <Text style={{ textAlign: 'center', justifyContent: 'center' }}>
             Add a new plant
           </Text>

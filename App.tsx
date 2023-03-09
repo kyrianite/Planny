@@ -8,6 +8,7 @@ import CommunityScreen from './src/screens/Community';
 import ProfileScreen from './src/screens/Profile';
 import React, { useState, createContext, useInsertionEffect, useEffect } from 'react';
 import { Image } from 'react-native';
+import ColorScheme from './src/constants/ColorScheme';
 
 type User = undefined;
 
@@ -25,30 +26,29 @@ const TabIconOptions = {
   Home: {
     headerShown: false,
     tabBarShowLabel: false,
-    tabBarIcon: () => (
-      <MaterialCommunityIcons name="home" color="grey" size={30} />
+    tabBarIcon: ({focused, color}) => (
+      <MaterialCommunityIcons name="home" color={color} size={30} focused={focused} />
     ),
   },
   Messages: {
     tabBarShowLabel: false,
-    tabBarIcon: () => (
-      <MaterialCommunityIcons name="message" color="grey" size={25} />
+    tabBarIcon: ({focused, color}) => (
+      <MaterialCommunityIcons name="message" color={color} size={25} focused={focused} />
     ),
   },
   Community: {
     headerShown: false,
     tabBarShowLabel: false,
-    tabBarIcon: () => (
-      <Image
-        source={require('./assets/community.png')}
-        style={{ width: 26, height: 26, tintColor: '#5A5A5A' }}
-      />
+    tabBarIcon: ({focused, color}) => (
+      focused
+      ? <Image source={require('./assets/community.png')} style={{ width: 26, height: 26, tintColor: 'green' }} />
+      : <Image source={require('./assets/community.png')} style={{ width: 26, height: 26, tintColor: ColorScheme.sage }}/>
     ),
   },
   Profile: {
     tabBarShowLabel: false,
-    tabBarIcon: () => (
-      <MaterialCommunityIcons name="cog" color="grey" size={25} />
+    tabBarIcon: ({focused, color}) => (
+      <MaterialCommunityIcons name="cog" color={color} size={25} focused={focused} />
     ),
   },
 };
@@ -57,12 +57,13 @@ const Tabs = createBottomTabNavigator();
 
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
+  console.log('initial user: ', user)
 
   return (
     <UserContext.Provider value={{ user, setUser}}>
       <NavigationContainer>
         {user ? (
-          <Tabs.Navigator initialRouteName="RootStack">
+          <Tabs.Navigator initialRouteName="RootStack" screenOptions={{tabBarActiveTintColor: 'green', tabBarInactiveTintColor: ColorScheme.sage}}>
             <Tabs.Screen
               name="RootStack"
               component={RootStack}
