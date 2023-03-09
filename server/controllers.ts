@@ -376,8 +376,7 @@ module.exports = {
         res.json(data)
         res.status(203)
         res.end()
-      }
-    }
+      }}
     );
   },
 };
