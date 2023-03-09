@@ -78,12 +78,14 @@ const LoginScreen = () => {
           const url = 'http://localhost:3000/db/user/';
           axios(url, params)
             .then((response) => {
-              setUser({
-                id: response.data[0].userId,
-                firstName: response.data[0].firstName,
-                lastName: response.data[0].lastName,
-                email: response.data[0].email,
-              });
+              console.log(response.data);
+              if (response.data[0].household.length === 0) {
+                var householdID = null;
+              } else {
+                householdID = response.data[0].household[0];
+              }
+              console.log(householdID);
+              setUser(response.data[0]);
             })
             .catch((error) => {
               console.log(error);
@@ -145,7 +147,7 @@ const LoginScreen = () => {
       <View style={styles.noAccount}>
         <Text
           onPress={() => {
-            navigation.navigate('SignUp');
+            navigation.navigate('ForgotPassword');
           }}
           style={{ padding: '1w', color: 'steel' }}
         >
