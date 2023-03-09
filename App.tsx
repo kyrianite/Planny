@@ -8,12 +8,14 @@ import ProfileScreen from './src/screens/Profile';
 import React, { useState, createContext } from 'react';
 import { Image } from 'react-native';
 
-type User = {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-};
+type User = undefined;
+// {
+//   id: string;
+//   email: string;
+//   firstName: string;
+//   lastName: string;
+//   // household: number;
+// };
 
 type UserContextType = {
   user: User | null;
@@ -22,9 +24,8 @@ type UserContextType = {
 
 export const UserContext = createContext<UserContextType>({
   user: null,
-  setUser: () => { },
+  setUser: () => {},
 });
-
 
 const TabIconOptions = {
   Home: {
@@ -59,7 +60,6 @@ const TabIconOptions = {
 
 const Tabs = createBottomTabNavigator();
 
-
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
 
@@ -90,6 +90,5 @@ export default function App() {
         </Tabs.Navigator>
       </NavigationContainer>
     </UserContext.Provider>
-
   );
 }
