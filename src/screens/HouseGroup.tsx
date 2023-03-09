@@ -41,7 +41,7 @@ export default function HouseGroupScreen({navigation, route}) {
         }
         const copy = {...props};
         data.forEach((arrObj) => {
-          copy[arrObj.plantName] = arrObj.location;
+          copy[arrObj.plantName] = {location: arrObj.location, photo: arrObj.photo};
         });
         setProps(copy);
         setLoading(false);
@@ -76,7 +76,7 @@ export default function HouseGroupScreen({navigation, route}) {
           <TouchableOpacity style={tempStyling.PlantStyle} key={plant}>
             <View style={{alignContent:'center', justifyContent:'center'}}>
               <Image style={tempStyling.ImageStyle}
-              source={require('../../assets/PlannyLogo.png')}/>
+              source={props[plant]['photo'] as any}/>
             </View>
             <View style={{alignContent:'center', justifyContent:'center', right: 45, width: 100}}>
               <Text style={{textAlign:'left', fontWeight: 'bold'}}>
@@ -84,7 +84,7 @@ export default function HouseGroupScreen({navigation, route}) {
                 {'\n'}
               </Text>
               <Text style={{textAlign:'left'}}>
-                {cap(props[plant])}
+                {cap(props[plant]['location'])}
               </Text>
             </View>
           </TouchableOpacity>
