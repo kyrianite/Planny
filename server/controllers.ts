@@ -86,6 +86,30 @@ module.exports = {
       }
     });
   },
+  updateWater: (req, res) => {
+    db.updateWater(req.query, (err, data) => {
+      if (err) {
+        res.status(500)
+        res.end(err)
+      } else {
+        res.json(data)
+        res.status(203)
+        res.end()
+      }
+    })
+  },
+  updateCaretaker: (req, res) => {
+    db.updateCaretaker(req.body, (err, data) => {
+      if (err) {
+        res.status(500)
+        res.end(err)
+      } else {
+        res.json(data)
+        res.status(203)
+        res.end()
+      }
+    })
+  },
   postDm: (req, res) => {
     let postObj = {
       count: 1,

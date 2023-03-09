@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, ScrollView, Image, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as ImagePicker from 'expo-image-picker';
@@ -9,9 +9,12 @@ const axiosOption = {headers: {'content-type': 'application/json'}};
 
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
+import { UserContext } from '../../App';
+
 const {height} = Dimensions.get('window');
 
 import ColorScheme from '../constants/ColorScheme';
+import { RouteProp } from '@react-navigation/native';
 
 const PlantAPI = require('../components/PlantProfile/PlantDataAPI');
 
@@ -21,10 +24,11 @@ interface WaterDropdown {
 };
 
 type AddNewPlantNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Add New Plant'>;
+type AddNewPlantScreenRouteProp = RouteProp<RootStackParamList, 'Add New Plant'>;
+type Props = { route: AddNewPlantScreenRouteProp; navigation: AddNewPlantNavigationProp };
 
-type Props = { navigation: AddNewPlantNavigationProp, userId: string | undefined };
-
-export default function AddNewPlantScreen( {navigation, userId='test'}: Props) {
+export default function AddNewPlantScreen( {route, navigation}: Props) {
+  const { user } = useContext(UserContext);
 
   const [plantImage, setPlantImage] = useState<string>(require('../../assets/AddNewPlantDefaultImage.png'));
   const [plantName, setPlantName] = useState<string>('');
@@ -36,11 +40,11 @@ export default function AddNewPlantScreen( {navigation, userId='test'}: Props) {
   const [openWaterDd, setOpenWaterDd] = useState<boolean>(false);
   const [wateringFreq, setWateringFreq] = useState<'string' | null>(null);
   const [freq, setFreq] = useState<WaterDropdown[]>([
-    {label: 'Daily', value: 'daily'},
-    {label: 'Weekly', value: 'weekly'},
-    {label: 'Biweekly', value: 'biweekly'},
-    {label: 'As needed', value: 'as needed'},
-    {label: 'Never', value: 'never'},
+    {label: 'Daily', value: 'Daily'},
+    {label: 'Weekly', value: 'Weekly'},
+    {label: 'Biweekly', value: 'Biweekly'},
+    {label: 'As needed', value: 'As needed'},
+    {label: 'Never', value: 'Never'},
   ]);
 
   const pickImage = async () => {
@@ -72,6 +76,11 @@ export default function AddNewPlantScreen( {navigation, userId='test'}: Props) {
       setValidationError(true);
     } else {
       setValidationError(false);
+
+      // for fake data purposes: setting userId to John Doe
+      let userId;
+      !user?.id ? userId = 'Ri6EMybFD2bLEGrbtVQ6itZGqP42' : userId=user.id;
+
       const plantData = {
         userId: userId,
         plant: {
@@ -81,12 +90,14 @@ export default function AddNewPlantScreen( {navigation, userId='test'}: Props) {
           location: plantLocation,
           careInstructions: plantCare,
           wateringSchedule: wateringFreq,
-          careHistory: [Date.now()]
+          lastWater: null,
+          careHistory: [new Date()],
+          careTakers: [],
         }
       }
       const res = await axios.post(`http://localhost:3000/db/plant`, plantData, axiosOption);
       const plantId = res.data.plantId;
-      navigation.navigate('Plant Profile', {plantId});
+      navigation.navigate('Plant Profile', {plantId, houseId: route.params?.houseId});
     }
   };
 

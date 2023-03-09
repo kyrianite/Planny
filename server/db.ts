@@ -60,6 +60,19 @@ module.exports={
         callback(err)
       })
   },
+  updateWater: (objUpdate, callback) => {
+    model.Plant.updateOne({plantId:objUpdate.plantId}, {lastWater: new Date()})
+      .exec()
+      .then((data) => callback(null, data))
+      .catch((err) =>callback(err))
+  },
+  updateCaretaker: (objUpdate, callback) => {
+    console.log('updating caretaker?', objUpdate);
+    model.Plant.updateOne({plantId:objUpdate.plantId}, {careTakers: objUpdate.careTakers})
+      .exec()
+      .then((data) => callback(null, data))
+      .catch((err) =>callback(err))
+  },
   postMessage: (body, callback) => {
 let message = {
   messageId : 1,

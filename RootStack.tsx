@@ -22,13 +22,9 @@ export type RootStackParamList = {
   MyPlants: undefined;
   Messages: undefined;
   HouseGroup: { screen: string; p: object } | undefined;
-  'Add New Plant': undefined;
-  'Plant Profile': { plantId: number, } | undefined;
-  'Assign Caretaker':
-    | undefined
-    | {
-        caretakers: Array<string>;
-      };
+  'Add New Plant': { houseId: number };
+  'Plant Profile': { plantId: number, houseId: number};
+  'Assign Caretaker': { plantId: number, houseId: number, currentCaretakerIds: string[]};
   // SignUp: undefined;
 };
 
