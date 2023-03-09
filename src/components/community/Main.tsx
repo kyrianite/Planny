@@ -98,6 +98,7 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
           placeholder="Search a plant type"
           value={searchText}
           onChangeText={setSearchText}
+          onSubmitEditing={onSearchIconPress}
         />
         <TouchableOpacity style={styles.addPost} onPress={() => navigation.navigate('AddPost')}>
           <Text style={styles.addPostText}>+</Text>
