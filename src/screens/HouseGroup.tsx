@@ -12,7 +12,7 @@ import { RootStackParamList } from '../../RootStack';
 
 type HouseGroupNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-function capitalize(str) { return str.charAt(0).toUpperCase() + str.slice(1)};
+function cap(str) { return str.charAt(0).toUpperCase() + str.slice(1)};
 
 export default function HouseGroupScreen({navigation, route}) {
   const nav = useNavigation<HouseGroupNavigationProp>();
@@ -72,11 +72,11 @@ export default function HouseGroupScreen({navigation, route}) {
             </View>
             <View style={{alignContent:'center', justifyContent:'center', right: 45, width: 100}}>
               <Text style={{textAlign:'left', fontWeight: 'bold'}}>
-                {capitalize(plant)}
+                {cap(plant)}
                 {'\n'}
               </Text>
               <Text style={{textAlign:'left'}}>
-                {capitalize(props[plant])}
+                {cap(props[plant])}
               </Text>
             </View>
           </TouchableOpacity>
@@ -102,14 +102,14 @@ export default function HouseGroupScreen({navigation, route}) {
       {plantTouch()}
     </ScrollView>
     <View style={{backgroundColor: 'white'}}>
-        <TouchableOpacity style={tempStyling.AddPlantStyle} onPress={() => navigation.navigate('Add New Plant')}>
+        <TouchableOpacity style={tempStyling.AddPlantStyle} onPress={() => nav.navigate('Add New Plant')}>
           <Text style={{ textAlign: 'center', justifyContent: 'center' }}>
             Add a new plant
           </Text>
         </TouchableOpacity>
         <View style={{ bottom: 0 }}>
           <Button title="Return to all groups"
-          onPress={() => { navigation.goBack(); } } />
+          onPress={() => { nav.goBack(); } } />
         </View>
       </View>
       </>
@@ -137,7 +137,7 @@ const tempStyling = StyleSheet.create({
     backgroundColor: '#EFDBCA', justifyContent: 'center'
   },
   PlantStyle: {
-    height: 100, width: 300,
+    height: 100, width: 350,
     borderRadius: 100, margin: 20,
     backgroundColor: '#C6D5BE', borderWidth: 1,
     justifyContent: 'center', alignContent:'center',

@@ -11,12 +11,15 @@ import { StyleSheet } from 'react-native';
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
 
-
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'Home'
 >;
 
+type HomeGroupsProp = {
+  householdName: string;
+  householdId: string;
+}
 const p = {
   groupName: 'Existing Group 1',
   plants: {'cactus': 'living room', 'aloe': 'bathroom'},
@@ -24,7 +27,7 @@ const p = {
 }
 export default function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
-  const [groups, setGroups]= React.useState<{householdName: string; householdId: string;}[]>([]);
+  const [groups, setGroups]= React.useState<HomeGroupsProp[]>([]);
   const [loading, setLoading] = React.useState(true);
   const { user, setUser } = useContext(UserContext);
   console.log('user info in home: ', user);
@@ -34,16 +37,15 @@ export default function HomeScreen() {
     async function getUserId () {
       const data = await axios.get(`http://localhost:8080/db/user`, { params: {userId: 'entry1'}});
       const householdArr = data.data[0].household;
-      const copy : {
-        householdName: string;
-        householdId: string;}[]  | undefined = [];
+      const copy : HomeGroupsProp[] = [];
       householdArr.forEach(async (householdId) => {
         let output = await axios.get(`http://localhost:8080/db/household`, {params: {householdId}});
         if (output.data.length > 0) {
           output.data.forEach((houseObj) => {
-            let groupObj = {householdName: '', householdId:''};
-            groupObj.householdName = houseObj.householdName;
-            groupObj.householdId = houseObj.householdId;
+            let groupObj = {
+              householdName: houseObj.householdName,
+              householdId: houseObj.householdId
+            };
             copy.push(groupObj);
           });
           setGroups(copy);
