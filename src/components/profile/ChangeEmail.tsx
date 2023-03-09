@@ -56,15 +56,17 @@ export default function ChangeEmail() {
     e.preventDefault();
     setLoading(true);
     setTimeout(() =>setLoading(false), 3000)
-    const credential = auth.EmailAuthProvider.credential(email.currentEmail, email.password);
-    console.log(credential)
-    auth().currentUser.reauthenticateWithCredential(credential)
-      .then(() => {
-        auth().currentUser.updateEmail(email.newEmail)
-          .then(() => console.log('email is updated'))
-          .catch((err) => console.log(err) ) // An error occurred while updating the email
-      })
-      .catch((err) => console.log(err)) // Incorrect password, show an error message
+    const user = auth.currentUser;
+    console.log(user)
+    // const credential = auth.EmailAuthProvider.credential(email.currentEmail, email.password);
+    // console.log(credential)
+    // auth().currentUser.reauthenticateWithCredential(credential)
+    //   .then(() => {
+    //     auth().currentUser.updateEmail(email.newEmail)
+    //       .then(() => console.log('email is updated'))
+    //       .catch((err) => console.log(err) ) // An error occurred while updating the email
+    //   })
+    //   .catch((err) => console.log(err)) // Incorrect password, show an error message
   }
 
   return (

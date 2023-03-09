@@ -53,6 +53,31 @@ const styles = StyleSheet.create({
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const LoginScreen = () => {
+
+  useEffect(() => {
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in, do something
+        const url = 'http://localhost:3000/db/user/';
+        let params = {params:{userId:user.uid}}
+        axios.get(url, params)
+          .then((response) => {
+            console.log(response.data);
+            setUser(response.data[0]);
+            navigation.navigate('Home');
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        // User is signed out, do something
+        navigation.navigate('Login')
+        console.log('User is signed out');
+      }
+    });
+  }, [])
+
+
   const navigation = useNavigation<LoginScreenNavigationProp>();
 
   const [loginInfo, setLoginInfo] = useState({
