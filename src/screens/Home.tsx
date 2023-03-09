@@ -33,13 +33,12 @@ export default function HomeScreen() {
   console.log('user info in home: ', user);
 
   useEffect(() => {
-    setUser({id: 'entry1', email: 'test@gmail.com', firstName: 'John', lastName: 'Doe'});
     async function getUserId () {
-      const data = await axios.get(`http://localhost:8080/db/user`, { params: {userId: 'entry1'}});
+      const data = await axios.get(`http://localhost:3000/db/user`, { params: {userId: 'entry1'}});
       const householdArr = data.data[0].household;
       const copy : HomeGroupsProp[] = [];
       householdArr.forEach(async (householdId) => {
-        let output = await axios.get(`http://localhost:8080/db/household`, {params: {householdId}});
+        let output = await axios.get(`http://localhost:3000/db/household`, {params: {householdId}});
         if (output.data.length > 0) {
           output.data.forEach((houseObj) => {
             let groupObj = {

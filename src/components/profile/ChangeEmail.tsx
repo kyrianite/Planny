@@ -7,6 +7,7 @@ import { ProfileStackParamList } from '../../screens/Profile';
 import Colors from '../../constants/ColorScheme';
 import { UserContext } from '../../../App';
 import {auth} from '../../constants/firebase/firebase'
+import { EmailAuthProvider, reauthenticateWithCredential, updateEmail } from 'firebase/auth';
 
 type ChangeEmailScreenNavigationProp = NativeStackNavigationProp<ProfileStackParamList, 'ChangeEmail'>;
 
@@ -20,6 +21,7 @@ type email = {
 export default function ChangeEmail() {
   const {user, setUser} = useContext(UserContext)
   const navigation = useNavigation<ChangeEmailScreenNavigationProp>();
+  const userContext = user
 
   const [email, setEmail] = useState<email>({
     newEmail:'',
@@ -29,16 +31,16 @@ export default function ChangeEmail() {
   const [loading, setLoading] = useState(false);
   const [warning, setWarning] = useState(false);
 
-  const updateEmail = (newEmail: string) => {
-    const user:any = auth.currentUser;
-      user.updateEmail(newEmail)
-        .then(() => {
-          console.log('email updated successfully')
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-  }
+  // const updateEmail = (newEmail: string) => {
+  //   const user:any = auth.currentUser;
+  //     user.updateEmail(newEmail)
+  //       .then(() => {
+  //         console.log('email updated successfully')
+  //       })
+  //       .catch((err) => {
+  //         console.log(err)
+  //       })
+  // }
 
   const onCurrentEmailChange = (text: string) => {
     setEmail({ ...email, currentEmail: text });
@@ -57,16 +59,42 @@ export default function ChangeEmail() {
     setLoading(true);
     setTimeout(() =>setLoading(false), 3000)
     const user = auth.currentUser;
-    console.log(user)
-    // const credential = auth.EmailAuthProvider.credential(email.currentEmail, email.password);
-    // console.log(credential)
-    // auth().currentUser.reauthenticateWithCredential(credential)
-    //   .then(() => {
-    //     auth().currentUser.updateEmail(email.newEmail)
-    //       .then(() => console.log('email is updated'))
-    //       .catch((err) => console.log(err) ) // An error occurred while updating the email
-    //   })
-    //   .catch((err) => console.log(err)) // Incorrect password, show an error message
+    console.log('this user', user)
+    const credential = EmailAuthProvider.credential(email.currentEmail, email.password)
+    console.log(credential)
+
+    reauthenticateWithCredential(user, credential)
+      .then(({user}) => {
+        // user has been reauthenticated, update email address
+        updateEmail(user, email.newEmail)
+          .then(() => {
+            let userContextCopy = JSON.parse(JSON.stringify(userContext).slice())
+            userContextCopy.email=email.newEmail
+            setUser(userContextCopy)
+            console.log('Email address updated successfully!');
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    // const credential = EmailAuthProvider.credential(email.currentEmail, email.password);
+    // user.reauthenticateWithCredential(credential)
+    // .then(() => {
+    //   // user has been reauthenticated, update email address
+    //   user.updateEmail(email.newEmail)
+    //     .then(() => {
+    //       console.log('Email updated successfully!');
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
   }
 
   return (
