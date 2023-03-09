@@ -6,14 +6,16 @@ import { useNavigation } from '@react-navigation/native';
 import { ProfileStackParamList } from '../../screens/Profile';
 import Colors from '../../constants/ColorScheme';
 import { UserContext } from '../../../App';
-// import {auth} from '../../constants/firebase/firebase'
+import { EmailAuthProvider, reauthenticateWithCredential, updateEmail, updatePassword } from 'firebase/auth';
+import {auth} from '../../constants/firebase/firebase'
 
 type ChangePassScreenNavigationProp = NativeStackNavigationProp<ProfileStackParamList, 'ChangePass'>;
 
-type email = {
-  newEmail: String;
-  currentEmail:String;
-  password:String;
+type changePass = {
+  email: string;
+  password:string;
+  newPassword:string;
+  confirmPassword:string;
 }
 
 
@@ -21,15 +23,8 @@ export default function ChangeEmail() {
   const {user, setUser} = useContext(UserContext)
   const navigation = useNavigation<ChangePassScreenNavigationProp>();
 
-  // const [newPost, setNewPost] = useState<NewPost>({
-  //   username: 'Quanjing Chen',
-  //   time: '',
-  //   topic: '',
-  //   photos: [],
-  //   plantType: '',
-  //   plantName: '',
-  // });
-  const [changePass, setChangePass] = useState<ChangePass>({
+
+  const [changePass, setChangePass] = useState<changePass>({
     email:'',
     password:'',
     newPassword:'',
@@ -38,19 +33,9 @@ export default function ChangeEmail() {
   const [loading, setLoading] = useState(false);
   const [warning, setWarning] = useState(false);
 
-  const updatePassword = (newPassword: string) => {
-    // const user:any = auth.currentUser;
-    //   user.updateEmail(newEmail)
-    //     .then(() => {
-    //       console.log('email updated successfully')
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //     })
-  }
 
   const onEmailChange = (text: string) => {
-    setChangePass({ ...changePass, emailmail: text });
+    setChangePass({ ...changePass, email: text });
   };
 
   const onPasswordChange = (text: string) => {
@@ -69,17 +54,34 @@ export default function ChangeEmail() {
     e.preventDefault();
     setLoading(true);
     setTimeout(() =>setLoading(false), 3000)
-    if (changePass.newPassword !== changePass.confirmPassword) {
+    if (changePass.newPassword !== changePass.confirmPassword || changePass.newPassword.length < 6) {
       setWarning(true)
+    } else {
+      const user = auth.currentUser;
+      console.log('this user', user)
+      const credential = EmailAuthProvider.credential(changePass.email, changePass.password)
+      console.log(credential)
+
+      reauthenticateWithCredential(user, credential)
+        .then(({user}) => {
+          // user has been reauthenticated, update email address
+          updatePassword(user, changePass.newPassword)
+            .then(() => {
+              navigation.navigate('Profile')
+              console.log('Password updated successfully!');
+            })
+            .catch((error) => {
+              console.error(error);
+              setLoading(false)
+              setWarning(true)
+            });
+        })
+        .catch((error) => {
+          console.error(error);
+          setLoading(false)
+          setWarning(true)
+        });
     }
-    // const credential = auth.EmailAuthProvider.credential(email.currentEmail, email.password);
-    // auth().currentUser.reauthenticateWithCredential(credential)
-    //   .then(() => {
-    //     auth().currentUser.updateEmail(email.newEmail)
-    //       .then(() => console.log('email is updated'))
-    //       .catch((err) => console.log(err) ) // An error occurred while updating the email
-    //   })
-    //   .catch((err) => console.log(err)) // Incorrect password, show an error message
   }
 
   return (
@@ -129,7 +131,7 @@ export default function ChangeEmail() {
         />
       </View>
       {warning && (
-        <Text style={{color:'red'}}>new password is not match</Text>
+        <Text style={{color:'red'}}>new password does not match/need at least 6 characters</Text>
       )}
       {loading && (
         <ActivityIndicator/>
