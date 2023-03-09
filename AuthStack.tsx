@@ -6,6 +6,7 @@ import {   NativeStackNavigationProp,
 
 import SignUpScreen from './src/screens/SignUp';
 import LoginScreen from './src/screens/Login'
+import ForgotPasswordScreen from './src/screens/ForgotPassword';
 import { onAuthStateChanged } from '@firebase/auth';
 import {auth} from './src/constants/firebase/firebase'
 import { useNavigation } from '@react-navigation/native';
