@@ -44,32 +44,48 @@ export default function RootStack() {
         {/* <Stack.Screen name="Login" component={LoginScreen} options={{ tabBarVisible: false }}/>
         <Stack.Screen name="SignUp" component={SignUpScreen} /> */}
         {/* <Stack.Screen name="Home" component={HomeScreen} options={{ headerLeft: null }}/> */}
-        <Stack.Screen name="Home" component={HomeScreen}/>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{headerShown: false}}
+        />
 
         <Stack.Screen
           name="CreateHouse"
           component={CreateHouseScreen}
-          options={{ headerTitle: 'Return to Home' }}
+          options={{ headerTitle: '' }}
         />
+
         <Stack.Screen
           name="JoinHouse"
           component={JoinHouseScreen}
-          options={{ headerTitle: 'Return to Home' }}
+          options={{ headerTitle: '' }}
         />
+
         <Stack.Screen
           name="Add New Plant"
           component={AddNewPlantScreen}
+          options={{ headerTitle: '' }}
         />
-        <Stack.Screen name="Plant Profile" component={PlantProfileScreen} />
+
+        <Stack.Screen
+          name="Plant Profile"
+          component={PlantProfileScreen}
+          options={{ headerTitle: '' }}
+        />
+
         <Stack.Screen
           name="Assign Caretaker"
           component={AssignPlantCaretakerScreen}
+          options={{ headerTitle: '' }}
         />
+
         <Stack.Screen
           name="MyPlants"
           component={MyPlantsScreen}
-          options={{ headerTitle: 'My Plants' }}
+          options={{ headerTitle: '' }}
         />
+
         <Stack.Screen
           name="HouseGroup"
           component={HouseGroupScreen}

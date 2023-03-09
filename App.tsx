@@ -42,7 +42,7 @@ const TabIconOptions = {
     tabBarIcon: ({focused, color}) => (
       focused
       ? <Image source={require('./assets/community.png')} style={{ width: 26, height: 26, tintColor: 'green' }} />
-      : <Image source={require('./assets/community.png')} style={{ width: 26, height: 26, tintColor: '#5A5A5A' }}/>
+      : <Image source={require('./assets/community.png')} style={{ width: 26, height: 26, tintColor: ColorScheme.sage }}/>
     ),
   },
   Profile: {
@@ -63,7 +63,7 @@ export default function App() {
     <UserContext.Provider value={{ user, setUser}}>
       <NavigationContainer>
         {user ? (
-          <Tabs.Navigator initialRouteName="RootStack" screenOptions={{tabBarActiveTintColor: 'green'}}>
+          <Tabs.Navigator initialRouteName="RootStack" screenOptions={{tabBarActiveTintColor: 'green', tabBarInactiveTintColor: ColorScheme.sage}}>
             <Tabs.Screen
               name="RootStack"
               component={RootStack}

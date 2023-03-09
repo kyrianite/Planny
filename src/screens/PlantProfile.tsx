@@ -46,7 +46,6 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
             setPlantWatering(res.data[0]?.wateringSchedule);
             let time = 'Unknown';
             if (res.data[0]?.lastWater) {
-              console.log('lastWater: ', res.data[0].lastWater);
               time = new Date(res.data[0]?.lastWater).toString();
             }
             setLastWatered(time);
