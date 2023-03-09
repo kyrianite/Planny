@@ -72,7 +72,7 @@ export const dummyPosts: post[] = [
     lastName: 'Wong',
     time: '2023-02-01',
     topic: '🌱💡 Remember to give your plants a good drink of water only when the top inch of soil is dry to the touch!',
-    photos: ['https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,c_fit,w_730,h_487/at%2Fart%2Fphoto%2F2020-10%2FHow-To-Clean-Plants%2FHow-to-Clean-Plants-1', 'https://hips.hearstapps.com/hmg-prod/images/perennial-flowers-and-plants-1674072475.jpeg'],
+    photos: ['https://empire-s3-production.bobvila.com/slides/30451/original/Gloxinia-flowering-houseplants.jpg?1551987245', 'https://hips.hearstapps.com/hmg-prod/images/perennial-flowers-and-plants-1674072475.jpeg'],
     plantType: 'Succulent',
     plantName: 'Aloe Vera',
     likes: 10,
