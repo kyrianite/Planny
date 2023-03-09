@@ -29,6 +29,7 @@ export default function HomeScreen() {
   const { user, setUser } = useContext(UserContext);
   console.log('user info in home: ', user);
 
+
   useFocusEffect(
     React.useCallback(() => {
       async function getUserId () {

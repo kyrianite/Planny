@@ -16,6 +16,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
+import { AuthStackParamList } from '../../AuthStack';
 import { auth } from '../constants/firebase/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import axios from 'axios';
@@ -51,8 +52,13 @@ const styles = StyleSheet.create({
 });
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+type AuthScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 
 const LoginScreen = () => {
+  const navigation = useNavigation<LoginScreenNavigationProp>();
+  const navigationAuth = useNavigation<AuthScreenNavigationProp>();
+  const { user, setUser } = useContext(UserContext);
+  console.log('userinfo in Login', user);
 
   useEffect(() => {
     auth.onAuthStateChanged(function(user) {
@@ -64,21 +70,22 @@ const LoginScreen = () => {
           .then((response) => {
             console.log('user info from exios call', response.data[0]);
             setUser(response.data[0]);
-            navigation.navigate('Home');
+            // navigation.navigate('Home');
           })
           .catch((error) => {
             console.log(error);
           });
       } else {
         // User is signed out, do something
-        navigation.navigate('Login')
+        setUser(null)
+        navigationAuth.navigate('Login')
         console.log('User is signed out');
       }
     });
   }, [])
 
 
-  const navigation = useNavigation<LoginScreenNavigationProp>();
+
 
   const [loginInfo, setLoginInfo] = useState({
     email: '',
@@ -86,8 +93,7 @@ const LoginScreen = () => {
   });
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { user, setUser } = useContext(UserContext);
-  console.log('userinfo in Login', user);
+
 
   const handleSignIn = () => {
     if (loginInfo.email.length !== 0 && loginInfo.password.length !== 0) {
