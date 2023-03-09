@@ -35,7 +35,7 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
     .then(async (res) => {
       const newData = await Promise.all(res.data.map(async (item) => {
         const messageRes = await axios.get(`http://localhost:${PORT}/db/message/?messageId=${item.messageId}`);
-        console.log('message id in main: ', item.messageId)
+        // console.log('message id in main: ', item.messageId)
         return {
           communityId: item.communityId,
           messageId: item.messageId,
@@ -91,10 +91,9 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
           : <Icon name="search" size={20} color="#555" style={styles.searchIcon} onPress={onSearchIconPress} />}
         <TextInput
           style={styles.searchInput}
-          placeholder="Search a plant e.g., rose"
+          placeholder="Search a plant type"
           value={searchText}
           onChangeText={setSearchText}
-          onSubmitEditing={onSearchIconPress}
         />
         <TouchableOpacity style={styles.addPost} onPress={() => navigation.navigate('AddPost')}>
           <Text style={styles.addPostText}>+</Text>
@@ -142,14 +141,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10,
+    margin: 10,
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     height: 50,
     zIndex: 1,
-    backgroundColor:'white'
   },
   searchIcon: {
     marginLeft: 10,
