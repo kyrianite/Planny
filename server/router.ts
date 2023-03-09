@@ -75,7 +75,7 @@ routers.post('/household', controllers.makeHousehold);
 // }
 
 routers.put('/household', controllers.updateHousehold);
-//in params
+//in body
 // {
 //   "householdId": 1,
 //   "userId": "try1"
