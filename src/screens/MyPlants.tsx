@@ -77,7 +77,7 @@ export default function MyPlantsScreen() {
     return myPlants.map((plant) => {
       return (
         <TouchableOpacity style={tempStyling.TouchableOpacityStyle}
-         onPress={moveScreen} key={plant.plantName}>
+         onPress={moveScreen} key={plant.plantId}>
           <View style={{alignContent: 'center', justifyContent: 'center'}}>
             <Image style={tempStyling.ImageStyle}
               source={plant.photo as any}/>
