@@ -8,7 +8,7 @@ import { StyleSheet } from 'react-native';
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
 import { UserContext } from '../../App';
-
+import { PORT } from '@env';
 type MyPlantsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 type MyPlantsObj = {
@@ -18,7 +18,7 @@ type MyPlantsObj = {
   location: string;
   photo: string | undefined;
 };
-
+const SERVER = `http://localhost:${PORT}/db`;
 function cap (str) { return str.charAt(0).toUpperCase() + str.slice(1); }
 
 export default function MyPlantsScreen() {
@@ -30,7 +30,7 @@ export default function MyPlantsScreen() {
   React.useEffect(() => {
     async function getMyPlants() {
       if (user) {
-        const data = await axios.get(`http://localhost:8080/db/plant`, {params: {userId: user.id}});
+        const data = await axios.get(`${SERVER}/plant`, {params: {userId: user['userId']}});
         let output : MyPlantsObj[] = [];
         data.data.forEach((plantObj) => {
           let scrub = {
@@ -77,7 +77,7 @@ export default function MyPlantsScreen() {
     return myPlants.map((plant) => {
       return (
         <TouchableOpacity style={tempStyling.TouchableOpacityStyle}
-         onPress={moveScreen}>
+         onPress={moveScreen} key={plant.plantId}>
           <View style={{alignContent: 'center', justifyContent: 'center'}}>
             <Image style={tempStyling.ImageStyle}
               source={plant.photo as any}/>
