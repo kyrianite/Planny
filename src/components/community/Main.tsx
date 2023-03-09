@@ -116,6 +116,8 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
             likes={post.likes}
             replies={post.replies}
             showComment={() => showComment(post.messageId)}
+            update={update}
+            setUpdate={setUpdate}
             />
         ))}
       </ScrollView>

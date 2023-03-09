@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import Colors from '../../constants/ColorScheme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { formatDistanceToNow } from 'date-fns';
-
+import axios from 'axios'
+import { PORT } from '@env';
 
 type PostProps = {
   communityId: Number,
@@ -18,6 +19,8 @@ type PostProps = {
   likes: number;
   replies: number;
   showComment: () => void;
+  update: boolean;
+  setUpdate: React.Dispatch<React.SetStateAction<boolean>>
 };
 
 export default function PostEntry(props: PostProps) {
@@ -34,9 +37,17 @@ export default function PostEntry(props: PostProps) {
     likes,
     replies,
     showComment,
+    update,
+    setUpdate
   } = props;
 
-  const onLikePress = () => {
+  const onLikePress = async () => {
+    await axios.put(`http://localhost:${PORT}/db/communityLikes`, { "communityId": communityId})
+    .then((res) => {
+      // console.log('SUCCESS WITH PUTTING LIKES: ', res.data)
+      setUpdate(!update);
+    })
+    .catch((err) => console.error('ERR WITH PUTTING LIKES: ', err));
     console.log('like + 1')
   };
   const onReplyPress = () => {
