@@ -1,11 +1,9 @@
-import React, { useEffect, useState, useContext, useCallback } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import { View, ScrollView, Image, Text, Button, TextInput, TouchableOpacity, FlatList, ListRenderItemInfo, StyleSheet, Dimensions, Touchable } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import axios, { AxiosResponse } from 'axios';
 const axiosOption = {headers: {'content-type': 'application/json'}};
-
-
 
 import { RootStackParamList } from '../../RootStack';
 import { RouteProp, useFocusEffect } from '@react-navigation/core';
@@ -14,10 +12,6 @@ import { UserContext } from '../../App';
 type PlantProfileNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Plant Profile'>;
 type PlantProfileScreenRouteProp = RouteProp<RootStackParamList, 'Plant Profile'>;
 type Props = { route: PlantProfileScreenRouteProp; navigation: PlantProfileNavigationProp };
-
-const TESTDATA = [
-  { id: 1, name: 'Abby' }, { id: 2, name: 'Brian' }, { id: 3, name: 'Crystal'}
-];
 
 const {width} = Dimensions.get('window');
 
@@ -74,23 +68,6 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
       return () => { isActive = false; };
     }, [navigation])
   );
-
-  // useEffect(()=> {
-  //   (async() => {
-  //     console.log('plantId: ', plantId);
-  //     const res = await axios.get(`http://localhost:3000/db/plant?plantId=${plantId}`, axiosOption)
-  //     console.log("GET request form inside PlantProfile.tsx", res);
-  //     setPlantName(res.data[0]?.plantName);
-  //     setPlantLoc(res.data[0]?.location);
-  //     setPlantCare(res.data[0]?.careInstructions);
-  //     setPlantWatering(res.data[0]?.wateringSchedule);
-  //     setLastWatered(res.data[0]?.lastWater);
-  //     if (res.data[0]?.photo) {
-  //       setPlantImage(res.data[0]?.photo);
-  //     }
-  //     setCaretakers(res.data[0]?.careTakers)
-  //   })();
-  // }, []);
 
   return (
     <ScrollView style={styles.scrollview}showsVerticalScrollIndicator={false}>

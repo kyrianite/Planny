@@ -13,10 +13,6 @@ type AssignPlantCaretakerProp = NativeStackNavigationProp<RootStackParamList, 'A
 type AssignPlantCaretakerScreenRouteProp = RouteProp<RootStackParamList, 'Assign Caretaker'>;
 type Props = { route: AssignPlantCaretakerScreenRouteProp; navigation: AssignPlantCaretakerProp };
 
-const TESTDATA = [
-  { id: 1, name: 'Daniel' }, { id: 2, name: 'Erin' }, { id: 3, name: 'Francisco'}
-];
-
 export default function AssignPlantCaretakerScreen( {route, navigation}: Props) {
 
   const [caretakers, setCaretakers] = useState<string[]>([]);
@@ -41,7 +37,6 @@ export default function AssignPlantCaretakerScreen( {route, navigation}: Props) 
       <FlatList
           style={styles.flatListContainer}
           contentContainerStyle={{flex: 1, justifyContent: 'center', alignItems: 'stretch'}}
-          // keyExtractor={(item) => item.id.toString()}
           data={caretakers}
           renderItem={({ item }: ListRenderItemInfo<string>) => (
             <TouchableOpacity style={styles.caretaker}>
