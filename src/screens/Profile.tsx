@@ -12,7 +12,7 @@ import ChangeEmailScreen from '../components/profile/ChangeEmail'
 
 export type ProfileStackParamList = {
   Profile: undefined;
-  // ChangePass: undefined;
+  ChangePass: undefined;
   ChangeEmail: undefined;
 };
 const Stack = createNativeStackNavigator<ProfileStackParamList>();

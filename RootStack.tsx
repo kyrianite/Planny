@@ -11,9 +11,11 @@ import PlantProfileScreen from './src/screens/PlantProfile';
 import AssignPlantCaretakerScreen from './src/screens/AssignPlantCaretaker';
 import MyPlantsScreen from './src/screens/MyPlants';
 import HouseGroupScreen from './src/screens/HouseGroup';
-// import SignUpScreen from './src/screens/SignUp';
+import SignUpScreen from './src/screens/SignUp';
+import LoginScreen from './src/screens/Login'
 
 export type RootStackParamList = {
+  // Login: undefined;
   Home: undefined;
   CreateHouse: undefined;
   JoinHouse: undefined;
@@ -27,7 +29,7 @@ export type RootStackParamList = {
     | {
         caretakers: Array<string>;
       };
-  SignUp: undefined;
+  // SignUp: undefined;
 };
 
 export type RootTabParamList = {
@@ -43,8 +45,11 @@ export default function RootStack() {
 
   return (
       <Stack.Navigator initialRouteName="Home">
-        {/* <Stack.Screen name="SignUp" component={SignUpScreen} /> */}
-        <Stack.Screen name="Home" component={HomeScreen} />
+        {/* <Stack.Screen name="Login" component={LoginScreen} options={{ tabBarVisible: false }}/>
+        <Stack.Screen name="SignUp" component={SignUpScreen} /> */}
+        {/* <Stack.Screen name="Home" component={HomeScreen} options={{ headerLeft: null }}/> */}
+        <Stack.Screen name="Home" component={HomeScreen}/>
+
         <Stack.Screen
           name="CreateHouse"
           component={CreateHouseScreen}

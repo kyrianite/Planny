@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ProfileStackParamList } from '../../screens/Profile';
 import Colors from '../../constants/ColorScheme';
 import { UserContext } from '../../../App';
-// import {auth} from '../../constants/firebase/firebase'
+import {auth} from '../../constants/firebase/firebase'
 
 type ChangeEmailScreenNavigationProp = NativeStackNavigationProp<ProfileStackParamList, 'ChangeEmail'>;
 
@@ -21,14 +21,6 @@ export default function ChangeEmail() {
   const {user, setUser} = useContext(UserContext)
   const navigation = useNavigation<ChangeEmailScreenNavigationProp>();
 
-  // const [newPost, setNewPost] = useState<NewPost>({
-  //   username: 'Quanjing Chen',
-  //   time: '',
-  //   topic: '',
-  //   photos: [],
-  //   plantType: '',
-  //   plantName: '',
-  // });
   const [email, setEmail] = useState<email>({
     newEmail:'',
     currentEmail:'',
@@ -38,14 +30,14 @@ export default function ChangeEmail() {
   const [warning, setWarning] = useState(false);
 
   const updateEmail = (newEmail: string) => {
-    // const user:any = auth.currentUser;
-    //   user.updateEmail(newEmail)
-    //     .then(() => {
-    //       console.log('email updated successfully')
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //     })
+    const user:any = auth.currentUser;
+      user.updateEmail(newEmail)
+        .then(() => {
+          console.log('email updated successfully')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
   }
 
   const onCurrentEmailChange = (text: string) => {
@@ -64,7 +56,10 @@ export default function ChangeEmail() {
     e.preventDefault();
     setLoading(true);
     setTimeout(() =>setLoading(false), 3000)
+    const user = auth.currentUser;
+    console.log(user)
     // const credential = auth.EmailAuthProvider.credential(email.currentEmail, email.password);
+    // console.log(credential)
     // auth().currentUser.reauthenticateWithCredential(credential)
     //   .then(() => {
     //     auth().currentUser.updateEmail(email.newEmail)

@@ -9,6 +9,7 @@ import Colors from '../../constants/ColorScheme';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Styles from '../../constants/Styles';
 import axios from 'axios'
+import {auth} from '../../constants/firebase/firebase'
 // import dotenv from 'dotenv'
 
 // dotenv.config()
@@ -142,6 +143,7 @@ export default function MainScreen() {
     <Button
       title="Logout"
       onPress={() => {
+        auth.signOut()
       // navigation.navigate('ChangePass');
       }}
     />
