@@ -62,7 +62,7 @@ const LoginScreen = () => {
         let params = {params:{userId:user.uid}}
         axios.get(url, params)
           .then((response) => {
-            console.log(response.data);
+            console.log('user info from exios call', response.data[0]);
             setUser(response.data[0]);
             navigation.navigate('Home');
           })
