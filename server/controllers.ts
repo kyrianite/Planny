@@ -31,7 +31,7 @@ module.exports= {
     })
   },
   updateUser: (req, res) => {
-    db.updateUser(req.query, (err, data) => {
+    db.updateUser(req.body, (err, data) => {
       if (err) {
         res.status(500)
         res.end(err)
@@ -362,7 +362,7 @@ module.exports= {
     })
   },
   updateCommunityLikes: (req, res) => {
-    db.updateCommunityLikes({communityId: req.query.communityId}, (err, data) => {
+    db.updateCommunityLikes({communityId: req.body.communityId}, (err, data) => {
       if (err) {
         console.log(err)
         res.status(500)
