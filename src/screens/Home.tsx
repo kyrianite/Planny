@@ -33,8 +33,9 @@ export default function HomeScreen() {
   useFocusEffect(
     React.useCallback(() => {
       async function getUserId () {
+        if (!user) { return }
         const data = await axios.get(`${SERVER}/user`, { params: {userId: user['userId']}});
-        const householdArr = data.data[0].household.flat();
+        const householdArr = Array.from( new Set(data.data[0].household.flat()));
         const copy : HomeGroupsProp[] = [];
         for (const householdId of householdArr) {
           const contents = await axios.get(`${SERVER}/household`, {params: {householdId}});
