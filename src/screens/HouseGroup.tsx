@@ -72,6 +72,7 @@ export default function HouseGroupScreen({navigation, route}) {
     }
     return (
       Object.keys(props).map((plant) => {
+        console.log(plant)
         return (
           <TouchableOpacity style={tempStyling.PlantStyle} key={plant}>
             <View style={{alignContent:'center', justifyContent:'center'}}>
