@@ -5,24 +5,24 @@ import { useNavigation } from '@react-navigation/native';
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
 import MainScreen from '../components/profile/Main';
-import ChangePass from '../components/profile/ChangePass'
-import ChangeEmail from '../components/profile/ChangeEmail'
+import ChangePassScreen from '../components/profile/ChangePass'
+import ChangeEmailScreen from '../components/profile/ChangeEmail'
 
-type ProfilePlaceholderNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+// type ProfilePlaceholderNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export type ProfileStackParamList = {
   Profile: undefined;
-  ChangePass: undefined;
+  // ChangePass: undefined;
   ChangeEmail: undefined;
 };
+const Stack = createNativeStackNavigator<ProfileStackParamList>();
 export default function ProfileScreen() {
-  const Stack = createNativeStackNavigator<ProfileStackParamList>();
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false}}>
       <Stack.Screen name="Profile" component={MainScreen} />
-      <Stack.Screen name="ChangePass" component={ChangePass}/>
-      <Stack.Screen name="ChangeEmail" component={ChangeEmail}/>
+      <Stack.Screen name="ChangePass" component={ChangePassScreen}/>
+      <Stack.Screen name="ChangeEmail" component={ChangeEmailScreen}/>
     </Stack.Navigator>
   )
 }
