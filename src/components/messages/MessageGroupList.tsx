@@ -69,7 +69,7 @@ export default function MessageGroupList() {
 // {
 //   "householdId": 1
 // }
-  axios.get('http://localhost:3100/db/household', {params: {householdId: 4}}).then(({data}) => {
+  axios.get('http://localhost:3000/db/household', {params: {householdId: 4}}).then(({data}) => {
     setHomes([...homes, ...data])
   })
   }, [])

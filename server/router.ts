@@ -89,7 +89,7 @@ routers.put('/household', controllers.updateHousehold);
 // }
 // {
 //   "householdId": 1,
-//   "plants": 1
+//   "plants": 1,
 // }
 
 routers.post('/householdMessage', controllers.postHouseholdMessage);
