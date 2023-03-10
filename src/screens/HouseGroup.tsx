@@ -77,7 +77,10 @@ export default function HouseGroupScreen({navigation, route}) {
     return (
       Object.keys(props).map((plant) => {
         return (
-          <TouchableOpacity style={tempStyling.PlantStyle} key={plant}>
+          <TouchableOpacity style={tempStyling.PlantStyle} key={props[plant]['plantId']}
+            onPress={(() => {
+              navigation.navigate('Plant Profile', {plantId: +props[plant]['plantId'], houseId: groupId})})}
+          >
             <View style={{alignContent:'center', justifyContent:'center'}}>
               <Image style={tempStyling.ImageStyle}
               source={props[plant]['photo'] as any}/>
@@ -117,7 +120,7 @@ export default function HouseGroupScreen({navigation, route}) {
       {plantTouch()}
     </ScrollView>
     <View style={{backgroundColor: 'white'}}>
-        <TouchableOpacity style={tempStyling.AddPlantStyle} onPress={() => navigation.navigate('Add New Plant', {houseId: 1234})}>
+        <TouchableOpacity style={tempStyling.AddPlantStyle} onPress={() => navigation.navigate('Add New Plant', {houseId: groupId})}>
           <Text style={{ textAlign: 'center', justifyContent: 'center' }}>
             Add a new plant
           </Text>
