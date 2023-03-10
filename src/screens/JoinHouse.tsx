@@ -78,7 +78,7 @@ export default function JoinHouseScreen() {
   }
   return (
     <View style={Styles.container}>
-      <View style={{position: 'absolute', top: '30%', justifyContent:'center', alignItems:'center'}}>
+      <View style={{position: 'absolute', top: '25%', justifyContent:'center', alignItems:'center'}}>
         <Image
           style={{height: 75, width: 75, resizeMode:'contain', transform: [ {scaleX: -1 }], zIndex: 1, position:'absolute', right: 20, top: 20}}
           source={'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2M3MzEwYWExMTFjZjkxZmM3NzEwOWI1N2UzMWQ5ZmNmMmExNWM3MSZjdD1z/A37i0ZxuGgDM1hSvzw/giphy.gif' as any}
@@ -88,8 +88,10 @@ export default function JoinHouseScreen() {
           source={'https://i1.sndcdn.com/artworks-HzrzK1bmqBUDXAi9-YwHAoA-t500x500.jpg' as any}
           />
       </View>
-      <Text style={{fontWeight:'bold', fontSize:30, position: 'absolute', top: '45%'}}>Join a House</Text>
-      <View style={{height: 200, width: 200, position: 'absolute', top: '50%'}}>
+      <Text style={{fontWeight:'bold', fontSize:30, position: 'absolute', top: '50%'}}>
+        Join a House
+      </Text>
+      <View style={{height: 200, width: 200, position: 'absolute', top: '55%'}}>
         <TextInput
           style={{textAlign: 'center', borderBottomWidth: 1, padding: 10, height: 40, marginBottom: 30, borderRadius: 5, overflow:"hidden"}} onChange={textInputHandler} keyboardType='number-pad'
           placeholder="Enter HouseID" placeholderTextColor={'grey'} />

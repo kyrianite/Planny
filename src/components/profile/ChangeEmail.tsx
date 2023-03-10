@@ -93,9 +93,9 @@ export default function ChangeEmail() {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: '#fff' }}>
-      <View>
-        <View style={Styles.container}>
+    <>
+      <View style={Styles.container}>
+        <View style={{width:'75%', alignItems: 'center'}}>
           <Text style={styles1.labelText}>Current Email</Text>
           <TextInput
             style={styles1.singleLineInput}
@@ -103,7 +103,7 @@ export default function ChangeEmail() {
             onChangeText={onCurrentEmailChange}
           />
         </View>
-        <View style={Styles.container}>
+        <View style={{width:'75%', alignItems: 'center'}}>
           <Text style={styles1.labelText}>Password</Text>
           <TextInput
             secureTextEntry={true}
@@ -111,7 +111,7 @@ export default function ChangeEmail() {
             onChangeText={onPasswordChange}
           />
         </View>
-        <View style={Styles.container}>
+        <View style={{width:'75%', alignItems: 'center'}}>
           <Text style={styles1.labelText}>New Email</Text>
           <TextInput
             style={styles1.singleLineInput}
@@ -119,12 +119,10 @@ export default function ChangeEmail() {
             onChangeText={onNewEmailChange}
           />
       </View>
-      <View style={Styles.container}>
+      <View style={{width:'75%', alignItems: 'center'}}>
         <Button
             title="Submit"
-            onPress={() => {
-              onSubmit
-            }}
+            onPress={onSubmit}
             type="outline"
             buttonStyle={{paddingVertical: 7, borderColor: '#1D9D51', borderWidth: 2, borderRadius: 15}}
             titleStyle={{color: '#1D9D51', fontWeight: 'bold'}}
@@ -137,7 +135,7 @@ export default function ChangeEmail() {
       {loading && (
         <ActivityIndicator/>
       )}
-    </ScrollView>
+    </>
   );
 }
 

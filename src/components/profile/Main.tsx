@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, ScrollView, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Button } from 'react-native-elements';
-import {CheckBox} from '@rneui/themed'
+import { Button, CheckBox} from 'react-native-elements';
+// import {CheckBox} from '@rneui/themed'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
@@ -143,7 +143,7 @@ export default function MainScreen() {
       <Text style={styles.textName}>{userData.email}</Text>
     </View>
     <CheckBox
-      title="notification"
+      title="Enable Notifications"
       checked={checkedNotif}
       onPress={() => setCheckedNotif(!checkedNotif)}
         />

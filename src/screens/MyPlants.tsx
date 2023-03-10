@@ -76,7 +76,11 @@ export default function MyPlantsScreen() {
     }
     if (myPlants.length === 0) {
       return (
-        <Text style={tempStyling.EmptyPlants}>Create a house to start adding plants</Text>
+        <View style={{alignItems: 'center'}}>
+          <Text style={tempStyling.EmptyPlants}>
+            Create a house to start adding plants
+          </Text>
+        </View>
       )
     }
     return myPlants.map((plant) => {
