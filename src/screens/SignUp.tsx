@@ -129,11 +129,11 @@ const SignUpScreen = () => {
   };
 
   return (
-    <View style={Styles.container}>
-      <Button title="Back" onPress={() => navigation.navigate('Login')} />
-      <View>
+    <View style={styles.container}>
+      {/* <Button title="Back" onPress={() => navigation.navigate('Login')} /> */}
+      {/* <View>
         <Text style={styles.headertext}>Sign Up</Text>
-      </View>
+      </View> */}
       <View style={Styles.container}>
         <TouchableOpacity>
           <Text style={styles.labelText}>First Name</Text>
@@ -236,9 +236,20 @@ const SignUpScreen = () => {
 // periwinkle: '#B4CCE1',
 // porcelain: '#EFDBCA',
 // greenBlack: '#2A2B2A',
+
+const myStyles = StyleSheet.create({
+  container: {
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginVertical: '10%'
+  }
+});
+
 const styles = {
   container: {
-    background: '#C6D5BE',
+    background: '#fff',
   },
   headertext: {
     fontSize: '10vw',

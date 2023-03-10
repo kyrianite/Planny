@@ -1,5 +1,5 @@
 import { Text, View, Image, StyleSheet, TouchableOpacity, Button, Modal, Alert, TextInput, Pressable, ScrollView } from 'react-native'
-import React, { useState, Component, useEffect } from 'react'
+import React, { useState, Component, useEffect, useContext } from 'react'
 const placeholder1 = require('./images/placeholder-1.jpeg')
 const placeholder2 = require('./images/placeholder-2.webp')
 const placeholder3 = require('./images/placeholder-3.png')
@@ -11,16 +11,19 @@ import axios from 'axios'
 import auth from '../../constants/firebase/firebase'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { UserContext } from '../../../App';
 
 type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Your Homes'>;
 
 export default function MessageGroupList() {
 
   const navigation = useNavigation<CreateHouseScreenNavigationProp>();
+  const { user, setUser } = useContext(UserContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [messages, setMessages] = useState([]);
+  //Dummy room data in state for now
   const [homes, setHomes] = useState([{householdName: 'Mom\'s house', lastMessage: 'I watered your flowers', lastMessager: 'PlantMama040', avatar: placeholder1}, {householdName:  'Dorm', lastMessage: 'bro my cactus!', lastMessager: 'Todd', avatar: placeholder3}, {householdName: 'Grandma\'s house', lastMessage: 'How do I care for a succulent?', lastMessager: 'GreenGranny', avatar: placeholder2}])
-  // ADD NEW HOUSE
+  // ADD NEW HOUSE (No Longer in use)
   const [modalVisible, setModalVisible] = useState(false);
   const [houseName, setHouseName] = useState('');
   const [members, setMembers] = useState([]);
@@ -28,12 +31,13 @@ export default function MessageGroupList() {
   const [dbMessageId, setDbMesageId] = useState(null);
   const [offlineRoom, setOfflineRoom] = useState('')
 
-  //ADD NEW HOUSE
+
+  //ADD NEW HOUSE (No Longer in use)
   const handleHouseNameChange = (text) => {
     setHouseName(text);
   };
 
-  //ADD NEW MEMBERS
+  //ADD NEW MEMBERS (No Longer in use)
   const handleMemberNameChange = (text) => {
     setMemberName(text);
   };
@@ -43,7 +47,7 @@ export default function MessageGroupList() {
     setMemberName('');
   };
 
-  //CREATE NEW HOME
+  //CREATE NEW HOME (No Longer in use)
   const createHome = () => {
     setHomes([...homes, {householdName: houseName, lastMessage: 'test', lastMessager: 'test', avatar: placeholder2, householdMembers: members }])
     setModalVisible(false)
@@ -60,6 +64,7 @@ export default function MessageGroupList() {
   })
   }
 
+  // Helper function to convert my stored date format to unix for time comparison
   const convertToUnixTimestamp = (dateTimeString) => {
     let dateTimeStringArray = dateTimeString.split(" ");
     let month = dateTimeStringArray[1];
@@ -72,6 +77,7 @@ export default function MessageGroupList() {
     return Date.parse(dateTimeStringFormatted);
   }
 
+  // Function to implement a timer that turns a circle red/green depending on time since last message...time difference needs work.
   const evaluateDataArray = (dataArray) => {
     const lastObjectTime = convertToUnixTimestamp(dataArray[dataArray.length - 1].time);
     console.log(dataArray)
@@ -80,7 +86,7 @@ export default function MessageGroupList() {
     console.log('current time', currentTime)
     console.log('last message time:', lastObjectTime)
     console.log('difference', timeDifference)
-    if (timeDifference > 66412630) {
+    if (timeDifference > 664126) {
       console.log('user is offline');
       setOfflineRoom(true);
     } else {
@@ -97,6 +103,7 @@ export default function MessageGroupList() {
     }, [])
   );
 
+  // Use Effect for Search Functionality, ideally loads all messages from user's rooms for sorting.
   useEffect(() => {
     axios.get('http://localhost:3000/db/message', {params: { messageId: 4}}).then(({data}) => {
       console.log(data[0].messages)
@@ -104,18 +111,19 @@ export default function MessageGroupList() {
     })
   }, [])
 
+  // Use Effect to get user's rooms.
   useEffect(() => {
-    // console.log(auth)
-    // in params
-// {
-//   "householdId": 1
-// }                       //this householdID is returned when we create room
-  axios.get('http://localhost:3000/db/household', {params: {householdId: 4}}).then(({data}) => {
-    console.log(data)
-    setHomes([...homes, ...data])
-  })
+    // console.log(user.household)
+    for (var i = 0; i < user.household.length; i++) {
+      // console.log(user.household[i])
+      axios.get('http://localhost:3000/db/household', {params: {householdId: user.household[i]}}).then(({data}) => {
+        // console.log(data)
+        setHomes([...homes, ...data])
+      })
+    }
   }, [])
 
+  // Handles Search Function
   const handleSearchSubmit = () => {
     setSearchTerm('')
     const foundMessage = messages.find(item => item.message.includes(searchTerm));

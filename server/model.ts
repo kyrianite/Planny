@@ -29,7 +29,7 @@ let userSchema = mongoose.Schema({
   profilePicture: {
     type: String,
     default:
-      'https://res.cloudinary.com/dsiywf70i/image/upload/v1678222821/download_uaih1t.jpg',
+      'https://res.cloudinary.com/dsiywf70i/image/upload/v1678222821/download_uaih1t.jpg'
   },
   household: [
     {
@@ -105,8 +105,7 @@ let plantSchema = mongoose.Schema({
     required: true,
   },
   waterCountDown: {
-    type: Number,
-    required: true,
+    type:Number,
   },
   lastWater: {
     type: Date,

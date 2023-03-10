@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,10 +11,9 @@ import AssignPlantCaretakerScreen from './src/screens/AssignPlantCaretaker';
 import MyPlantsScreen from './src/screens/MyPlants';
 import HouseGroupScreen from './src/screens/HouseGroup';
 import SignUpScreen from './src/screens/SignUp';
-import Chatroom from './src/components/messages/chatroom'
-import MessageGroupList from './src/components/messages/MessageGroupList'
-import Messages from './src/screens/Messages'
 import LoginScreen from './src/screens/Login'
+import MessageGroupList from './src/components/messages/MessageGroupList'
+import Chatroom from './src/components/messages/chatroom'
 
 export type RootStackParamList = {
   // Login: undefined;
@@ -25,13 +23,9 @@ export type RootStackParamList = {
   MyPlants: undefined;
   Messages: undefined;
   HouseGroup: { screen: string; p: object } | undefined;
-  'Add New Plant': undefined;
-  'Plant Profile': undefined;
-  'Assign Caretaker':
-    | undefined
-    | {
-        caretakers: Array<string>;
-      };
+  'Add New Plant': { houseId: number };
+  'Plant Profile': { plantId: number, houseId: number | null};
+  'Assign Caretaker': { plantId: number, houseId: number, currentCaretakerIds: string[]};
   // SignUp: undefined;
 };
 
@@ -51,62 +45,66 @@ export default function RootStack() {
         {/* <Stack.Screen name="Login" component={LoginScreen} options={{ tabBarVisible: false }}/>
         <Stack.Screen name="SignUp" component={SignUpScreen} /> */}
         {/* <Stack.Screen name="Home" component={HomeScreen} options={{ headerLeft: null }}/> */}
-        <Stack.Screen name="Home" component={HomeScreen}/>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{headerShown: false}}
+        />
 
         <Stack.Screen
           name="CreateHouse"
           component={CreateHouseScreen}
-          options={{ headerTitle: 'Return to Home' }}
+          options={{ headerTitle: '' }}
         />
+
         <Stack.Screen
           name="JoinHouse"
           component={JoinHouseScreen}
-          options={{ headerTitle: 'Return to Home' }}
+          options={{ headerTitle: '' }}
         />
+
         <Stack.Screen
           name="Add New Plant"
           component={AddNewPlantScreen}
-          options={({ navigation, route }) => ({
-            headerRight: () => (
-              <TouchableOpacity
-                style={{ padding: 10 }}
-                onPress={() => navigation.navigate('Plant Profile')}
-              >
-                <MaterialCommunityIcons
-                  name="content-save-outline"
-                  size={24}
-                  color="black"
-                />
-              </TouchableOpacity>
-            ),
-          })}
+          options={{ headerTitle: '' }}
         />
-        <Stack.Group>
+
         <Stack.Screen
-          name="Your Homes"
-          component={MessageGroupList}
+          name="Plant Profile"
+          component={PlantProfileScreen}
+          options={{ headerTitle: '' }}
         />
-        <Stack.Screen name="Messages" component={Messages}/>
-        <Stack.Screen
-          name="ChatRoom"
-          component={Chatroom}
-        />
-        </Stack.Group>
-        <Stack.Screen name="Plant Profile" component={PlantProfileScreen} />
+
         <Stack.Screen
           name="Assign Caretaker"
           component={AssignPlantCaretakerScreen}
+          options={{ headerTitle: '' }}
         />
+
         <Stack.Screen
           name="MyPlants"
           component={MyPlantsScreen}
-          options={{ headerTitle: 'My Plants' }}
+          options={{ headerTitle: '' }}
         />
+
         <Stack.Screen
           name="HouseGroup"
           component={HouseGroupScreen}
           options={{ headerTitle: '' }}
         />
+
+        <Stack.Screen
+          name="Your Homes"
+          component={MessageGroupList}
+          options={{ headerTitle: '' }}
+        />
+
+        <Stack.Screen
+          name="ChatRoom"
+          component={Chatroom}
+          options={{ headerTitle: '' }}
+        />
+
       </Stack.Navigator>
   );
 }
