@@ -13,7 +13,7 @@ import {
   REACT_APP_FIREBASE_SENDER_ID,
   REACT_APP_FIREBASE_STORAGE_BUCKET,
 } from '@env';
-console.log('REACT_APP_FIREBASE_API_KEY: ', REACT_APP_FIREBASE_API_KEY);
+// console.log('REACT_APP_FIREBASE_API_KEY: ', REACT_APP_FIREBASE_API_KEY);
 const fb = initializeApp({
   apiKey: REACT_APP_FIREBASE_API_KEY,
   authDomain: REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -24,5 +24,3 @@ const fb = initializeApp({
 });
 
 export const auth = getAuth(fb);
-
-export default firebase;

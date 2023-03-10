@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, TextInput, StyleSheet, Image} from 'react-native';
-import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
+import { View, Text, TextInput, StyleSheet, Image } from 'react-native';
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import Styles from '../constants/Styles';
 import { Button } from 'react-native-elements';
@@ -12,6 +15,7 @@ import axios from 'axios';
 import { UserContext } from '../../App';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import ColorScheme from '../constants/ColorScheme';
+import { PORT } from '@env';
 
 const styles = StyleSheet.create({
   container: {
@@ -32,15 +36,9 @@ const styles = StyleSheet.create({
     padding: 10,
     textAlign: 'center',
   },
-  noAccount: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: '4vw',
-  },
   labelText: {
     fontWeight: 'bold',
-    marginTop: '5%'
+    marginTop: '5%',
   },
 });
 
@@ -54,14 +52,14 @@ const LoginScreen = () => {
   // console.log('userinfo in Login', user);
 
   useEffect(() => {
-    auth.onAuthStateChanged(function(user) {
+    auth.onAuthStateChanged(function (user) {
       if (user) {
         // User is signed in, do something
-        const url = 'http://localhost:3000/db/user/';
-        let params = {params:{userId:user.uid}}
-        axios.get(url, params)
+        const url = `http://localhost:${PORT}/db/user/`;
+        let params = { params: { userId: user.uid } };
+        axios
+          .get(url, params)
           .then((response) => {
-            console.log('user info from axios call', response.data[0]);
             setUser(response.data[0]);
             // navigation.navigate('Home');
           })
@@ -70,15 +68,10 @@ const LoginScreen = () => {
           });
       } else {
         // User is signed out, do something
-        setUser(null)
-        navigationAuth.navigate('Login')
-        console.log('User is signed out');
+        setUser(null);
       }
     });
-  }, [])
-
-
-
+  }, []);
 
   const [loginInfo, setLoginInfo] = useState({
     email: '',
@@ -86,53 +79,42 @@ const LoginScreen = () => {
   });
   const [errorMessage, setErrorMessage] = useState('');
 
-
-
   const handleSignIn = () => {
     if (loginInfo.email.length !== 0 && loginInfo.password.length !== 0) {
       signInWithEmailAndPassword(auth, loginInfo.email, loginInfo.password)
         .then((userCredential) => {
-          console.log(userCredential, userCredential.user.uid);
           const userID = userCredential.user.uid;
           const params = {
             params: {
               userId: userID,
             },
           };
-          const url = 'http://localhost:3000/db/user/';
+          const url = `http://localhost:${PORT}/db/user/`;
           axios(url, params)
             .then((response) => {
-              console.log(response.data);
               if (response.data[0].household.length === 0) {
                 var householdID = null;
               } else {
                 householdID = response.data[0].household[0];
               }
-              console.log(householdID);
               setUser(response.data[0]);
             })
             .catch((error) => {
               console.log(error);
             });
         })
-        .then(() => {
-          console.log(user);
-          navigation.navigate('Home');
-        })
         .catch((error) => {
           console.log(error.code);
-          const fbErrorCode = error.code;
           setErrorMessage('Invalid Email or Password');
         });
     } else {
-      setErrorMessage('Please Enter Both An Email and Password');
+      setErrorMessage('Please enter both an Email and Password');
     }
   };
 
   return (
     <>
       <View style={Styles.container}>
-        {/* <Text>Planny</Text> */}
         <Image
           style={styles.logo}
           source={require('../../assets/PlannyLogo.png')}
@@ -159,31 +141,21 @@ const LoginScreen = () => {
           }}
           secureTextEntry
         ></TextInput>
-        <View style={{marginTop: '5%'}}>
-          <Button onPress={handleSignIn} title="Sign In" type="outline"
-            buttonStyle={{paddingVertical: 7, borderColor: '#1D9D51', borderWidth: 2, borderRadius: 15}}
-            titleStyle={{color: '#1D9D51', fontWeight: 'bold'}}
+        <View style={{ marginTop: '5%' }}>
+          <Button
+            onPress={handleSignIn}
+            title="Sign In"
+            type="outline"
+            buttonStyle={{
+              paddingVertical: 7,
+              borderColor: '#1D9D51',
+              borderWidth: 2,
+              borderRadius: 15,
+            }}
+            titleStyle={{ color: '#1D9D51', fontWeight: 'bold' }}
           />
         </View>
       </View>
-      {/* <View style={styles.noAccount}>
-        <Text
-          onPress={() => {
-            navigation.navigate('ForgotPassword');
-          }}
-          style={{ padding: '1w', color: 'steel' }}
-        >
-          Forgot Password
-        </Text>
-        <Text
-          onPress={() => {
-            navigation.navigate('SignUp');
-          }}
-          style={{ padding: '1w', color: 'steelblue' }}
-        >
-          Sign up
-        </Text>
-      </View> */}
     </>
   );
 };
