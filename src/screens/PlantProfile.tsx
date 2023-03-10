@@ -9,6 +9,7 @@ import { RootStackParamList } from '../../RootStack';
 import { RouteProp, useFocusEffect } from '@react-navigation/core';
 // import { UserContext } from '../../App';
 import ColorScheme from '../constants/ColorScheme';
+import { MaterialIcons } from '@expo/vector-icons';
 
 type PlantProfileNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Plant Profile'>;
 type PlantProfileScreenRouteProp = RouteProp<RootStackParamList, 'Plant Profile'>;
@@ -69,6 +70,17 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
     }, [navigation])
   );
 
+  async function removeCaretaker(name) {
+    const index = caretakers.indexOf(name);
+    const updatedCaretakerIds = caretakerIds.slice();
+    updatedCaretakerIds.splice(index, 1);
+    const updatedCaretakers = caretakers.slice();
+    updatedCaretakers.splice(index, 1);
+    await axios.put(`http://localhost:3000/db/plant/caretaker`, {plantId, careTakers: updatedCaretakerIds}, axiosOption);
+    setCaretakers(updatedCaretakers);
+    setCaretakerIds(updatedCaretakerIds);
+  };
+
   return (
     <>
       <View style={styles.plantHeading}>
@@ -125,17 +137,25 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
               }
             </View>
             <View style={styles.description}>
-              <FlatList
-                style={styles.flatListContainer}
-                contentContainerStyle={{flex: 1, justifyContent: 'center', alignItems: 'stretch'}}
-                // keyExtractor={(item) => item.id.toString()}
-                data={caretakers}
-                renderItem={({ item }: ListRenderItemInfo<string>) => (
-                  <TouchableOpacity>
-                    <Text>{item}</Text>
-                  </TouchableOpacity>
-                )}
-              />
+              {caretakers[0] === 'No current caretakers'
+                ? <Text>No current caretakers</Text>
+                : <FlatList
+                    style={styles.flatListContainer}
+                    contentContainerStyle={{flex: 1, justifyContent: 'center', alignItems: 'stretch'}}
+                    // keyExtractor={(item) => item.id.toString()}
+                    data={caretakers}
+                    extraData={caretakers}
+                    renderItem={({ item }: ListRenderItemInfo<string>) => (
+                      <View style={styles.eachCaretaker}>
+                        <TouchableOpacity onPress={() => removeCaretaker(item)}>
+                          <MaterialIcons name="highlight-remove" size={24} color="#DA0909"style={{marginRight: 5}} />
+                        </TouchableOpacity>
+                        <Text>{item}</Text>
+                      </View>
+                    )}
+                  />
+              }
+
             </View>
           </View>
         </View>
@@ -214,5 +234,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 50,
     padding: 5
-  }
+  },
+  eachCaretaker: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
