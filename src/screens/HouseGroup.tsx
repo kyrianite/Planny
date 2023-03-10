@@ -5,7 +5,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { PORT } from '@env';
 import axios from 'axios';
-
+import ReactLoading from 'react-loading';
+import ColorScheme from '../constants/ColorScheme';
 import { StyleSheet } from 'react-native';
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
@@ -41,7 +42,11 @@ export default function HouseGroupScreen({navigation, route}) {
         }
         const copy = {...props};
         data.forEach((arrObj) => {
-          copy[arrObj.plantName] = arrObj.location;
+          copy[arrObj.plantName] = {
+            location: arrObj.location,
+            photo: arrObj.photo,
+            lastWater: arrObj.lastWater === undefined ? 'Unknown'
+            : new Date(arrObj.lastWater).toDateString()};
         });
         setProps(copy);
         setLoading(false);
@@ -58,8 +63,7 @@ export default function HouseGroupScreen({navigation, route}) {
           <Text style={{fontSize: 30, fontWeight:'bold'}}>
             Loading
           </Text>
-          <Image style={{height: 300, width: 300, borderRadius: 150, overflow: 'hidden'}}
-          source={'https://media.tenor.com/yU_koH5kItwAAAAd/budew-sleepy.gif' as any}/>
+          <ReactLoading type={'bubbles'} color={ColorScheme.sage} height={'30%'} width={'30%'}/>
         </View>
       )
     }
@@ -73,18 +77,24 @@ export default function HouseGroupScreen({navigation, route}) {
     return (
       Object.keys(props).map((plant) => {
         return (
-          <TouchableOpacity style={tempStyling.PlantStyle} key={plant}>
+          <TouchableOpacity style={tempStyling.PlantStyle} key={props[plant]['plantId']}
+            onPress={(() => {
+              navigation.navigate('Plant Profile', {plantId: +props[plant]['plantId'], houseId: groupId})})}
+          >
             <View style={{alignContent:'center', justifyContent:'center'}}>
               <Image style={tempStyling.ImageStyle}
-              source={require('../../assets/PlannyLogo.png')}/>
+              source={props[plant]['photo'] as any}/>
             </View>
-            <View style={{alignContent:'center', justifyContent:'center', right: 45, width: 100}}>
+            <View style={{alignContent:'center', justifyContent:'center', right: 45, width: 150}}>
               <Text style={{textAlign:'left', fontWeight: 'bold'}}>
                 {cap(plant)}
                 {'\n'}
               </Text>
               <Text style={{textAlign:'left'}}>
-                {cap(props[plant])}
+                {cap(props[plant]['location'])}
+              </Text>
+              <Text style={{textAlign:'left'}}>
+                💧{cap(props[plant]['lastWater'])}
               </Text>
             </View>
           </TouchableOpacity>
@@ -110,16 +120,11 @@ export default function HouseGroupScreen({navigation, route}) {
       {plantTouch()}
     </ScrollView>
     <View style={{backgroundColor: 'white'}}>
-    {/* Remove hard coded group */}
-        <TouchableOpacity style={tempStyling.AddPlantStyle} onPress={() => navigation.navigate('Add New Plant', {houseId: 1234})}>
+        <TouchableOpacity style={tempStyling.AddPlantStyle} onPress={() => navigation.navigate('Add New Plant', {houseId: groupId})}>
           <Text style={{ textAlign: 'center', justifyContent: 'center' }}>
             Add a new plant
           </Text>
         </TouchableOpacity>
-        <View style={{ bottom: 0 }}>
-          <Button title="Return to all groups"
-          onPress={() => { navigation.navigate('Home'); } } />
-        </View>
       </View>
       </>
   )
