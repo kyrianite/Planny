@@ -49,6 +49,7 @@ const TabIconOptions = {
     ),
   },
   Profile: {
+    headerShown: false,
     tabBarShowLabel: false,
     tabBarIcon: ({focused, color}) => (
       <MaterialCommunityIcons name="cog" color={color} size={25} focused={focused} />
