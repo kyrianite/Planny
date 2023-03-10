@@ -57,7 +57,6 @@ export default function HouseGroupScreen({navigation, route}) {
     makePlants();
   }, [])
 
-  // const props = route.params.p;
   function plantTouch() {
     if (loading) {
       return (
