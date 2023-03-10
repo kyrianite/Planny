@@ -121,7 +121,6 @@ export default function MyPlantsScreen() {
   )
 }
 
-//temporary styling
 const tempStyling = StyleSheet.create({
   Header: {
     top: 0,
