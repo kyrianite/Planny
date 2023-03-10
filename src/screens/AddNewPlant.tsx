@@ -6,6 +6,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios, { AxiosResponse } from 'axios';
 const axiosOption = {headers: {'content-type': 'application/json'}};
+import { PORT } from '@env';
+
 
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
@@ -92,9 +94,9 @@ export default function AddNewPlantScreen( {route, navigation}: Props) {
         }
       }
 
-      const res = await axios.post(`http://localhost:3000/db/plant`, plantData, axiosOption);
+      const res = await axios.post(`http://localhost:${PORT}/db/plant`, plantData, axiosOption);
       const plantId = res.data.plantId;
-      const res2 = await axios.put(`http://localhost:3000/db/household`, {householdId: route.params?.houseId, plants: plantId}, axiosOption);
+      const res2 = await axios.put(`http://localhost:${PORT}/db/household`, {householdId: route.params?.houseId, plants: plantId}, axiosOption);
       navigation.navigate('Plant Profile', {plantId, houseId: route.params?.houseId});
     }
   };
