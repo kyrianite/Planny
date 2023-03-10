@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
 });
 
 type ForgotPasswordScreenNavigationProp =
-  NativeStackNavigationProp<AuthStackParamList>;
+  NativeStackNavigationProp<RootStackParamList>;
 
 const ForgotPasswordScreen = () => {
   const navigationAuth = useNavigation<ForgotPasswordScreenNavigationProp>();
@@ -81,7 +81,7 @@ const ForgotPasswordScreen = () => {
   const handleSubmit = () => {
     sendPasswordResetEmail(auth, email)
       .then((result) => {
-        navigation.navigate('Log In');
+        navigation.navigate('Login');
       })
       .catch((error) => {
         const fbErrorCode = error.code;

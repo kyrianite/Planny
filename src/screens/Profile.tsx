@@ -19,10 +19,10 @@ const Stack = createNativeStackNavigator<ProfileStackParamList>();
 export default function ProfileScreen() {
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false}}>
-      <Stack.Screen name="Profile" component={MainScreen} />
-      <Stack.Screen name="ChangePass" component={ChangePassScreen}/>
-      <Stack.Screen name="ChangeEmail" component={ChangeEmailScreen}/>
+    <Stack.Navigator initialRouteName="Profile">
+      <Stack.Screen name="Profile" component={MainScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="ChangeEmail" component={ChangeEmailScreen} />
+      <Stack.Screen name="ChangePass" component={ChangePassScreen} />
     </Stack.Navigator>
   )
 }
