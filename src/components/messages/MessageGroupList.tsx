@@ -146,7 +146,7 @@ export default function MessageGroupList() {
     const foundMessage = messages.message.includes(searchTerm)
     console.log(messages)
     if (foundMessage) {
-      navigation.navigate('ChatRoom', { homeLocation: 'elite4', messageID: messageID});
+      navigation.navigate('ChatRoom', { homeLocation: homes[0].householdName, messageID: messageID});
     }
   };
 
