@@ -194,6 +194,7 @@ let message = {
       .then((data) => {callback(null, data)})
       .catch((err) => {callback(err)})
     } else {
+      console.log('body:', body);
       model.Household.updateOne({householdId:body.householdId}, {$addToSet: body.update})
       .then((data) => {callback(null, data)})
       .catch((err) => {callback(err)})

@@ -11,6 +11,7 @@ import { StyleSheet } from 'react-native';
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
 import { PORT } from '@env';
+import ColorScheme from '../constants/ColorScheme';
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'Home'
@@ -27,8 +28,6 @@ export default function HomeScreen() {
   const [groups, setGroups]= React.useState<HomeGroupsProp[]>([]);
   const [loading, setLoading] = React.useState(true);
   const { user, setUser } = useContext(UserContext);
-  console.log('user info in home: ', user);
-
 
   useFocusEffect(
     React.useCallback(() => {
@@ -67,7 +66,7 @@ export default function HomeScreen() {
     if (groups.length > 0) {
       return groups.map((groupObj) => {
         return (
-          <TouchableOpacity style={tempStyling.groups} key={groupObj.householdName}
+          <TouchableOpacity style={tempStyling.groups} key={groupObj.householdId}
           onPress={() => press(groupObj.householdName, groupObj.householdId)}>
             <Text> {groupObj.householdName} </Text>
           </TouchableOpacity>
@@ -75,18 +74,21 @@ export default function HomeScreen() {
       })
     } else {
       return (
-        <Text style={{fontWeight:'bold', fontSize: 30, margin: 30, width: 300, textAlign:'center'}}>
-          Create a new house to add your plants
-        </Text>
+        <TouchableOpacity>
+          <Text>Create a new house to start adding your plants</Text>
+        </TouchableOpacity>
+        // <Text style={{fontWeight:'bold', fontSize: 30, margin: 30, width: 300, textAlign:'center'}}>
+        //   Create a new house to add your plants
+        // </Text>
       )
     }
   }
   return (
     <>
-      <ScrollView style={{backgroundColor: 'white', flexDirection: 'column'}}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: 'white', flexDirection: 'column'}}>
 
         <View style={{alignItems:'center', justifyContent:'center'}}>
-          <Text style={{fontSize: 30 }}>Welcome Back</Text>
+          {/* <Text style={{fontSize: 30 }}>Welcome Back</Text> */}
           <Image
             style={tempStyling.LandingPageImage}
             source={require('../../assets/PlannyLogo.png')}
@@ -94,15 +96,31 @@ export default function HomeScreen() {
         </View>
 
         <View style={{alignItems:'center'}}>
-          <TouchableOpacity style={tempStyling.groups}
+          {/* <TouchableOpacity style={tempStyling.groups}
           onPress={() => navigation.navigate('MyPlants')}>
             <Text>My Plants</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           {makeHouseGroups()}
         </View>
 
-      </ScrollView>
+      </ScrollView  >
       <View style={tempStyling.FloatingMenuStyle}>
+        <TouchableOpacity style={tempStyling.FloatingButtons}
+          onPress={() => navigation.navigate('MyPlants')}>
+          <Text>My Plants</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={tempStyling.FloatingButtons}
+        onPress={() => navigation.navigate('CreateHouse')}>
+          <Text>Create New House</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={tempStyling.FloatingButtons}
+        onPress={() => navigation.navigate('JoinHouse')}>
+          <Text>Join a House</Text>
+        </TouchableOpacity>
+      </View>
+      {/* <View style={tempStyling.FloatingMenuStyle}>
 
         <TouchableOpacity style={tempStyling.FloatingButtons}
         onPress={() => navigation.navigate('CreateHouse')}>
@@ -113,7 +131,7 @@ export default function HomeScreen() {
         onPress={() => navigation.navigate('JoinHouse')}>
           <Text>Join a House</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </>
   );
 }
@@ -121,23 +139,33 @@ export default function HomeScreen() {
 //temporary styling
 const tempStyling = StyleSheet.create({
   groups: {
-    backgroundColor: '#B4CCE1',
-    width: 300, margin: 5,
-    height: 75, borderRadius: 50,
-    alignItems: 'center', justifyContent: 'center'
+    // backgroundColor: '#B4CCE1',
+    // width: 300, margin: 5,
+    // height: 75, borderRadius: 50,
+    alignItems: 'center', justifyContent: 'center',
+    width: '70%',
+    height: '15%',
+    // padding: '7%',
+    marginVertical: '3%',
+    borderWidth: 2,
+    borderRadius: 25,
+    borderColor: ColorScheme.lightBlue
   },
 
   FloatingMenuStyle: {
     flexDirection: 'row', bottom: 0,
-    alignItems: 'center', justifyContent:'center',
-    backgroundColor: 'white'
+    alignItems: 'center', justifyContent:'space-evenly',
+    paddingVertical: '3%',
+    backgroundColor: ColorScheme.porcelain
   },
 
   FloatingButtons: {
-    backgroundColor: '#B4CCE1',
-    width: 125, margin: 5,
-    height: 50, borderRadius: 50,
-    alignItems:'center', justifyContent:'center'
+    // backgroundColor: '#B4CCE1',
+    // width: 125, margin: 5,
+    // height: 50, borderRadius: 50,
+    alignItems:'center', justifyContent:'center',
+    flexGrow: 1,
+    borderLeftWidth: 1
   },
 
   LandingPageImage: {
