@@ -44,6 +44,7 @@ export default function HouseGroupScreen({navigation, route}) {
           copy[arrObj.plantName] = {
             location: arrObj.location,
             photo: arrObj.photo,
+            plantId: arrObj.plantId,
             lastWater: arrObj.lastWater === undefined ? 'Unknown'
             : new Date(arrObj.lastWater).toDateString()};
         });

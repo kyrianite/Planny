@@ -19,6 +19,7 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<
 type HomeGroupsProp = {
   householdName: string;
   householdId: string;
+  photo: string;
 }
 const SERVER = `http://localhost:${PORT}/db`;
 
@@ -40,7 +41,9 @@ export default function HomeScreen() {
           if (contents.data[0]) {
             let groupObj = {
               householdName: contents.data[0].householdName,
-              householdId: contents.data[0].householdId
+              householdId: contents.data[0].householdId,
+              photo: (contents.data[0].photo === undefined ? require('../../assets/budew.png')
+              : contents.data[0].photo)
             }
             copy.push(groupObj);
           }
@@ -67,7 +70,10 @@ export default function HomeScreen() {
         return (
           <TouchableOpacity style={tempStyling.groups} key={groupObj.householdId}
           onPress={() => press(groupObj.householdName, groupObj.householdId)}>
-            <Text> {groupObj.householdName} </Text>
+            <Image source={groupObj.photo as any} style={{width: '20%', height: '100%', resizeMode: 'contain', marginLeft: '8%'}}/>
+            <View style={{alignSelf:'stretch', justifyContent:'center', alignContent:'center', marginLeft: '5%'}}>
+              <Text style={{textAlign:'center'}}> {groupObj.householdName} </Text>
+            </View>
           </TouchableOpacity>
         )
       })
@@ -76,9 +82,6 @@ export default function HomeScreen() {
         <TouchableOpacity>
           <Text>Create a new house to start adding your plants</Text>
         </TouchableOpacity>
-        // <Text style={{fontWeight:'bold', fontSize: 30, margin: 30, width: 300, textAlign:'center'}}>
-        //   Create a new house to add your plants
-        // </Text>
       )
     }
   }
@@ -87,7 +90,6 @@ export default function HomeScreen() {
       <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: 'white', flexDirection: 'column'}}>
 
         <View style={{alignItems:'center', justifyContent:'center'}}>
-          {/* <Text style={{fontSize: 30 }}>Welcome Back</Text> */}
           <Image
             style={tempStyling.LandingPageImage}
             source={require('../../assets/PlannyLogo.png')}
@@ -138,17 +140,17 @@ export default function HomeScreen() {
 //temporary styling
 const tempStyling = StyleSheet.create({
   groups: {
-    // backgroundColor: '#B4CCE1',
-    // width: 300, margin: 5,
-    // height: 75, borderRadius: 50,
-    alignItems: 'center', justifyContent: 'center',
+    alignItems: 'baseline',
+    // justifyContent: 'space-between',
     width: '70%',
-    height: '15%',
+    height: '20%',
+    flexDirection:'row',
     // padding: '7%',
     marginVertical: '3%',
     borderWidth: 2,
     borderRadius: 25,
-    borderColor: ColorScheme.lightBlue
+    borderColor: ColorScheme.lightBlue,
+    overflow:'hidden'
   },
 
   FloatingMenuStyle: {
