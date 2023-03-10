@@ -1,26 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  View,
-  SafeAreaView,
-  Text,
-  Button,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
-  Image,
-} from 'react-native';
-import {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack';
+import { View, Text, TextInput, StyleSheet, Image} from 'react-native';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import Styles from '../constants/Styles';
+import { Button } from 'react-native-elements';
 import { RootStackParamList } from '../../RootStack';
 import { AuthStackParamList } from '../../AuthStack';
 import { auth } from '../constants/firebase/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import axios from 'axios';
 import { UserContext } from '../../App';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import ColorScheme from '../constants/ColorScheme';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,9 +27,10 @@ const styles = StyleSheet.create({
     outlineStyle: 'none',
     borderBottomWidth: 1,
     height: '5%',
-    width: '75%',
+    width: '70%',
     margin: '3%',
     padding: 10,
+    textAlign: 'center',
   },
   noAccount: {
     display: 'flex',
@@ -48,6 +40,7 @@ const styles = StyleSheet.create({
   },
   labelText: {
     fontWeight: 'bold',
+    marginTop: '5%'
   },
 });
 
@@ -58,7 +51,7 @@ const LoginScreen = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const navigationAuth = useNavigation<AuthScreenNavigationProp>();
   const { user, setUser } = useContext(UserContext);
-  console.log('userinfo in Login', user);
+  // console.log('userinfo in Login', user);
 
   useEffect(() => {
     auth.onAuthStateChanged(function(user) {
@@ -144,6 +137,9 @@ const LoginScreen = () => {
           style={styles.logo}
           source={require('../../assets/PlannyLogo.png')}
         />
+        {errorMessage.length >= 0 && (
+          <Text style={{ color: 'red' }}>{errorMessage}</Text>
+        )}
         <Text style={styles.labelText}>Email</Text>
         <TextInput
           style={styles.singleLineInput}
@@ -163,14 +159,14 @@ const LoginScreen = () => {
           }}
           secureTextEntry
         ></TextInput>
-        <Button onPress={handleSignIn} title="Sign In">
-          Sign In
-        </Button>
-        {errorMessage.length >= 0 && (
-          <Text style={{ color: 'red' }}>{errorMessage}</Text>
-        )}
+        <View style={{marginTop: '5%'}}>
+          <Button onPress={handleSignIn} title="Sign In" type="outline"
+            buttonStyle={{paddingVertical: 7, borderColor: '#1D9D51', borderWidth: 2, borderRadius: 15}}
+            titleStyle={{color: '#1D9D51', fontWeight: 'bold'}}
+          />
+        </View>
       </View>
-      <View style={styles.noAccount}>
+      {/* <View style={styles.noAccount}>
         <Text
           onPress={() => {
             navigation.navigate('ForgotPassword');
@@ -187,7 +183,7 @@ const LoginScreen = () => {
         >
           Sign up
         </Text>
-      </View>
+      </View> */}
     </>
   );
 };

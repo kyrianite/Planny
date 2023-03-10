@@ -77,12 +77,8 @@ export default function AddNewPlantScreen( {route, navigation}: Props) {
     } else {
       setValidationError(false);
 
-      // for fake data purposes: setting userId to John Doe
-      // let userId;
-      // !user?.id ? userId = 'Ri6EMybFD2bLEGrbtVQ6itZGqP42' : userId=user.id;
-
       const plantData = {
-        userId: user.userId, //change to user.id once context is working
+        userId: user?.userId,
         plant: {
           photo: plantImage,
           plantName: plantName,
@@ -95,8 +91,10 @@ export default function AddNewPlantScreen( {route, navigation}: Props) {
           careTakers: [],
         }
       }
+
       const res = await axios.post(`http://localhost:3000/db/plant`, plantData, axiosOption);
       const plantId = res.data.plantId;
+      const res2 = await axios.put(`http://localhost:3000/db/household`, {householdId: route.params?.houseId, plants: plantId}, axiosOption);
       navigation.navigate('Plant Profile', {plantId, houseId: route.params?.houseId});
     }
   };

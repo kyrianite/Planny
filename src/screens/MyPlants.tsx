@@ -83,8 +83,9 @@ export default function MyPlantsScreen() {
       return (
         <TouchableOpacity style={tempStyling.TouchableOpacityStyle}
           onPress={(() => {
-            navigation.navigate('Plant Profile', {plantId: +plant.plantId, houseId: null})
-          })} key={plant.plantId}>
+            navigation.navigate('Plant Profile', {plantId: +plant.plantId, houseId: null})})}
+          key={plant.plantId}
+        >
           <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
             <Image style={tempStyling.ImageStyle} source={plant.photo as any}/>
             <View style={{alignSelf: 'flex-start', marginLeft: '3%'}}>
@@ -108,7 +109,7 @@ export default function MyPlantsScreen() {
   };
 
   return (
-    <ScrollView style={tempStyling.ScrollStyle}>
+    <ScrollView showsVerticalScrollIndicator={false} style={tempStyling.ScrollStyle}>
       <View style={{alignSelf: 'center'}}>
         {makeButtons()}
       </View>
