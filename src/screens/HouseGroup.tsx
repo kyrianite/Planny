@@ -41,7 +41,7 @@ export default function HouseGroupScreen({navigation, route}) {
         }
         const copy = {...props};
         data.forEach((arrObj) => {
-          copy[arrObj.plantName] = {location: arrObj.location, photo: arrObj.photo};
+          copy[arrObj.plantName] = {location: arrObj.location, photo: arrObj.photo, plantId: arrObj.plantId};
         });
         setProps(copy);
         setLoading(false);
@@ -72,8 +72,11 @@ export default function HouseGroupScreen({navigation, route}) {
     }
     return (
       Object.keys(props).map((plant) => {
-         return (
-          <TouchableOpacity style={tempStyling.PlantStyle} key={plant}>
+        return (
+          <TouchableOpacity style={tempStyling.PlantStyle} key={props[plant]['plantId']}
+            onPress={(() => {
+              navigation.navigate('Plant Profile', {plantId: +props[plant]['plantId'], houseId: groupId})})}
+          >
             <View style={{alignContent:'center', justifyContent:'center'}}>
               <Image style={tempStyling.ImageStyle}
               source={props[plant]['photo'] as any}/>

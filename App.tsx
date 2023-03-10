@@ -108,7 +108,7 @@ export default function App() {
             />
           </Tabs.Navigator> )
           : (
-          <LoginTabs.Navigator initialRouteName="Log In" screenOptions={{tabBarActiveTintColor: 'green', tabBarInactiveTintColor: ColorScheme.sage}}>
+          <LoginTabs.Navigator initialRouteName="Log In" screenOptions={{headerShown: false, tabBarActiveTintColor: 'green', tabBarInactiveTintColor: ColorScheme.sage}}>
             <Tabs.Screen
               name="Forgot Password"
               component={ForgotPasswordScreen}

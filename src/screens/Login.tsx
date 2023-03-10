@@ -36,9 +36,10 @@ const styles = StyleSheet.create({
     outlineStyle: 'none',
     borderBottomWidth: 1,
     height: '5%',
-    width: '75%',
+    width: '70%',
     margin: '3%',
     padding: 10,
+    textAlign: 'center',
   },
   noAccount: {
     display: 'flex',
