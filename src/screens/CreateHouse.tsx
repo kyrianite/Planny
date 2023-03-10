@@ -6,12 +6,10 @@ import {
   Button,
   TextInput,
   TouchableOpacity,
-  Platform,
   StyleSheet
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { launchImageLibrary } from 'react-native-image-picker';
 import { launchImageLibraryAsync } from 'expo-image-picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ReactLoading from 'react-loading';

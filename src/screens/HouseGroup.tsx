@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UserContext } from '../../App';
-import { View, Text, Image, Button, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { PORT } from '@env';
@@ -8,7 +8,6 @@ import axios from 'axios';
 import ReactLoading from 'react-loading';
 import ColorScheme from '../constants/ColorScheme';
 import { StyleSheet } from 'react-native';
-import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
 
 const SERVER = `http://localhost:${PORT}/db`;

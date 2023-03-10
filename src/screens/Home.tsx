@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { UserContext } from '../../App';
-import { View, Text, Image, Button, TouchableOpacity, ScrollView} from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import ReactLoading from 'react-loading';
 import axios from 'axios';
 
 import { StyleSheet } from 'react-native';
-import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
 import { PORT } from '@env';
 type HomeScreenNavigationProp = NativeStackNavigationProp<
@@ -75,7 +74,7 @@ export default function HomeScreen() {
       })
     } else {
       return (
-        <Text style={{fontWeight:'bold', fontSize: 30, margin: 30, width: 300, textAlign:'center'}}>
+        <Text style={tempStyling.EmptyPlants}>
           Create a new house to add your plants
         </Text>
       )
@@ -143,6 +142,10 @@ const tempStyling = StyleSheet.create({
   LandingPageImage: {
     width: 210, height: 250,
     resizeMode:'contain'
-  }
+  },
+  EmptyPlants: {
+    fontWeight:'bold', textAlign:'center',
+    margin: 30, width: 300,
+    fontSize: 30}
 
 })
