@@ -4,6 +4,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import axios, { AxiosResponse } from 'axios';
 const axiosOption = {headers: {'content-type': 'application/json'}};
+import { PORT } from '@env';
 
 import { RootStackParamList } from '../../RootStack';
 import { RouteProp, useFocusEffect } from '@react-navigation/core';
@@ -39,7 +40,7 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
         try {
           if (isActive) {
             console.log('plantId: ', plantId);
-            const res = await axios.get(`http://localhost:3000/db/plant?plantId=${plantId}`, axiosOption)
+            const res = await axios.get(`http://localhost:${PORT}/db/plant?plantId=${plantId}`, axiosOption)
             console.log("GET request form inside PlantProfile.tsx", res);
             setPlantName(res.data[0]?.plantName);
             setPlantLoc(res.data[0]?.location);
@@ -55,7 +56,7 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
             }
             const names : string[] = [];
             for (const id of res.data[0]?.careTakers) {
-              const user = await axios.get(`http://localhost:3000/db/user?userId=${id}`, axiosOption);
+              const user = await axios.get(`http://localhost:${PORT}/db/user?userId=${id}`, axiosOption);
               names.push(`${user?.data[0]?.firstName} ${user?.data[0]?.lastName}`);
             }
             setCaretakers(names.length ? names : ['No current caretakers']);
@@ -76,7 +77,7 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
     updatedCaretakerIds.splice(index, 1);
     const updatedCaretakers = caretakers.slice();
     updatedCaretakers.splice(index, 1);
-    await axios.put(`http://localhost:3000/db/plant/caretaker`, {plantId, careTakers: updatedCaretakerIds}, axiosOption);
+    await axios.put(`http://localhost:${PORT}/db/plant/caretaker`, {plantId, careTakers: updatedCaretakerIds}, axiosOption);
     setCaretakers(updatedCaretakers);
     setCaretakerIds(updatedCaretakerIds);
   };
@@ -95,7 +96,7 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
           <Ionicons name="water-outline" size={36} color="black"
             onPress = {() => {
               (async() => {
-                const res = await axios.put(`http://localhost:3000/db/plant/water?plantId=${plantId}`, axiosOption)
+                const res = await axios.put(`http://localhost:${PORT}/db/plant/water?plantId=${plantId}`, axiosOption)
                 setLastWatered(new Date().toString());
                 console.log("PUT request from inside PlantProfile.tsx", res);
               })();

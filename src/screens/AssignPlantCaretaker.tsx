@@ -5,6 +5,7 @@ import { RouteProp, useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import axios, { AxiosResponse } from 'axios';
 const axiosOption = {headers: {'content-type': 'application/json'}};
+import { PORT } from '@env';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ColorScheme from '../constants/ColorScheme';
@@ -21,12 +22,12 @@ export default function AssignPlantCaretakerScreen( {route, navigation}: Props) 
 
   useEffect(() => {
     (async() => {
-      const res = await axios.get(`http://localhost:3000/db/household?householdId=${route.params.houseId}`, axiosOption)
+      const res = await axios.get(`http://localhost:${PORT}/db/household?householdId=${route.params.houseId}`, axiosOption)
       console.log('GET request from inside Assign Caretaker', res);
       const names : string[] = [];
       for (const id of res.data[0]?.members) {
         if (!route.params.currentCaretakerIds.includes(id)) {
-          const user = await axios.get(`http://localhost:3000/db/user?userId=${id}`, axiosOption);
+          const user = await axios.get(`http://localhost:${PORT}/db/user?userId=${id}`, axiosOption);
           names.push(`${user?.data[0]?.firstName} ${user?.data[0]?.lastName}`);
         }
       }
@@ -51,7 +52,7 @@ export default function AssignPlantCaretakerScreen( {route, navigation}: Props) 
                       const index = caretakers.indexOf(item);
                       // if (!route.params.currentCaretakerIds.includes(caretakerIds[index])) {
                         const updatedCaretakers = [...route.params.currentCaretakerIds, caretakerIds[index]];
-                        await axios.put(`http://localhost:3000/db/plant/caretaker`, {plantId: route.params.plantId, careTakers: updatedCaretakers}, axiosOption);
+                        await axios.put(`http://localhost:${PORT}/db/plant/caretaker`, {plantId: route.params.plantId, careTakers: updatedCaretakers}, axiosOption);
                         navigation.goBack();
                       // }
                     }}
