@@ -26,7 +26,7 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
   const [queryType, setQueryType] = useState('');
   const [searchText, setSearchText] = useState('');
   const [showBackIcon, setShowBackIcon] = useState(false);
-  const [posts, setPosts] = useState<post[]>(dummyPosts);
+  const [posts, setPosts] = useState<post[]>([]);
 
   posts.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
 
@@ -39,12 +39,14 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
       }
       const newData = await Promise.all(res.data.map(async (item) => {
         const messageRes = await axios.get(`http://localhost:${PORT}/db/message/?messageId=${item.messageId}`);
+        const userRes = await axios.get(`http://localhost:${PORT}/db/user/?userId=${item.userId}`);
         console.log('message id in main: ', item.messageId)
         return {
           communityId: item.communityId,
           messageId: item.messageId,
-          firstName: item.firstName,
-          lastName: item.lastName,
+          firstName: userRes.data[0].firstName,
+          lastName: userRes.data[0].lastName,
+          profilePicture: userRes.data[0].profilePicture,
           time: item.time,
           topic: item.topic,
           photos: item.photos,
@@ -54,10 +56,11 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
           replies: messageRes.data[0].messages.length,
         };
       }));
-      setPosts([...dummyPosts, ...newData])
+      setPosts([...newData])
     })
     .catch((err) => console.error('ERR WITH GETTING FROM COMMUNITY:: ', err));
   }
+
 
   const onSearchIconPress = () => {
     setShowBackIcon(true);
@@ -71,7 +74,7 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
   };
 
   const showComment = (messageId: number) => {
-    navigation.navigate('Comment', { messageId });
+  navigation.navigate('Comment', {messageId});
   };
 
 
@@ -95,7 +98,8 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
           : <Icon name="search" size={20} color="#555" style={styles.searchIcon} onPress={onSearchIconPress} />}
         <TextInput
           style={styles.searchInput}
-          placeholder="Search a plant type"
+          placeholder="Search a plant, e.g. rose"
+          placeholderTextColor="grey"
           value={searchText}
           onChangeText={setSearchText}
           onSubmitEditing={onSearchIconPress}
@@ -113,6 +117,7 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
             messageId={post.messageId}
             firstName={post.firstName}
             lastName={post.lastName}
+            profilePicture={post.profilePicture}
             time={post.time}
             topic={post.topic}
             photos={post.photos}

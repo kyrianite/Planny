@@ -11,6 +11,7 @@ type PostProps = {
   messageId: Number,
   firstName: string;
   lastName: string;
+  profilePicture: string;
   time: string;
   topic: string;
   photos: string[];
@@ -38,16 +39,19 @@ export default function PostEntry(props: PostProps) {
     replies,
     showComment,
     update,
-    setUpdate
+    setUpdate,
+    profilePicture
   } = props;
 
+  // console.log('messageId: ',messageId);
+
   const onLikePress = async () => {
-    await axios.put(`http://localhost:${PORT}/db/communityLikes`, { "communityId": communityId})
-    .then((res) => {
-      // console.log('SUCCESS WITH PUTTING LIKES: ', res.data)
-      setUpdate(!update);
-    })
-    .catch((err) => console.error('ERR WITH PUTTING LIKES: ', err));
+    await axios.put(`http://localhost:${PORT}/db/communityLikes`, { "communityId": communityId })
+      .then((res) => {
+        // console.log('SUCCESS WITH PUTTING LIKES: ', res.data)
+        setUpdate(!update);
+      })
+      .catch((err) => console.error('ERR WITH PUTTING LIKES: ', err));
     console.log('like + 1')
   };
   const onReplyPress = () => {
@@ -60,7 +64,10 @@ export default function PostEntry(props: PostProps) {
   return (
     <View style={styles.postContainer}>
       <View style={styles.postHeader}>
-        <Text style={styles.postUsername}>{firstName} {lastName}</Text>
+        <Image source={{ uri: profilePicture }} style={styles.profilePic} />
+        <View style={styles.nameContainer}>
+          <Text style={styles.postUsername}>{firstName} {lastName}</Text>
+        </View>
       </View>
       {photos.length ? <View style={styles.postPhotoContainer}>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -102,9 +109,18 @@ const styles = StyleSheet.create({
   },
   postHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     marginBottom: 5,
+  },
+  nameContainer: {
+    marginLeft: 8,
+    justifyContent: 'center',
+  },
+  profilePic: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
   },
   postUsername: {
     fontWeight: 'bold',
