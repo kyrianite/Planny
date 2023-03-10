@@ -15,7 +15,9 @@ import {
 } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import Styles from '../constants/Styles';
-import { RootStackParamList } from '../../RootStack';
+// import { RootStackParamList } from '../../RootStack';
+import { AuthStackParamList } from '../../AuthStack';
+
 import { auth } from '../constants/firebase/firebase';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import axios from 'axios';
@@ -62,10 +64,10 @@ const styles = StyleSheet.create({
 });
 
 type ForgotPasswordScreenNavigationProp =
-  NativeStackNavigationProp<RootStackParamList>;
+  NativeStackNavigationProp<AuthStackParamList>;
 
 const ForgotPasswordScreen = () => {
-  const navigation = useNavigation<ForgotPasswordScreenNavigationProp>();
+  const navigationAuth = useNavigation<ForgotPasswordScreenNavigationProp>();
 
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -75,14 +77,15 @@ const ForgotPasswordScreen = () => {
   }, [email]);
 
   const handleSubmit = () => {
-    sendPasswordResetEmail(auth, email)
-      .then((result) => {
-        navigation.navigate('Login');
-      })
-      .catch((error) => {
-        const fbErrorCode = error.code;
-        setErrorMessage(fbErrorCode.toString().slice(5));
-      });
+    navigationAuth.navigate('Login');
+    // sendPasswordResetEmail(auth, email)
+    //   .then((result) => {
+    //     navigationAuth.navigate('Login');
+    //   })
+    //   .catch((error) => {
+    //     const fbErrorCode = error.code;
+    //     setErrorMessage(fbErrorCode.toString().slice(5));
+    //   });
   };
 
   return (
