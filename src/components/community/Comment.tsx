@@ -11,6 +11,7 @@ import { PORT } from '@env';
 import { formatDistanceToNow } from 'date-fns';
 import { useContext } from 'react';
 import { UserContext } from '../../../App';
+import { colors } from 'react-native-elements';
 type MainScreenNavigationProp = NativeStackNavigationProp<CommunityStackParamList, 'Comment'>;
 
 
@@ -103,8 +104,8 @@ export default function CommentScreen({ update, setUpdate, route, navigation }: 
     getComments();
   }, [update]);
   return (
-    <View style={{ marginTop: 20 }}>
-      <Text style={styles.title}>New Comment</Text>
+    <View style={styles.container}>
+    <Text style={styles.title}>Comment</Text>
 
       {comments.map((comment, index) => (
         <View key={index} style={styles.commentContainer}>
@@ -137,17 +138,27 @@ export default function CommentScreen({ update, setUpdate, route, navigation }: 
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   title: {
-    marginLeft: 10,
+    marginTop: 30,
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 30,
   },
   commentContainer: {
-    backgroundColor: Colors.sage,
+    width: '80%',
+    backgroundColor: 'white',
     padding: 10,
     margin: 10,
-    borderRadius: 20,
+    // borderRadius: 20,
+    borderBottomColor:Colors.sage,
+    borderBottomWidth:0.2,
+    borderStyle: 'dashed'
   },
   commentHeader: {
     flexDirection: 'row',
@@ -165,29 +176,32 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   addCommentContainer: {
+    width:'80%',
     height: 60,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     margin: 10,
-    marginTop: 30
+    marginTop: 30,
   },
   addCommentInput: {
     height: 60,
-    padding: 5,
+    padding: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: Colors.sage,
     borderRadius: 20,
     fontSize: 15,
     width: '100%',
   },
   button: {
-    backgroundColor: Colors.sage,
+    // backgroundColor: Colors.sage,
+    backgroundColor: '#1D9D51',
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 20,
     marginLeft: 10,
     width: 100,
+    marginTop: 30,
     marginBottom: 30
   },
   buttonText: {

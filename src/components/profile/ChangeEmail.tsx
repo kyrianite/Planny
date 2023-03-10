@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Button } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
@@ -9,6 +10,7 @@ import { UserContext } from '../../../App';
 import {auth} from '../../constants/firebase/firebase'
 import { EmailAuthProvider, reauthenticateWithCredential, updateEmail } from 'firebase/auth';
 import axios from 'axios'
+import Styles from '../../constants/Styles';
 
 type ChangeEmailScreenNavigationProp = NativeStackNavigationProp<ProfileStackParamList, 'ChangeEmail'>;
 
@@ -91,42 +93,41 @@ export default function ChangeEmail() {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: '#fff' }}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Change Email</Text>
-        <View style={styles.form}>
-          <Text style={styles.label}>Current Email</Text>
+    <>
+      <View style={Styles.container}>
+        <View style={{width:'75%', alignItems: 'center'}}>
+          <Text style={styles1.labelText}>Current Email</Text>
           <TextInput
-            style={styles.input}
+            style={styles1.singleLineInput}
             keyboardType="email-address"
             onChangeText={onCurrentEmailChange}
           />
         </View>
-        <View style={styles.form}>
-          <Text style={styles.label}>Password</Text>
+        <View style={{width:'75%', alignItems: 'center'}}>
+          <Text style={styles1.labelText}>Password</Text>
           <TextInput
             secureTextEntry={true}
-            style={styles.input}
+            style={styles1.singleLineInput}
             onChangeText={onPasswordChange}
           />
         </View>
-        <View style={styles.form}>
-          <Text style={styles.label}>New Email</Text>
+        <View style={{width:'75%', alignItems: 'center'}}>
+          <Text style={styles1.labelText}>New Email</Text>
           <TextInput
-            style={styles.input}
+            style={styles1.singleLineInput}
             keyboardType="email-address"
             onChangeText={onNewEmailChange}
           />
-        </View>
-        <TouchableOpacity style={styles.button} onPress={onSubmit}>
-        <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity>
-      <Button
-          title="< Back"
-          onPress={() => {
-            navigation.navigate('Profile');
-          }}
-        />
+      </View>
+      <View style={{width:'75%', alignItems: 'center'}}>
+        <Button
+            title="Submit"
+            onPress={onSubmit}
+            type="outline"
+            buttonStyle={{paddingVertical: 7, borderColor: '#1D9D51', borderWidth: 2, borderRadius: 15}}
+            titleStyle={{color: '#1D9D51', fontWeight: 'bold'}}
+          />
+      </View>
       </View>
       {warning && (
         <Text style={{color:'red'}}>Email or Password is incorrect/Email is already in used</Text>
@@ -134,7 +135,7 @@ export default function ChangeEmail() {
       {loading && (
         <ActivityIndicator/>
       )}
-    </ScrollView>
+    </>
   );
 }
 
@@ -182,5 +183,36 @@ const styles = StyleSheet.create({
     color: 'gray',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+});
+
+const styles1 = StyleSheet.create({
+  container: {
+    display: 'flex',
+  },
+  logo: {
+    width: 210,
+    height: 250,
+    resizeMode: 'contain',
+    alignContent: 'center',
+  },
+  singleLineInput: {
+    outlineStyle: 'none',
+    borderBottomWidth: 1,
+    height: '5%',
+    width: '70%',
+    margin: '3%',
+    padding: 10,
+    textAlign: 'center',
+  },
+  noAccount: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: '4vw',
+  },
+  labelText: {
+    fontWeight: 'bold',
+    marginTop: '5%'
   },
 });

@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Button } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +9,7 @@ import Colors from '../../constants/ColorScheme';
 import { UserContext } from '../../../App';
 import { EmailAuthProvider, reauthenticateWithCredential, updateEmail, updatePassword } from 'firebase/auth';
 import {auth} from '../../constants/firebase/firebase'
+import Styles from '../../constants/Styles';
 
 type ChangePassScreenNavigationProp = NativeStackNavigationProp<ProfileStackParamList, 'ChangePass'>;
 
@@ -85,50 +87,49 @@ export default function ChangeEmail() {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: '#fff' }}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Change Password</Text>
-        <View style={styles.form}>
-          <Text style={styles.label}>Current Email</Text>
+    <>
+      <View style={Styles.container}>
+        <View style={{width:'75%', alignItems: 'center'}}>
+          <Text style={styles1.labelText}>Current Email</Text>
           <TextInput
-            style={styles.input}
+            style={styles1.singleLineInput}
             keyboardType="email-address"
             onChangeText={onEmailChange}
           />
         </View>
-        <View style={styles.form}>
-          <Text style={styles.label}>Password</Text>
+        <View style={{width:'75%', alignItems: 'center'}}>
+          <Text style={styles1.labelText}>Password</Text>
           <TextInput
             secureTextEntry={true}
-            style={styles.input}
+            style={styles1.singleLineInput}
             onChangeText={onPasswordChange}
           />
         </View>
-        <View style={styles.form}>
-          <Text style={styles.label}>New Password</Text>
+        <View style={{width:'75%', alignItems: 'center'}}>
+          <Text style={styles1.labelText}>New Password</Text>
           <TextInput
             secureTextEntry={true}
-            style={styles.input}
+            style={styles1.singleLineInput}
             onChangeText={onNewPasswordChange}
           />
         </View>
-        <View style={styles.form}>
-          <Text style={styles.label}>Confirm Password</Text>
+        <View style={{width:'75%', alignItems: 'center'}}>
+          <Text style={styles1.labelText}>Confirm Password</Text>
           <TextInput
             secureTextEntry={true}
-            style={styles.input}
+            style={styles1.singleLineInput}
             onChangeText={onConfirmPasswordChange}
           />
         </View>
-        <TouchableOpacity style={styles.button} onPress={onSubmit}>
-        <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity>
-      <Button
-          title="< Back"
-          onPress={() => {
-            navigation.navigate('Profile');
-          }}
-        />
+        <View>
+          <Button
+            title="Submit"
+            onPress={onSubmit}
+            type="outline"
+            buttonStyle={{paddingVertical: 7, borderColor: '#1D9D51', borderWidth: 2, borderRadius: 15}}
+            titleStyle={{color: '#1D9D51', fontWeight: 'bold'}}
+          />
+        </View>
       </View>
       {warning && (
         <Text style={{color:'red'}}>new password does not match/need at least 6 characters</Text>
@@ -136,7 +137,7 @@ export default function ChangeEmail() {
       {loading && (
         <ActivityIndicator/>
       )}
-    </ScrollView>
+    </>
   );
 }
 
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 10,
+    // padding: 10,
   },
   title: {
     fontSize: 20,
@@ -185,4 +186,44 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  profileContainer: {
+    // flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  }
 });
+
+const styles1 = StyleSheet.create({
+  container: {
+    display: 'flex',
+  },
+  logo: {
+    width: 210,
+    height: 250,
+    resizeMode: 'contain',
+    alignContent: 'center',
+  },
+  singleLineInput: {
+    outlineStyle: 'none',
+    borderBottomWidth: 1,
+    height: '5%',
+    width: '70%',
+    margin: '3%',
+    padding: 10,
+    textAlign: 'center',
+  },
+  noAccount: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: '4vw',
+  },
+  labelText: {
+    fontWeight: 'bold',
+    // marginTop: '5%'
+  },
+
+});
+
