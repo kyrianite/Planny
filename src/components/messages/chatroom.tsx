@@ -193,28 +193,31 @@ export default function Chatroom({ route }) {
 const styles = StyleSheet.create({
   outsideContainer: {
     flex: 1,
-    backgroundColor: '#C6D5BE',
+    backgroundColor: 'white',
   },
   container: {
     flex: 0.8,
   },
   messagesContainer: {
     flex: 1,
-    backgroundColor: '#EFDBCA',
+    backgroundColor: 'white',
     padding: 10,
-    maxHeight: '80%',
+    maxHeight: '90%',
   },
   inputContainer: {
     flex: 0.2,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#EFDBCA',
+    backgroundColor: '#C6D5BE',
     padding: 10,
+    maxHeight: 100,
+    marginTop: 100,
+    marginBottom: -40,
   },
   input: {
     flex: 1,
-    backgroundColor: '#EFDBCA',
+    backgroundColor: 'white',
     fontSize: 18,
     padding: 10,
     marginRight: 10,
