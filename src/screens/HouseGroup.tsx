@@ -11,7 +11,6 @@ import { StyleSheet } from 'react-native';
 import { RootStackParamList } from '../../RootStack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Styles from '../constants/Styles';
-import ColorScheme from '../constants/ColorScheme';
 
 const SERVER = `http://localhost:${PORT}/db`;
 type HouseGroupNavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -45,9 +44,10 @@ export default function HouseGroupScreen({navigation, route}) {
         const copy = {...props};
         data.forEach((arrObj) => {
           copy[arrObj.plantName] = {
+            plantId: arrObj.plantId,
             location: arrObj.location,
             photo: arrObj.photo,
-            lastWater: arrObj.lastWater === undefined ? 'Unknown'
+            lastWater: arrObj.lastWater === null ? 'Unknown'
             : new Date(arrObj.lastWater).toDateString()};
         });
         setProps(copy);
@@ -95,7 +95,7 @@ export default function HouseGroupScreen({navigation, route}) {
                 {cap(props[plant]['location'])}
               </Text>
               <Text style={{textAlign:'left'}}>
-                💧{cap(props[plant]['lastWater'])}
+                💧 {cap(props[plant]['lastWater'])}
               </Text>
             </View>
           </TouchableOpacity>

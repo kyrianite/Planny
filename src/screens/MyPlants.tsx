@@ -97,7 +97,7 @@ export default function MyPlantsScreen() {
                   {cap(plant.location)}
                 </Text>
                 <Text>
-                  {cap(plant.lastWater)}
+                💧 {cap(plant.lastWater)}
                 </Text>
               </View>
             </View>
@@ -108,16 +108,27 @@ export default function MyPlantsScreen() {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={tempStyling.ScrollStyle}>
-      {/* <View> */}
-        {makeButtons()}
-      {/* </View> */}
-    </ScrollView>
+    <>
+      <View style={tempStyling.Header}>
+        <Text style={{fontWeight:'bold', fontSize: 25, marginLeft: 10}}>My Plants</Text>
+      </View>
+      <ScrollView showsVerticalScrollIndicator={false} style={tempStyling.ScrollStyle}>
+        {/* <View> */}
+          {makeButtons()}
+        {/* </View> */}
+      </ScrollView>
+    </>
   )
 }
 
 //temporary styling
 const tempStyling = StyleSheet.create({
+  Header: {
+    top: 0,
+    backgroundColor: ColorScheme.lightBlue,
+    paddingVertical: '3%',
+    paddingHorizontal: '5%'
+  },
   BottomBorder: {
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: ColorScheme.lightBlue,
@@ -128,7 +139,7 @@ const tempStyling = StyleSheet.create({
     alignItems:'center',
     alignContent: 'center',
     flexDirection:'row',
-    paddingVertical: '3%',
+    paddingVertical: '5%',
     marginLeft: '20%'
   },
   ImageStyle: {
