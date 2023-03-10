@@ -9,6 +9,9 @@ import { useContext } from 'react';
 import { UserContext } from '../../../App';
 import axios from 'axios'
 import { PORT } from '@env';
+import Styles from '../../constants/Styles';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 type AddPostScreenNavigationProp = NativeStackNavigationProp<CommunityStackParamList, 'AddPost'>;
 
 type AddPostScreenProps = {
@@ -84,52 +87,51 @@ export default function AddPostScreen({ update, setUpdate }: AddPostScreenProps)
     await setNewPost({ ...newPost, time: new Date() });
     console.log('time', newPost.time);
     await axios.post(`http://localhost:${PORT}/db/community`, newPost)
-    .then((res) => {
-      console.log('SUCCESS WITH POSTING TO COMMUNITY: ', res.data)
-      setShowModal(true);
-      setUpdate(!update);
-    })
-    .catch((err) => console.error('ERR WITH POSTINTG TO COMMUNITY: ', err));
+      .then((res) => {
+        console.log('SUCCESS WITH POSTING TO COMMUNITY: ', res.data)
+        setShowModal(true);
+        setUpdate(!update);
+      })
+      .catch((err) => console.error('ERR WITH POSTINTG TO COMMUNITY: ', err));
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: '#fff' }}>
+    <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: '#fff', flex: 1 }}>
       <View style={styles.container}>
         <Text style={styles.title}>New Post</Text>
-        <View style={styles.form}>
-          <Text style={styles.label}>Plant Type (optional)</Text>
+        <Text style={styles.label}>Plant Type</Text>
+        <Text>(optional)</Text>
+        <TextInput
+          style={styles.input}
+          value={newPost.plantType}
+          onChangeText={onPlantTypeChange}
+        />
+        <Text style={styles.label}>Plant Name</Text>
+        <Text>(optional)</Text>
+        <TextInput
+          style={styles.input}
+          value={newPost.plantName}
+          onChangeText={onPlantNameChange}
+        />
+        <Text style={styles.label}>Body</Text>
           <TextInput
-            style={styles.input}
-            value={newPost.plantType}
-            onChangeText={onPlantTypeChange}
-          />
-        </View>
-        <View style={styles.form}>
-          <Text style={styles.label}>Plant Name (optional)</Text>
-          <TextInput
-            style={styles.input}
-            value={newPost.plantName}
-            onChangeText={onPlantNameChange}
-          />
-        </View>
-        <View style={styles.form}>
-          <Text style={styles.label}>Body</Text>
-          <TextInput
-            style={[styles.input, { height: 100 }]}
+            style={styles.addPostInput}
             multiline={true}
             numberOfLines={4}
             value={newPost.topic}
             onChangeText={onBodyChange}
           />
-        </View>
         {showModal && (
           <View style={styles.modal}>
             <Text style={styles.modalText}>Post submitted successfully!</Text>
-            <Button title='OK' onPress={() => { setShowModal(false); navigation.navigate('Community');}} />
+            <TouchableOpacity style={[styles.button, { margin: 0 }]} onPress={() => { setShowModal(false); navigation.navigate('Community'); }}>
+              <Text style={styles.buttonText}>OK</Text>
+            </TouchableOpacity>
           </View>
         )}
-        <View style={styles.form}>
-          <Button title="Select Photo" onPress={onPhotoSelect} />
+        <View>
+          <Icon name="photo-camera" size={30} onPress={onPhotoSelect} />
+
           {newPost.photos.map((photo, index) => (
             <Image source={{ uri: photo }} style={styles.postPhoto} key={index} />
           ))}
@@ -146,41 +148,66 @@ export default function AddPostScreen({ update, setUpdate }: AddPostScreenProps)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
     justifyContent: 'center',
-    padding: 10,
   },
   title: {
+    marginTop: 30,
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 30,
   },
-  form: {
-    marginBottom: 20,
-  },
+
   label: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
+    marginTop: 20
   },
   input: {
-    // borderWidth: 1,
-    borderColor: 'grey',
+    width:'80%',
+    outlineStyle: 'none',
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+    height: '5%',
+    flex: 1,
     padding: 10,
+    textAlign: 'center',
+  },
+  // addPostContainer: {
+  //   height: 60,
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   marginTop: 10,
+  //   marginBottom: 30,
+  // },
+  addPostInput: {
+    width:'80%',
+    height: 100,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
     borderRadius: 20,
-    backgroundColor: Colors.sage
+    fontSize: 15,
+    marginTop: 10,
+    marginBottom: 30,
   },
   postPhoto: {
-    height: 100,
+    height: 30,
     resizeMode: 'contain',
-    marginVertical: 10,
+    marginVertical: 2,
   },
   button: {
-    backgroundColor: Colors.sage,
+    // backgroundColor: Colors.sage,
+    backgroundColor: '#1D9D51',
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 20,
     marginLeft: 10,
     width: 100,
+    marginTop: 30,
     marginBottom: 30
   },
   buttonText: {
@@ -194,7 +221,7 @@ const styles = StyleSheet.create({
     top: '50%',
     left: '50%',
     transform: [{ translateX: -Dimensions.get('window').width / 4 }],
-    backgroundColor: Colors.porcelain,
+    backgroundColor: 'lightgrey',
     borderRadius: 20,
     height: 100,
     justifyContent: 'center',

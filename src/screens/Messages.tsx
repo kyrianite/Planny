@@ -6,7 +6,7 @@ import MessageGroupList from '../components/messages/MessageGroupList'
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
 
-type MessagesScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+type MessagesScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Messages'>;
 
 export default function MessagesScreen() {
   const navigation = useNavigation<MessagesScreenNavigationProp>();
@@ -51,21 +51,6 @@ export default function MessagesScreen() {
 
   return (
 <View style={styles.container}>
-{/* <Text style={styles.messageText}>Welcome to your Message Feed. Your house conversations are stored here</Text>
-  <View style={styles.container}>
-    {messages.map((message, index) => (
-      <Text key={index} style={styles.text}>{message}</Text>
-    ))}
-    <TextInput
-      value={text}
-      style={styles.input}
-      placeholder="Enter Text Here"
-      onChangeText={text => setText(text)}
-    />
-  </View>
-  <View>
-    <Button style={styles.submitButton} title="Submit" onPress={onSubmit} />
-  </View> */}
   <MessageGroupList/>
 </View>
   );

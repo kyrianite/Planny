@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UserContext } from '../../App';
-import { View, Text, Image, Button, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { PORT } from '@env';
@@ -128,7 +128,6 @@ export default function HouseGroupScreen({navigation, route}) {
   )
 }
 
-//temporary styling, will clean up after prototyping
 const tempStyling = StyleSheet.create({
   HeaderStyle : {
     top: 0,
