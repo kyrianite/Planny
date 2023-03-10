@@ -132,7 +132,7 @@ export default function MainScreen() {
             <Button
             title="Submit"
             onPress={() => {
-              handleChangeName
+              handleChangeName()
             }}
             type="outline"
             buttonStyle={{paddingVertical: 7, borderColor: '#1D9D51', borderWidth: 2, borderRadius: 15}}

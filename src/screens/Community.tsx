@@ -20,7 +20,7 @@ export default function CommunityScreen() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: true}}>
-      <Stack.Screen name="Community">
+      <Stack.Screen name="Community"     options={{ headerShown: false }}>
         {(props) => <MainScreen {...props} update={update} setUpdate={setUpdate} />}
       </Stack.Screen>
       <Stack.Screen name="AddPost" options={{ headerTitle: '' }}>
