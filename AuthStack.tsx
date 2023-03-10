@@ -31,17 +31,6 @@ export default function AuthStack() {
   const navigationRoot =
   useNavigation<RootScreenNavigationProp>();
 
-// useEffect(() => {
-//   auth.onAuthStateChanged((user) => {
-//     if (user) {
-//       navigationRoot.navigate('Home')
-//       console.log('user is signed in')
-//     } else {
-//       navigation.navigate('Login')
-//       console.log('User is signed out');
-//     }
-//   })
-// }, [])
   return (
     <Stack.Navigator>
       <Stack.Screen name="Login" component={LoginScreen} />

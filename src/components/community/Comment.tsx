@@ -37,34 +37,35 @@ export default function CommentScreen({ update, setUpdate, route, navigation }: 
   const { messageId } = route.params ? route.params : { messageId: 0 } as CommentScreenRouteParams;
   const [newComment, setNewComment] = useState<String>('');
 
-
-  const [comments, setComments] = useState<comment[]>([
-    {
-      firstName: 'William',
-      lastName: 'Wong',
-      time: '2023-03-03',
-      message: 'so cute!!',
-    },
-    {
-      firstName: 'Quanjing',
-      lastName: 'Chen',
-      time: '2023-03-03',
-      message: 'nice!',
-    },
-    {
-      firstName: 'Sandy',
-      lastName: 'Chu',
-      time: '2023-03-04',
-      message: 'Where did you get it?',
-    }
-  ]);
+  const [comments, setComments] = useState<comment[]>([]);
+  // const [comments, setComments] = useState<comment[]>([
+  //   {
+  //     firstName: 'William',
+  //     lastName: 'Wong',
+  //     time: '2023-03-03',
+  //     message: 'so cute!!',
+  //   },
+  //   {
+  //     firstName: 'Quanjing',
+  //     lastName: 'Chen',
+  //     time: '2023-03-03',
+  //     message: 'nice!',
+  //   },
+  //   {
+  //     firstName: 'Sandy',
+  //     lastName: 'Chu',
+  //     time: '2023-03-04',
+  //     message: 'Where did you get it?',
+  //   }
+  // ]);
+  // console.log('messageId: ', messageId);
 
   const onCommentSubmit = async () => {
     const currentDate = new Date();
     const newCommentObj = {
       messageId: messageId,
       message: {
-        userId: user?.id ?? 'try1',
+        userId: user?.userId ?? 'try1',
         time: currentDate.toLocaleString(),
         message: newComment,
       }
