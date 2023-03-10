@@ -20,6 +20,7 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<
 type HomeGroupsProp = {
   householdName: string;
   householdId: string;
+  householdPhoto: string;
 }
 const SERVER = `http://localhost:${PORT}/db`;
 
@@ -41,7 +42,8 @@ export default function HomeScreen() {
           if (contents.data[0]) {
             let groupObj = {
               householdName: contents.data[0].householdName,
-              householdId: contents.data[0].householdId
+              householdId: contents.data[0].householdId,
+              householdPhoto: contents.data[0].photo
             }
             copy.push(groupObj);
           }
@@ -53,8 +55,8 @@ export default function HomeScreen() {
     }, [])
   )
 
-  function press(groupName, groupId) {
-    navigation.navigate('HouseGroup', {screen: 'HouseGroup', p: {groupName, groupId}});
+  function press(groupName, groupId, groupPhoto) {
+    navigation.navigate('HouseGroup', {screen: 'HouseGroup', p: {groupName, groupId, groupPhoto}});
   }
 
   function makeHouseGroups() {
@@ -67,7 +69,7 @@ export default function HomeScreen() {
       return groups.map((groupObj) => {
         return (
           <TouchableOpacity style={tempStyling.groups} key={groupObj.householdId}
-          onPress={() => press(groupObj.householdName, groupObj.householdId)}>
+          onPress={() => press(groupObj.householdName, groupObj.householdId, groupObj.householdPhoto)}>
             <Text> {groupObj.householdName} </Text>
           </TouchableOpacity>
         )

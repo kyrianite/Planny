@@ -8,8 +8,10 @@ import axios from 'axios';
 import ReactLoading from 'react-loading';
 import ColorScheme from '../constants/ColorScheme';
 import { StyleSheet } from 'react-native';
-import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Styles from '../constants/Styles';
+import ColorScheme from '../constants/ColorScheme';
 
 const SERVER = `http://localhost:${PORT}/db`;
 type HouseGroupNavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -88,7 +90,6 @@ export default function HouseGroupScreen({navigation, route}) {
             <View style={{alignContent:'center', justifyContent:'center', right: 45, width: 150}}>
               <Text style={{textAlign:'left', fontWeight: 'bold'}}>
                 {cap(plant)}
-                {'\n'}
               </Text>
               <Text style={{textAlign:'left'}}>
                 {cap(props[plant]['location'])}
@@ -104,38 +105,49 @@ export default function HouseGroupScreen({navigation, route}) {
   }
   return (
     <>
-    <ScrollView style={tempStyling.ViewStyle}>
-      <View style={{width: '100%', flexDirection:'row', justifyContent:'space-between', backgroundColor: 'lightgreen'}}>
-        <Text style={{fontWeight:'bold', fontSize: 25, marginLeft: 5, marginBottom: 5}}>
-          {groupName}
-        </Text>
-        <Text style={{ textAlign:'right', marginRight: 5, fontWeight: 'bold'}}>
-          HouseID:
-          {'\n'}
-          <Text style={{fontWeight:'normal'}}>
-            {groupId}
+      <View style={tempStyling.HeaderStyle}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Image style={tempStyling.GroupPhoto} source={route.params.p.groupPhoto} />
+          <Text style={{fontWeight:'bold', fontSize: 25, marginLeft: 10}}>
+            {groupName}
           </Text>
+        </View>
+        <Text style={{ textAlign:'right', marginRight: 5, fontWeight: 'bold', fontSize: 20}}>
+          #{groupId}
         </Text>
       </View>
-      {plantTouch()}
-    </ScrollView>
-    <View style={{backgroundColor: 'white'}}>
+      <ScrollView showsVerticalScrollIndicator={false} style={tempStyling.ViewStyle}>
+        {plantTouch()}
+      </ScrollView>
+      <View style={tempStyling.transparentWrapper}>
         <TouchableOpacity style={tempStyling.AddPlantStyle} onPress={() => navigation.navigate('Add New Plant', {houseId: groupId})}>
-          <Text style={{ textAlign: 'center', justifyContent: 'center' }}>
-            Add a new plant
-          </Text>
+          <MaterialCommunityIcons name="leaf-circle-outline" size={48} color='darkgreen' />
         </TouchableOpacity>
       </View>
-      </>
+    </>
   )
 }
 
 //temporary styling, will clean up after prototyping
 const tempStyling = StyleSheet.create({
-  HouseGroupStyle : {
-    backgroundColor: '#C6D5BE', borderWidth: 1,
-    textAlign: 'left', fontSize: 20,
-    fontWeight: 'bold', padding: 5
+  HeaderStyle : {
+    top: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: ColorScheme.lightBlue,
+    width: '100%',
+    paddingVertical: '3%',
+    paddingHorizontal: '5%',
+  },
+  GroupPhoto: {
+    alignSelf: 'flex-start',
+    width: 60,
+    height: 60,
+    borderWidth: 1,
+    borderColor: ColorScheme.greenBlack,
+    borderRadius: 50,
+    overflow: 'hidden'
   },
   ViewStyle: {
     flexDirection: 'column', flex: 1,
@@ -145,20 +157,29 @@ const tempStyling = StyleSheet.create({
     alignSelf: 'flex-end', position: 'absolute',
     bottom: 35
   },
+  transparentWrapper: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    alignSelf: 'flex-end',
+    bottom: 0,
+  },
   AddPlantStyle: {
-    height: 100, width: 150,
-    borderRadius:100, margin: 15,
-    backgroundColor: '#EFDBCA', justifyContent: 'center'
+    backgroundColor: ColorScheme.porcelain,
+    justifyContent: 'center',
+    borderRadius: 50,
+    padding: 5,
+    margin: 10
   },
   PlantStyle: {
-    height: 100, width: 350,
-    borderRadius: 100, margin: 20,
-    backgroundColor: '#C6D5BE', borderWidth: 1,
-    justifyContent: 'center', alignContent:'center',
-    flexDirection: 'row'
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: ColorScheme.lightBlue,
+    justifyContent: 'center',
+    alignContent:'center',
+    flexDirection: 'row',
+    paddingVertical: '3%'
   },
   ImageStyle: {
     height: 80, width: 80,
     right: 50, resizeMode: 'contain'
-  }
-})
+  },
+});

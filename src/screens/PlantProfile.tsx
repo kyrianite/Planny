@@ -92,8 +92,8 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
         </TouchableOpacity>
       </View>
       <View style={{
-        borderBottomColor: ColorScheme.porcelain,
-        borderBottomWidth: StyleSheet.hairlineWidth
+        // borderBottomColor: ColorScheme.porcelain,
+        // borderBottomWidth: StyleSheet.hairlineWidth
       }} />
       <View style={styles.mainContainer}>
         <View style={styles.section}>
@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
     marginHorizontal: '10%',
     marginVertical: '5%',
+    backgroundColor: ColorScheme.lightBlue,
   },
   plantInfo: {
     flexDirection: 'row',
@@ -170,8 +171,11 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   plantWaterIcon: {
-    alignItems: 'baseline',
-    alignSelf: 'center'
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: ColorScheme.periwinkle,
+    borderRadius: 50,
+    padding: 5
   },
   plantThumbnail: {
     alignSelf: 'flex-start',
