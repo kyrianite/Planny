@@ -128,7 +128,6 @@ export default function HouseGroupScreen({navigation, route}) {
   )
 }
 
-//temporary styling, will clean up after prototyping
 const tempStyling = StyleSheet.create({
   HeaderStyle : {
     top: 0,

@@ -136,7 +136,6 @@ export default function HomeScreen() {
   );
 }
 
-//temporary styling
 const tempStyling = StyleSheet.create({
   groups: {
     // backgroundColor: '#B4CCE1',
