@@ -1,13 +1,6 @@
 import * as React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Button,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet
-} from 'react-native';
+import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { Button } from 'react-native-elements';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { launchImageLibraryAsync } from 'expo-image-picker';
@@ -15,6 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ReactLoading from 'react-loading';
 
 import Styles from '../constants/Styles';
+import ColorScheme from '../constants/ColorScheme';
 import { RootStackParamList } from '../../RootStack';
 import axios from 'axios';
 import { PORT } from '@env';
@@ -107,16 +101,19 @@ export default function CreateHouseScreen() {
           onPress={userPickImage}/>
         </TouchableOpacity>
       </View>
-      <Text style={{fontWeight: 'bold', fontSize: 30}}>
+      <Text style={{fontWeight: 'bold', fontSize: 30, paddingTop: 15}}>
         Create a New House
       </Text>
       <View style={{height: 200, width: 200, margin: 20}}>
         <TextInput
           style={tempStyling.TInput}
-          placeholder="My House" placeholderTextColor={'grey'}
+          placeholder="Name..." placeholderTextColor={'grey'}
           onChange={textInputHandler} maxLength={15}
         />
-        <Button title="Create" color='#2F7A3E' onPress={buttonHandler}/>
+        <Button onPress={buttonHandler} title="Create" type="outline"
+            buttonStyle={{paddingVertical: 7, borderColor: '#1D9D51', borderWidth: 2, borderRadius: 15}}
+            titleStyle={{color: '#1D9D51', fontWeight: 'bold'}}
+          />
         {loadingScreen()}
       </View>
     </View>
@@ -126,13 +123,15 @@ export default function CreateHouseScreen() {
 const tempStyling = StyleSheet.create({
   TInput: {
     height: 40, marginBottom: 30,
-    borderWidth: 1, borderRadius: 5,
+    // borderWidth: 1, borderRadius: 5,
+    borderBottomWidth: 1,
+    textAlign: 'center',
     overflow: 'hidden', padding: 10
   },
   TOpacity: {
     height: 50, width: 50,
     borderRadius:25, overflow:'hidden',
-    backgroundColor: '#B4CCE1', zIndex: 1,
+    backgroundColor: ColorScheme.porcelain, zIndex: 1,
     position: 'absolute',
     alignItems:'center', justifyContent:'center',
     bottom: 0, right: 30}
