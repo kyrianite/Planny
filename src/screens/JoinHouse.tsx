@@ -7,10 +7,8 @@ import ReactLoading from 'react-loading';
 import { PORT } from '@env';
 import { UserContext } from '../../App';
 
-
 import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
-import { assert } from 'console';
 
 type JoinHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
