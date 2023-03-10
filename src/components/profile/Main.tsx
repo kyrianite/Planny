@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, ScrollView, Button, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import {CheckBox} from '@rneui/themed'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -19,18 +19,17 @@ type MainScreenNavigationProp = NativeStackNavigationProp<ProfileStackParamList,
 
 
 export default function MainScreen() {
-  let dummyData = {
-    "userId": "try2",
-    "firstName": "try",
-    "lastName": "LN",
-    "email": "nate@gmail.com",
-    "household": [1, 1, 1],
-    "myPlants": [],
-    "assignedPlants": [],
-    "messages": [1, 2, 3, 4, 5],
-  }
   const {user, setUser} = useContext(UserContext)
-  const [profilePic, setProfilePic] = useState('https://res.cloudinary.com/dsiywf70i/image/upload/v1678222821/download_uaih1t.jpg')
+  // const [profilePic, setProfilePic] = useState('https://res.cloudinary.com/dsiywf70i/image/upload/v1678222821/download_uaih1t.jpg')
+  const [checkedNotif, setCheckedNotif] = useState(false);
+  const [changeNameDis, setChangeNameDis] = useState(false);
+  const [fn, setfn] = useState('');
+  const [ln, setln] = useState('');
+  const [userData, setUserData] = useState({})
+
+  useEffect(() => {
+    setUserData(user)
+  }, [user])
 
   const navigation = useNavigation<MainScreenNavigationProp>();
 
@@ -54,16 +53,19 @@ export default function MainScreen() {
       base64Data = await blobToBase64(blob);
       // console.log(base64Data);
     }
-    setProfilePic(base64Data)
+    // setProfilePic(base64Data)
     const formData = new FormData();
     await formData.append('file', base64Data);
     await formData.append('upload_preset', 'o9exuyqa');
     await axios.post('https://api.cloudinary.com/v1_1/dsiywf70i/image/upload', formData)
     .then((res) => {
+      let userDataCopy = JSON.parse(JSON.stringify(userData).slice())
+      userDataCopy.profilePicture = res.data.secure_url;
+      setUser(userDataCopy)
       let objUpdate = {
         userId: userData.userId,
         update: {
-          photo: res.data.secure_url
+          profilePicture: res.data.secure_url
         }
       }
       axios.put('http://localhost:3000/db/user', objUpdate)
@@ -81,7 +83,7 @@ export default function MainScreen() {
     let userDataCopy = JSON.parse(JSON.stringify(userData).slice())
     userDataCopy.firstName = fn;
     userDataCopy.lastName = ln;
-    setUserData(userDataCopy)
+    setUser(userDataCopy)
     let objUpdate = {
       userId: userData.userId,
       update: {
@@ -100,16 +102,11 @@ export default function MainScreen() {
 
 
   }
-  const [checkedNotif, setCheckedNotif] = useState(false);
-  const [changeNameDis, setChangeNameDis] = useState(false);
-  const [fn, setfn] = useState('');
-  const [ln, setln] = useState('');
-  const [userData, setUserData] = useState(user)
   return (
   <View style={styles.profileContainer} >
 
     <TouchableOpacity  onPress={onPhotoSelect} style={{width:100}}>
-      <Image source={{uri:profilePic}} style={{width: 150, height: 150, borderRadius: 25, marginLeft:-23}} />
+      <Image source={{uri:userData.profilePicture}} style={{width: 150, height: 150, borderRadius: 25, marginLeft:-23}} />
     </TouchableOpacity>
 
     <View style={styles.textContainer}>
