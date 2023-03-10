@@ -6,12 +6,10 @@ import {
   Button,
   TextInput,
   TouchableOpacity,
-  Platform,
   StyleSheet
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { launchImageLibrary } from 'react-native-image-picker';
 import { launchImageLibraryAsync } from 'expo-image-picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ReactLoading from 'react-loading';
@@ -97,7 +95,7 @@ export default function CreateHouseScreen() {
     const output = await axios.post(`${SERVER}/db/household`, bod);
     const newId = output.data['householdId'];
     setLoading(false);
-    navigation.navigate('HouseGroup', {screen: 'HouseGroup', p: {groupName: newGroup, groupId: newId}});
+    navigation.navigate('HouseGroup', {screen: 'HouseGroup', p: {groupName: newGroup, groupId: newId, groupPhoto: image}});
   }
 
   return (
@@ -116,7 +114,7 @@ export default function CreateHouseScreen() {
         <TextInput
           style={tempStyling.TInput}
           placeholder="My House" placeholderTextColor={'grey'}
-          onChange={textInputHandler}
+          onChange={textInputHandler} maxLength={15}
         />
         <Button title="Create" color='#2F7A3E' onPress={buttonHandler}/>
         {loadingScreen()}

@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { UserContext } from '../../App';
-import { View, Text, Image, Button, TouchableOpacity, ScrollView} from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import ReactLoading from 'react-loading';
 import axios from 'axios';
 
 import { StyleSheet } from 'react-native';
-import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
 import { PORT } from '@env';
 import ColorScheme from '../constants/ColorScheme';
@@ -70,7 +69,7 @@ export default function HomeScreen() {
         return (
           <TouchableOpacity style={tempStyling.groups} key={groupObj.householdId}
           onPress={() => press(groupObj.householdName, groupObj.householdId, groupObj.householdPhoto)}>
-            <Image style={tempStyling.groupThumbnail} source={groupObj.householdPhoto} />
+            <Image style={tempStyling.groupThumbnail} source={groupObj.householdPhoto as any} />
             <View style={{width: '30%'}}>
               <Text style={{textAlign: 'center'}}> {groupObj.householdName} </Text>
             </View>
@@ -82,9 +81,6 @@ export default function HomeScreen() {
         <TouchableOpacity>
           <Text>Create a new house to start adding your plants</Text>
         </TouchableOpacity>
-        // <Text style={{fontWeight:'bold', fontSize: 30, margin: 30, width: 300, textAlign:'center'}}>
-        //   Create a new house to add your plants
-        // </Text>
       )
     }
   }
@@ -93,7 +89,6 @@ export default function HomeScreen() {
       <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: 'white', flexDirection: 'column'}}>
 
         <View style={{alignItems:'center', justifyContent:'center'}}>
-          {/* <Text style={{fontSize: 30 }}>Welcome Back</Text> */}
           <Image
             style={tempStyling.LandingPageImage}
             source={require('../../assets/PlannyLogo.png')}
@@ -141,7 +136,6 @@ export default function HomeScreen() {
   );
 }
 
-//temporary styling
 const tempStyling = StyleSheet.create({
   groups: {
     // backgroundColor: '#B4CCE1',
@@ -151,7 +145,8 @@ const tempStyling = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '70%',
-    height: '12%',
+    // height: '12%',
+    minHeight:'20%',
     // padding: '7%',
     marginVertical: '3%',
     borderWidth: 2,
@@ -181,6 +176,10 @@ const tempStyling = StyleSheet.create({
   LandingPageImage: {
     width: 210, height: 250,
     resizeMode:'contain'
-  }
+  },
+  EmptyPlants: {
+    fontWeight:'bold', textAlign:'center',
+    margin: 30, width: 300,
+    fontSize: 30}
 
 })

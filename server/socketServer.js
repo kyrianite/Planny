@@ -21,7 +21,7 @@ io.on('connection', (socket) => {
   socket.on('message', (message) => {
     console.log(message)
     io.to(currentRoom).emit('message', message);
-    console.log(`user "${message.name}" sent "${message.message}" to room "${currentRoom}"`);
+    console.log(`user "${message.firstName}" sent "${message.message}" to room "${currentRoom}"`);
   });
 
   socket.on('disconnect', () => {

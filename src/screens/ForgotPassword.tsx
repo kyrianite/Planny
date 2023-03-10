@@ -3,25 +3,18 @@ import {
   View,
   SafeAreaView,
   Text,
-  Button,
   TouchableOpacity,
   TextInput,
   StyleSheet,
   Image,
 } from 'react-native';
-import {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack';
+import { Button } from 'react-native-elements';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import Styles from '../constants/Styles';
-// import { RootStackParamList } from '../../RootStack';
-import { AuthStackParamList } from '../../AuthStack';
-
+import AuthStack, { AuthStackParamList } from '../../AuthStack';
 import { auth } from '../constants/firebase/firebase';
 import { sendPasswordResetEmail } from 'firebase/auth';
-import axios from 'axios';
-import { UserContext } from '../../App';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,7 +27,16 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   headertext: {
-    fontSize: '10vw',
+    fontWeight: 'bold',
+    fontSize: '7vw',
+    alignSelf: 'center',
+    marginTop: '15%',
+    marginBottom: '25%',
+  },
+  descriptiontext: {
+    marginBottom: '8%',
+    textAlign: 'center',
+    width: '75%',
   },
   formInput: {
     outlineStyle: 'none',
@@ -43,14 +45,16 @@ const styles = StyleSheet.create({
     width: '100%',
     margin: '3%',
     padding: 10,
+    textAlign: 'center',
   },
   singleLineInput: {
     outlineStyle: 'none',
     borderBottomWidth: 1,
     height: '5%',
-    width: '75%',
+    width: '150%',
     margin: '3%',
     padding: 10,
+    textAlign: 'center',
   },
   noAccount: {
     display: 'flex',
@@ -60,6 +64,8 @@ const styles = StyleSheet.create({
   },
   labelText: {
     fontWeight: 'bold',
+    alignSelf: 'center',
+    marginTop: '5%',
   },
 });
 
@@ -72,29 +78,26 @@ const ForgotPasswordScreen = () => {
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  useEffect(() => {
-    console.log(email);
-  }, [email]);
-
   const handleSubmit = () => {
-    navigationAuth.navigate('Login');
-    // sendPasswordResetEmail(auth, email)
-    //   .then((result) => {
-    //     navigationAuth.navigate('Login');
-    //   })
-    //   .catch((error) => {
-    //     const fbErrorCode = error.code;
-    //     setErrorMessage(fbErrorCode.toString().slice(5));
-    //   });
+    sendPasswordResetEmail(auth, email)
+      .then((result) => {
+        navigation.navigate('Log In');
+      })
+      .catch((error) => {
+        const fbErrorCode = error.code;
+        setErrorMessage(fbErrorCode.toString().slice(5));
+      });
   };
 
   return (
     <>
       <View style={Styles.container}>
-        <View>
-          <Text style={styles.headertext}>Forgot Password</Text>
-        </View>
-        <View style={Styles.container}>
+        <Text style={styles.headertext}>Forgot Your Password?</Text>
+        <Text style={styles.descriptiontext}>
+          Please enter your email, and we'll send you a link to reset your
+          password
+        </Text>
+        <View style={styles.container}>
           <TouchableOpacity>
             <Text style={styles.labelText}>Email</Text>
             <TextInput
@@ -105,11 +108,23 @@ const ForgotPasswordScreen = () => {
                 setEmail(text);
               }}
             ></TextInput>
-            <Button onPress={handleSubmit} title="Submit"></Button>
-            {errorMessage.length > 0 && (
-              <Text style={{ color: 'red' }}>{errorMessage}</Text>
-            )}
           </TouchableOpacity>
+          <Button
+            onPress={handleSubmit}
+            title="Submit"
+            type="outline"
+            buttonStyle={{
+              paddingVertical: 7,
+              marginTop: 5,
+              borderColor: '#1D9D51',
+              borderWidth: 2,
+              borderRadius: 15,
+            }}
+            titleStyle={{ color: '#1D9D51', fontWeight: 'bold' }}
+          ></Button>
+          {errorMessage.length > 0 && (
+            <Text style={{ color: 'red' }}>{errorMessage}</Text>
+          )}
         </View>
       </View>
     </>
