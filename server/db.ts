@@ -143,7 +143,7 @@ let message = {
             objUpdate.firstName = dataUser[0].firstName;
             objUpdate.lastName = dataUser[0].lastName;
             arrMessage.push(objUpdate)
-            console.log(arrMessage)
+            console.log('this is arrMessage: ', arrMessage)
             model.Messages.updateOne({messageId:body.messageId}, {messages:arrMessage})
              .then((data) => callback(null, data))
              .catch((err) => callback(err))

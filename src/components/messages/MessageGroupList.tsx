@@ -19,10 +19,11 @@ export default function MessageGroupList() {
 
   const navigation = useNavigation<CreateHouseScreenNavigationProp>();
   const { user, setUser } = useContext(UserContext);
+  const [messageID, setMessageID] = useState(null)
   const [searchTerm, setSearchTerm] = useState('');
   const [messages, setMessages] = useState([]);
   //Dummy room data in state for now
-  const [homes, setHomes] = useState([{householdName: 'Mom\'s house', lastMessage: 'I watered your flowers', lastMessager: 'PlantMama040', avatar: placeholder1}, {householdName:  'Dorm', lastMessage: 'bro my cactus!', lastMessager: 'Todd', avatar: placeholder3}, {householdName: 'Grandma\'s house', lastMessage: 'How do I care for a succulent?', lastMessager: 'GreenGranny', avatar: placeholder2}])
+  const [homes, setHomes] = useState([])
   // ADD NEW HOUSE (No Longer in use)
   const [modalVisible, setModalVisible] = useState(false);
   const [houseName, setHouseName] = useState('');
@@ -30,6 +31,9 @@ export default function MessageGroupList() {
   const [memberName, setMemberName] = useState('');
   const [dbMessageId, setDbMesageId] = useState(null);
   const [offlineRoom, setOfflineRoom] = useState('')
+
+  // Fake House DATA
+  // {householdName: 'Mom\'s house', lastMessage: 'I watered your flowers', lastMessager: 'PlantMama040', avatar: placeholder1}, {householdName:  'Dorm', lastMessage: 'bro my cactus!', lastMessager: 'Todd', avatar: placeholder3}, {householdName: 'Grandma\'s house', lastMessage: 'How do I care for a succulent?', lastMessager: 'GreenGranny', avatar: placeholder2}
 
 
   //ADD NEW HOUSE (No Longer in use)
@@ -54,7 +58,7 @@ export default function MessageGroupList() {
     //setHouseName('');
     setMemberName('');
     setMembers([]); //userId below will be from auth context
-    axios.post('http://localhost:3000/db/household', {userId: 'try1', household: {
+    axios.post('http://localhost:3000/db/household', {userId: user.userId, household: {
       householdName: houseName,
       photo: '',
     }
@@ -94,31 +98,44 @@ export default function MessageGroupList() {
     }
   };
 
+  const removeLetters = (str) => {
+    return Number(str.replace(/[^0-9]/g, ''));
+  }
+
 
   // CHANGE NAVIGATION TITLE ON BACK
 
   useFocusEffect(
     React.useCallback(() => {
-      navigation.setOptions({ title: 'Your Homes'})
+      navigation.setOptions({ title: ''})
     }, [])
   );
 
   // Use Effect for Search Functionality, ideally loads all messages from user's rooms for sorting.
-  useEffect(() => {
-    axios.get('http://localhost:3000/db/message', {params: { messageId: 4}}).then(({data}) => {
-      console.log(data[0].messages)
-      setMessages(data[0].messages)
-    })
-  }, [])
+  // useEffect(() => {
+  //   axios.get('http://localhost:3000/db/message', {params: { messageId: 5}}).then(({data}) => {
+  //     console.log(data[0].messages)
+  //     setMessages(data[0].messages)
+  //   })
+  // }, [])
 
   // Use Effect to get user's rooms.
   useEffect(() => {
-    // console.log(user.household)
+    console.log(user)
     for (var i = 0; i < user.household.length; i++) {
       // console.log(user.household[i])
+      let z = i
       axios.get('http://localhost:3000/db/household', {params: {householdId: user.household[i]}}).then(({data}) => {
-        // console.log(data)
+        console.log('this is msg id', data)
+        setMessageID(data[z].messageId)
+        // let temp = {householdName: 'data.householdName', lastMessage: '', lastMessager: ', avatar: data.photo}
         setHomes([...homes, ...data])
+        axios.get('http://localhost:3000/db/message', {params: { messageId: data[z].messageId}}).then(({data}) => {
+          console.log('message data:', data[0].messages)
+          for (var j = 0; j < data[0].messages.length; j++) {
+            setMessages(data[0].messages[j])
+          }
+        }).catch((err) => console.error(err))
       })
     }
   }, [])
@@ -126,10 +143,10 @@ export default function MessageGroupList() {
   // Handles Search Function
   const handleSearchSubmit = () => {
     setSearchTerm('')
-    const foundMessage = messages.find(item => item.message.includes(searchTerm));
+    const foundMessage = messages.message.includes(searchTerm)
     console.log(messages)
     if (foundMessage) {
-      navigation.navigate('ChatRoom', { homeLocation: 'Dorm'});
+      navigation.navigate('ChatRoom', { homeLocation: 'elite4', messageID: messageID});
     }
   };
 
@@ -138,7 +155,7 @@ export default function MessageGroupList() {
   return (
     <View style={styles.container}>
       <ScrollView style={{flex: 1, backgroundColor: 'white', padding: 10, maxHeight: '90%', position: 'absolute', top: 0, bottom: 0, left: 0, right: 0,}}>
-      <Text style={{marginBottom: 25}}>Your Houses</Text>
+      <Text style={{margin: 'auto', justifyContent: 'center', fontSize: 25}}>Your Houses</Text>
       {homes.map((home, index) => (
           <TouchableOpacity
           key={home.householdName}
@@ -147,19 +164,21 @@ export default function MessageGroupList() {
             navigation.setOptions({
               title: home.householdName
             });
-            navigation.navigate('ChatRoom', { homeLocation: home.householdName,});
+            navigation.navigate('ChatRoom', { messageID: messageID, homeLocation: home.householdName});
             console.log('testing pressing and opacity', home)
-            console.log(homes)
+            console.log('this is homes: ', homes)
+            console.log('this is messages:', messages)
           }}
         >
-        <View key={home.householdName} style={{flexDirection: 'row', borderWidth: 2, backgroundColor: 'white', padding: 10, margin: 10, borderRadius: 20, marginBottom: 25, borderColor: index % 2 === 0 ? '#C6D5BE' : '#B7DBDB'}}>
-          <Image source={home.avatar} style={{width: 50, height: 50, borderRadius: 25}} />
-          <View style={{marginLeft: 10, marginBottom: 5}}>
-            <Text style={{fontWeight: 'bold', textDecoration: 'underline', fontSize: '20px', }}>{home.householdName}</Text>
-            <View style={{maxWidth: 200}}>
-              <Text style={{fontSize: '16px'}}>{home.lastMessager}</Text>
-              <Text>{home.lastMessage}</Text>
+        <View key={home.householdName} style={{flexDirection: 'row', borderWidth: 2, backgroundColor: 'white', padding: 10, margin: 10, borderRadius: 20, marginBottom: 25, borderColor: index % 2 === 0 ? 'green' : '#B7DBDB'}}>
+          <Image source={home.photo} style={{width: 50, height: 50, borderRadius: 25, justifyContent: 'center', margin: 'auto'}} />
+          <View style={{margin: 'auto', marginRight: 70, marginLeft: 15}}>
+            <Text style={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', marginTop: 10 }}>{home.householdName}</Text>
+            <View style={{maxWidth: 200, flexDirection: 'row'}}>
+              <Text style={{fontSize: '16px'}}>{messages.firstName}{' '}{messages.lastName}:</Text>
+              <Text style={{marginLeft: 5, marginTop: 0.5}}>{messages.message}</Text>
             </View>
+            <Text style={{fontSize: 12}}>{messages.time}</Text>
           </View>
           <View style={{position: 'absolute',  right: 20, bottom: 22}}>
           {/* {index === 1 &&
@@ -265,7 +284,7 @@ const styles = StyleSheet.create({
         // all the available vertical space will be occupied by it
     // justifyContent: 'space-between', // will create the gutter between body and footer
     position: 'relative',
-    backgroundColor: '#C6D5BE'
+    backgroundColor: '#EFDBCA'
   },
   modalView: {
     margin: 20,
