@@ -157,7 +157,8 @@ const styles = StyleSheet.create({
     margin: 10,
     // borderRadius: 20,
     borderBottomColor:Colors.sage,
-    borderBottomWidth:1
+    borderBottomWidth:0.2,
+    borderStyle: 'dashed'
   },
   commentHeader: {
     flexDirection: 'row',
