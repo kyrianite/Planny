@@ -30,7 +30,7 @@ export default function AddPostScreen({ update, setUpdate }: AddPostScreenProps)
   const [showModal, setShowModal] = useState<boolean>(false); // add type for showModal
   const navigation = useNavigation<AddPostScreenNavigationProp>();
   const [newPost, setNewPost] = useState<NewPost>({
-    userId: user?.id ?? 'try1',
+    userId: user?.userId ?? 'try1',
     time: new Date(),
     topic: '',
     photos: [],

@@ -5,10 +5,12 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { PORT } from '@env';
 import axios from 'axios';
-
+import ReactLoading from 'react-loading';
+import ColorScheme from '../constants/ColorScheme';
 import { StyleSheet } from 'react-native';
-import Styles from '../constants/Styles';
 import { RootStackParamList } from '../../RootStack';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Styles from '../constants/Styles';
 
 const SERVER = `http://localhost:${PORT}/db`;
 type HouseGroupNavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -41,7 +43,12 @@ export default function HouseGroupScreen({navigation, route}) {
         }
         const copy = {...props};
         data.forEach((arrObj) => {
-          copy[arrObj.plantName] = {location: arrObj.location, photo: arrObj.photo};
+          copy[arrObj.plantName] = {
+            plantId: arrObj.plantId,
+            location: arrObj.location,
+            photo: arrObj.photo,
+            lastWater: arrObj.lastWater === null ? 'Unknown'
+            : new Date(arrObj.lastWater).toDateString()};
         });
         setProps(copy);
         setLoading(false);
@@ -58,8 +65,7 @@ export default function HouseGroupScreen({navigation, route}) {
           <Text style={{fontSize: 30, fontWeight:'bold'}}>
             Loading
           </Text>
-          <Image style={{height: 300, width: 300, borderRadius: 150, overflow: 'hidden'}}
-          source={'https://media.tenor.com/yU_koH5kItwAAAAd/budew-sleepy.gif' as any}/>
+          <ReactLoading type={'bubbles'} color={ColorScheme.sage} height={'30%'} width={'30%'}/>
         </View>
       )
     }
@@ -73,18 +79,23 @@ export default function HouseGroupScreen({navigation, route}) {
     return (
       Object.keys(props).map((plant) => {
         return (
-          <TouchableOpacity style={tempStyling.PlantStyle} key={plant}>
+          <TouchableOpacity style={tempStyling.PlantStyle} key={props[plant]['plantId']}
+            onPress={(() => {
+              navigation.navigate('Plant Profile', {plantId: +props[plant]['plantId'], houseId: groupId})})}
+          >
             <View style={{alignContent:'center', justifyContent:'center'}}>
               <Image style={tempStyling.ImageStyle}
               source={props[plant]['photo'] as any}/>
             </View>
-            <View style={{alignContent:'center', justifyContent:'center', right: 45, width: 100}}>
+            <View style={{alignContent:'center', justifyContent:'center', right: 45, width: 150}}>
               <Text style={{textAlign:'left', fontWeight: 'bold'}}>
                 {cap(plant)}
-                {'\n'}
               </Text>
               <Text style={{textAlign:'left'}}>
                 {cap(props[plant]['location'])}
+              </Text>
+              <Text style={{textAlign:'left'}}>
+                💧 {cap(props[plant]['lastWater'])}
               </Text>
             </View>
           </TouchableOpacity>
@@ -94,43 +105,49 @@ export default function HouseGroupScreen({navigation, route}) {
   }
   return (
     <>
-    <ScrollView style={tempStyling.ViewStyle}>
-      <View style={{width: '100%', flexDirection:'row', justifyContent:'space-between', backgroundColor: 'lightgreen'}}>
-        <Text style={{fontWeight:'bold', fontSize: 25, marginLeft: 5, marginBottom: 5}}>
-          {groupName}
-        </Text>
-        <Text style={{ textAlign:'right', marginRight: 5, fontWeight: 'bold'}}>
-          HouseID:
-          {'\n'}
-          <Text style={{fontWeight:'normal'}}>
-            {groupId}
+      <View style={tempStyling.HeaderStyle}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Image style={tempStyling.GroupPhoto} source={route.params.p.groupPhoto} />
+          <Text style={{fontWeight:'bold', fontSize: 25, marginLeft: 10}}>
+            {groupName}
           </Text>
-        </Text>
-      </View>
-      {plantTouch()}
-    </ScrollView>
-    <View style={{backgroundColor: 'white'}}>
-    {/* Remove hard coded group */}
-        <TouchableOpacity style={tempStyling.AddPlantStyle} onPress={() => navigation.navigate('Add New Plant', {houseId: 1234})}>
-          <Text style={{ textAlign: 'center', justifyContent: 'center' }}>
-            Add a new plant
-          </Text>
-        </TouchableOpacity>
-        <View style={{ bottom: 0 }}>
-          <Button title="Return to all groups"
-          onPress={() => { navigation.navigate('Home'); } } />
         </View>
+        <Text style={{ textAlign:'right', marginRight: 5, fontWeight: 'bold', fontSize: 20}}>
+          #{groupId}
+        </Text>
       </View>
-      </>
+      <ScrollView showsVerticalScrollIndicator={false} style={tempStyling.ViewStyle}>
+        {plantTouch()}
+      </ScrollView>
+      <View style={tempStyling.transparentWrapper}>
+        <TouchableOpacity style={tempStyling.AddPlantStyle} onPress={() => navigation.navigate('Add New Plant', {houseId: groupId})}>
+          <MaterialCommunityIcons name="leaf-circle-outline" size={48} color='darkgreen' />
+        </TouchableOpacity>
+      </View>
+    </>
   )
 }
 
 //temporary styling, will clean up after prototyping
 const tempStyling = StyleSheet.create({
-  HouseGroupStyle : {
-    backgroundColor: '#C6D5BE', borderWidth: 1,
-    textAlign: 'left', fontSize: 20,
-    fontWeight: 'bold', padding: 5
+  HeaderStyle : {
+    top: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: ColorScheme.lightBlue,
+    width: '100%',
+    paddingVertical: '3%',
+    paddingHorizontal: '5%',
+  },
+  GroupPhoto: {
+    alignSelf: 'flex-start',
+    width: 60,
+    height: 60,
+    borderWidth: 1,
+    borderColor: ColorScheme.greenBlack,
+    borderRadius: 50,
+    overflow: 'hidden'
   },
   ViewStyle: {
     flexDirection: 'column', flex: 1,
@@ -140,20 +157,29 @@ const tempStyling = StyleSheet.create({
     alignSelf: 'flex-end', position: 'absolute',
     bottom: 35
   },
+  transparentWrapper: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    alignSelf: 'flex-end',
+    bottom: 0,
+  },
   AddPlantStyle: {
-    height: 100, width: 150,
-    borderRadius:100, margin: 15,
-    backgroundColor: '#EFDBCA', justifyContent: 'center'
+    backgroundColor: ColorScheme.porcelain,
+    justifyContent: 'center',
+    borderRadius: 50,
+    padding: 5,
+    margin: 10
   },
   PlantStyle: {
-    height: 100, width: 350,
-    borderRadius: 100, margin: 20,
-    backgroundColor: '#C6D5BE', borderWidth: 1,
-    justifyContent: 'center', alignContent:'center',
-    flexDirection: 'row'
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: ColorScheme.lightBlue,
+    justifyContent: 'center',
+    alignContent:'center',
+    flexDirection: 'row',
+    paddingVertical: '3%'
   },
   ImageStyle: {
     height: 80, width: 80,
     right: 50, resizeMode: 'contain'
-  }
-})
+  },
+});

@@ -10,6 +10,7 @@ export type post = {
   plantName: string;
   likes: number;
   replies: number;
+  profilePicture: string
 };
 
 export const dummyPosts: post[] = [
@@ -25,6 +26,7 @@ export const dummyPosts: post[] = [
     plantName: 'Aloe Vera',
     likes: 10,
     replies: 3,
+    profilePicture:'https://ca.slack-edge.com/T0455847Q-U04ER3F959T-ef44f68e627e-512'
   },
   {
     communityId:10002,
@@ -38,6 +40,7 @@ export const dummyPosts: post[] = [
     plantName: 'Rose',
     likes: 10,
     replies: 3,
+    profilePicture:'https://ca.slack-edge.com/T0455847Q-U04EMDCLARL-6e419e5fc48b-512'
   },
   {
     communityId:10003,
@@ -51,6 +54,7 @@ export const dummyPosts: post[] = [
     plantName: 'Cactus',
     likes: 5,
     replies: 3,
+    profilePicture:'https://ca.slack-edge.com/T0455847Q-U04ETTW2G75-46dfcc5471da-512'
   },
   {
     communityId:10004,
@@ -64,6 +68,7 @@ export const dummyPosts: post[] = [
     plantName: 'Pokemon',
     likes: 10,
     replies: 3,
+    profilePicture:'https://ca.slack-edge.com/T0455847Q-U04FHNK2BG8-4a6ba3fba6e6-512'
   },
   {
     communityId:10005,
@@ -77,6 +82,7 @@ export const dummyPosts: post[] = [
     plantName: '',
     likes: 10,
     replies: 3,
+    profilePicture:'https://ca.slack-edge.com/T0455847Q-U04EDFABKBR-085e96a0c7ec-512'
   },
 
   {
@@ -91,5 +97,6 @@ export const dummyPosts: post[] = [
     plantName: 'rose',
     likes: 10,
     replies: 3,
+    profilePicture:'https://ca.slack-edge.com/T0455847Q-U04EMDMHHF0-04bbf4b803f8-512'
   },
 ];

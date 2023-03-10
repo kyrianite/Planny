@@ -4,11 +4,13 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import axios, { AxiosResponse } from 'axios';
 const axiosOption = {headers: {'content-type': 'application/json'}};
+import { PORT } from '@env';
 
 import { RootStackParamList } from '../../RootStack';
 import { RouteProp, useFocusEffect } from '@react-navigation/core';
 // import { UserContext } from '../../App';
 import ColorScheme from '../constants/ColorScheme';
+import { MaterialIcons } from '@expo/vector-icons';
 
 type PlantProfileNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Plant Profile'>;
 type PlantProfileScreenRouteProp = RouteProp<RootStackParamList, 'Plant Profile'>;
@@ -38,7 +40,7 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
         try {
           if (isActive) {
             console.log('plantId: ', plantId);
-            const res = await axios.get(`http://localhost:3000/db/plant?plantId=${plantId}`, axiosOption)
+            const res = await axios.get(`http://localhost:${PORT}/db/plant?plantId=${plantId}`, axiosOption)
             console.log("GET request form inside PlantProfile.tsx", res);
             setPlantName(res.data[0]?.plantName);
             setPlantLoc(res.data[0]?.location);
@@ -54,7 +56,7 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
             }
             const names : string[] = [];
             for (const id of res.data[0]?.careTakers) {
-              const user = await axios.get(`http://localhost:3000/db/user?userId=${id}`, axiosOption);
+              const user = await axios.get(`http://localhost:${PORT}/db/user?userId=${id}`, axiosOption);
               names.push(`${user?.data[0]?.firstName} ${user?.data[0]?.lastName}`);
             }
             setCaretakers(names.length ? names : ['No current caretakers']);
@@ -69,8 +71,19 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
     }, [navigation])
   );
 
+  async function removeCaretaker(name) {
+    const index = caretakers.indexOf(name);
+    const updatedCaretakerIds = caretakerIds.slice();
+    updatedCaretakerIds.splice(index, 1);
+    const updatedCaretakers = caretakers.slice();
+    updatedCaretakers.splice(index, 1);
+    await axios.put(`http://localhost:${PORT}/db/plant/caretaker`, {plantId, careTakers: updatedCaretakerIds}, axiosOption);
+    setCaretakers(updatedCaretakers);
+    setCaretakerIds(updatedCaretakerIds);
+  };
+
   return (
-    <ScrollView style={styles.scrollview}showsVerticalScrollIndicator={false}>
+    <>
       <View style={styles.plantHeading}>
         <View style={styles.plantInfo}>
           <Image source={{ uri: plantImage }} style={styles.plantThumbnail} />
@@ -83,7 +96,7 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
           <Ionicons name="water-outline" size={36} color="black"
             onPress = {() => {
               (async() => {
-                const res = await axios.put(`http://localhost:3000/db/plant/water?plantId=${plantId}`, axiosOption)
+                const res = await axios.put(`http://localhost:${PORT}/db/plant/water?plantId=${plantId}`, axiosOption)
                 setLastWatered(new Date().toString());
                 console.log("PUT request from inside PlantProfile.tsx", res);
               })();
@@ -91,54 +104,64 @@ export default function PlantProfileScreen( {route, navigation}: Props) {
           />
         </TouchableOpacity>
       </View>
-      <View style={{
-        borderBottomColor: ColorScheme.porcelain,
-        borderBottomWidth: StyleSheet.hairlineWidth
-      }} />
-      <View style={styles.mainContainer}>
-        <View style={styles.section}>
-          <Text style={styles.label}>Last Watered:</Text>
-          <Text style={styles.description}>{lastWatered ? lastWatered.toString() : 'Unknown'}</Text>
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.label}>Care Instructions:</Text>
-          <Text style={styles.description}>{plantCare}</Text>
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.label}>Watering Instructions:</Text>
-          <Text style={styles.description}>{plantWatering}</Text>
-        </View>
-        <View style={styles.section}>
-          <View style={styles.caretaker}>
-            <Text style={{fontWeight: 'bold'}}>Caretakers:</Text>
-            {houseId
-              ? <TouchableOpacity>
-                  <Ionicons name="md-person-add-outline" size={24} color={ColorScheme.lightBlue}
-                    style={{alignSelf: 'flex-end'}}
-                    onPress = {() => {
-                      navigation.navigate('Assign Caretaker', {plantId, houseId, currentCaretakerIds: caretakerIds});
-                    }}
+      <ScrollView style={styles.scrollview}showsVerticalScrollIndicator={false}>
+        <View style={{
+          // borderBottomColor: ColorScheme.porcelain,
+          // borderBottomWidth: StyleSheet.hairlineWidth
+        }} />
+        <View style={styles.mainContainer}>
+          <View style={styles.section}>
+            <Text style={styles.label}>Last Watered:</Text>
+            <Text style={styles.description}>{lastWatered ? lastWatered.toString() : 'Unknown'}</Text>
+          </View>
+          <View style={styles.section}>
+            <Text style={styles.label}>Care Instructions:</Text>
+            <Text style={styles.description}>{plantCare}</Text>
+          </View>
+          <View style={styles.section}>
+            <Text style={styles.label}>Watering Instructions:</Text>
+            <Text style={styles.description}>{plantWatering}</Text>
+          </View>
+          <View style={styles.section}>
+            <View style={styles.caretaker}>
+              <Text style={{fontWeight: 'bold'}}>Caretakers:</Text>
+              {houseId
+                ? <TouchableOpacity style={styles.addCaretakerContainer}>
+                    <Ionicons name="md-person-add-outline" size={24} color='darkgreen'
+                      style={{alignSelf: 'flex-end'}}
+                      onPress = {() => {
+                        navigation.navigate('Assign Caretaker', {plantId, houseId, currentCaretakerIds: caretakerIds});
+                      }}
+                    />
+                  </TouchableOpacity>
+                : null
+              }
+            </View>
+            <View style={styles.description}>
+              {caretakers[0] === 'No current caretakers'
+                ? <Text>No current caretakers</Text>
+                : <FlatList
+                    style={styles.flatListContainer}
+                    contentContainerStyle={{flex: 1, justifyContent: 'center', alignItems: 'stretch'}}
+                    // keyExtractor={(item) => item.id.toString()}
+                    data={caretakers}
+                    extraData={caretakers}
+                    renderItem={({ item }: ListRenderItemInfo<string>) => (
+                      <View style={styles.eachCaretaker}>
+                        <TouchableOpacity onPress={() => removeCaretaker(item)}>
+                          <MaterialIcons name="highlight-remove" size={24} color="#DA0909"style={{marginRight: 5}} />
+                        </TouchableOpacity>
+                        <Text>{item}</Text>
+                      </View>
+                    )}
                   />
-                </TouchableOpacity>
-              : null
-            }
-          </View>
-          <View style={styles.description}>
-            <FlatList
-              style={styles.flatListContainer}
-              contentContainerStyle={{flex: 1, justifyContent: 'center', alignItems: 'stretch'}}
-              // keyExtractor={(item) => item.id.toString()}
-              data={caretakers}
-              renderItem={({ item }: ListRenderItemInfo<string>) => (
-                <TouchableOpacity>
-                  <Text>{item}</Text>
-                </TouchableOpacity>
-              )}
-            />
+              }
+
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </>
   )
 };
 
@@ -150,12 +173,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
-    marginHorizontal: '10%',
-    marginVertical: '5%',
+    paddingHorizontal: '10%',
+    paddingVertical: '1%',
+    backgroundColor: ColorScheme.lightBlue,
   },
   plantInfo: {
     flexDirection: 'row',
-    alignItems: 'baseline'
+    alignItems: 'center'
   },
   plantNameAndLoc: {
     flex: 1,
@@ -170,8 +194,11 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   plantWaterIcon: {
-    alignItems: 'baseline',
-    alignSelf: 'center'
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: ColorScheme.periwinkle,
+    borderRadius: 50,
+    padding: 5
   },
   plantThumbnail: {
     alignSelf: 'flex-start',
@@ -186,7 +213,7 @@ const styles = StyleSheet.create({
   },
   section: {
     marginHorizontal: '10%',
-    paddingBottom: '2%'
+    paddingVertical: '2%'
   },
   label: {
     alignSelf: 'flex-start',
@@ -201,6 +228,16 @@ const styles = StyleSheet.create({
   caretaker: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'baseline'
-  }
+    alignItems: 'center'
+  },
+  addCaretakerContainer: {
+    backgroundColor: ColorScheme.porcelain,
+    justifyContent: 'center',
+    borderRadius: 50,
+    padding: 5
+  },
+  eachCaretaker: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
