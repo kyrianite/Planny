@@ -114,7 +114,7 @@ export default function CreateHouseScreen() {
         <TextInput
           style={tempStyling.TInput}
           placeholder="My House" placeholderTextColor={'grey'}
-          onChange={textInputHandler}
+          onChange={textInputHandler} maxLength={15}
         />
         <Button title="Create" color='#2F7A3E' onPress={buttonHandler}/>
         {loadingScreen()}
