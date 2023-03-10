@@ -110,11 +110,6 @@ export default function App() {
           : (
           <LoginTabs.Navigator initialRouteName="Log In" screenOptions={{headerShown: false, tabBarActiveTintColor: 'green', tabBarInactiveTintColor: ColorScheme.sage}}>
             <Tabs.Screen
-              name="Forgot Password"
-              component={ForgotPasswordScreen}
-              options={TabIconOptions.ForgotPassword}
-            />
-            <Tabs.Screen
               name="Log In"
               component={LoginScreen}
               options={TabIconOptions.Login}
@@ -123,6 +118,11 @@ export default function App() {
               name="Sign Up"
               component={SignUpScreen}
               options={TabIconOptions.SignUp}
+            />
+            <Tabs.Screen
+              name="Forgot Password"
+              component={ForgotPasswordScreen}
+              options={TabIconOptions.ForgotPassword}
             />
           </LoginTabs.Navigator> )
         }
