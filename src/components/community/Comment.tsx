@@ -58,7 +58,7 @@ export default function CommentScreen({ update, setUpdate, route, navigation }: 
   //     message: 'Where did you get it?',
   //   }
   // ]);
-  console.log('messageId: ', messageId);
+  // console.log('messageId: ', messageId);
 
   const onCommentSubmit = async () => {
     const currentDate = new Date();

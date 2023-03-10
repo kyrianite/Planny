@@ -40,7 +40,7 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
       const newData = await Promise.all(res.data.map(async (item) => {
         const messageRes = await axios.get(`http://localhost:${PORT}/db/message/?messageId=${item.messageId}`);
         const userRes = await axios.get(`http://localhost:${PORT}/db/user/?userId=${item.userId}`);
-        console.log('message id in main: ', item.messageId)
+        // console.log('message id in main: ', item.messageId)
         return {
           communityId: item.communityId,
           messageId: item.messageId,
