@@ -95,7 +95,7 @@ export default function CreateHouseScreen() {
     const output = await axios.post(`${SERVER}/db/household`, bod);
     const newId = output.data['householdId'];
     setLoading(false);
-    navigation.navigate('HouseGroup', {screen: 'HouseGroup', p: {groupName: newGroup, groupId: newId}});
+    navigation.navigate('HouseGroup', {screen: 'HouseGroup', p: {groupName: newGroup, groupId: newId, groupPhoto: image}});
   }
 
   return (
