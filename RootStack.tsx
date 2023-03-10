@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -13,6 +12,8 @@ import MyPlantsScreen from './src/screens/MyPlants';
 import HouseGroupScreen from './src/screens/HouseGroup';
 import SignUpScreen from './src/screens/SignUp';
 import LoginScreen from './src/screens/Login'
+import MessageGroupList from './src/components/messages/MessageGroupList'
+import Chatroom from './src/components/messages/chatroom'
 
 export type RootStackParamList = {
   // Login: undefined;
@@ -91,6 +92,19 @@ export default function RootStack() {
           component={HouseGroupScreen}
           options={{ headerTitle: '' }}
         />
+
+        <Stack.Screen
+          name="Your Homes"
+          component={MessageGroupList}
+          options={{ headerTitle: '' }}
+        />
+
+        <Stack.Screen
+          name="ChatRoom"
+          component={Chatroom}
+          options={{ headerTitle: '' }}
+        />
+
       </Stack.Navigator>
   );
 }

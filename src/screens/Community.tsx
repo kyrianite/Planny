@@ -23,11 +23,11 @@ export default function CommunityScreen() {
       <Stack.Screen name="Community">
         {(props) => <MainScreen {...props} update={update} setUpdate={setUpdate} />}
       </Stack.Screen>
-      <Stack.Screen name="AddPost">
+      <Stack.Screen name="AddPost" options={{ headerTitle: '' }}>
       {(props) => <AddPostScreen {...props} update={update} setUpdate={setUpdate} />}
       </Stack.Screen>
 
-      <Stack.Screen name="Comment">
+      <Stack.Screen name="Comment" options={{ headerTitle: '' }}>
       {(props) => <CommentScreen {...props} update={update} setUpdate={setUpdate} />}
       </Stack.Screen>
 

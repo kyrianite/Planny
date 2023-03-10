@@ -1,35 +1,47 @@
 import { Text, View, Image, StyleSheet, TouchableOpacity, Button, Modal, Alert, TextInput, Pressable, ScrollView } from 'react-native'
-import React, { useState, Component, useEffect } from 'react'
+import React, { useState, Component, useEffect, useContext } from 'react'
 const placeholder1 = require('./images/placeholder-1.jpeg')
 const placeholder2 = require('./images/placeholder-2.webp')
 const placeholder3 = require('./images/placeholder-3.png')
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Chatroom from './chatroom'
-import { RootStackParamList } from '../../../App';
+import { RootStackParamList } from '../../../RootStack';
 import axios from 'axios'
+import auth from '../../constants/firebase/firebase'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { UserContext } from '../../../App';
 
-type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Your Homes'>;
 
 export default function MessageGroupList() {
 
   const navigation = useNavigation<CreateHouseScreenNavigationProp>();
-
-
-  const [homes, setHomes] = useState([{householdName: 'Mom\'s house', lastMessage: 'I watered your flowers', lastMessager: 'PlantMama040', avatar: placeholder1}, {householdName:  'Dorm', lastMessage: 'bro my cactus!', lastMessager: 'Todd', avatar: placeholder3}, {householdName: 'Grandma\'s house', lastMessage: 'How do I care for a succulent?', lastMessager: 'GreenGranny', avatar: placeholder2}])
-  // ADD NEW HOUSE
+  const { user, setUser } = useContext(UserContext);
+  const [messageID, setMessageID] = useState(null)
+  const [searchTerm, setSearchTerm] = useState('');
+  const [messages, setMessages] = useState([]);
+  //Dummy room data in state for now
+  const [homes, setHomes] = useState([])
+  // ADD NEW HOUSE (No Longer in use)
   const [modalVisible, setModalVisible] = useState(false);
   const [houseName, setHouseName] = useState('');
   const [members, setMembers] = useState([]);
   const [memberName, setMemberName] = useState('');
   const [dbMessageId, setDbMesageId] = useState(null);
+  const [offlineRoom, setOfflineRoom] = useState('')
 
-  //ADD NEW HOUSE
+  // Fake House DATA
+  // {householdName: 'Mom\'s house', lastMessage: 'I watered your flowers', lastMessager: 'PlantMama040', avatar: placeholder1}, {householdName:  'Dorm', lastMessage: 'bro my cactus!', lastMessager: 'Todd', avatar: placeholder3}, {householdName: 'Grandma\'s house', lastMessage: 'How do I care for a succulent?', lastMessager: 'GreenGranny', avatar: placeholder2}
+
+
+  //ADD NEW HOUSE (No Longer in use)
   const handleHouseNameChange = (text) => {
     setHouseName(text);
   };
 
-  //ADD NEW MEMBERS
+  //ADD NEW MEMBERS (No Longer in use)
   const handleMemberNameChange = (text) => {
     setMemberName(text);
   };
@@ -39,14 +51,14 @@ export default function MessageGroupList() {
     setMemberName('');
   };
 
-  //CREATE NEW HOME
+  //CREATE NEW HOME (No Longer in use)
   const createHome = () => {
     setHomes([...homes, {householdName: houseName, lastMessage: 'test', lastMessager: 'test', avatar: placeholder2, householdMembers: members }])
     setModalVisible(false)
     //setHouseName('');
     setMemberName('');
-    setMembers([]);
-    axios.post('http://localhost:3000/db/household', {userId: 'try2', household: {
+    setMembers([]); //userId below will be from auth context
+    axios.post('http://localhost:3000/db/household', {userId: user.userId, household: {
       householdName: houseName,
       photo: '',
     }
@@ -56,28 +68,94 @@ export default function MessageGroupList() {
   })
   }
 
+  // Helper function to convert my stored date format to unix for time comparison
+  const convertToUnixTimestamp = (dateTimeString) => {
+    let dateTimeStringArray = dateTimeString.split(" ");
+    let month = dateTimeStringArray[1];
+    let day = dateTimeStringArray[2];
+    let time = dateTimeStringArray[4];
+    let year = new Date().getFullYear();
+
+    let dateTimeStringFormatted = `${month} ${day} ${year} ${time}`;
+
+    return Date.parse(dateTimeStringFormatted);
+  }
+
+  // Function to implement a timer that turns a circle red/green depending on time since last message...time difference needs work.
+  const evaluateDataArray = (dataArray) => {
+    const lastObjectTime = convertToUnixTimestamp(dataArray[dataArray.length - 1].time);
+    console.log(dataArray)
+    const currentTime = Date.now();
+    const timeDifference = currentTime - lastObjectTime;
+    console.log('current time', currentTime)
+    console.log('last message time:', lastObjectTime)
+    console.log('difference', timeDifference)
+    if (timeDifference > 664126) {
+      console.log('user is offline');
+      setOfflineRoom(true);
+    } else {
+      setOfflineRoom(false);
+    }
+  };
+
+  const removeLetters = (str) => {
+    return Number(str.replace(/[^0-9]/g, ''));
+  }
+
+
   // CHANGE NAVIGATION TITLE ON BACK
 
   useFocusEffect(
     React.useCallback(() => {
-      navigation.setOptions({ title: 'Your Homes'})
+      navigation.setOptions({ title: ''})
     }, [])
   );
 
+  // Use Effect for Search Functionality, ideally loads all messages from user's rooms for sorting.
+  // useEffect(() => {
+  //   axios.get('http://localhost:3000/db/message', {params: { messageId: 5}}).then(({data}) => {
+  //     console.log(data[0].messages)
+  //     setMessages(data[0].messages)
+  //   })
+  // }, [])
+
+  // Use Effect to get user's rooms.
   useEffect(() => {
-    // in params
-// {
-//   "householdId": 1
-// }
-  axios.get('http://localhost:3000/db/household', {params: {householdId: 4}}).then(({data}) => {
-    setHomes([...homes, ...data])
-  })
+    console.log(user)
+    for (var i = 0; i < user.household.length; i++) {
+      // console.log(user.household[i])
+      let z = i
+      axios.get('http://localhost:3000/db/household', {params: {householdId: user.household[i]}}).then(({data}) => {
+        console.log('this is msg id', data)
+        setMessageID(data[z].messageId)
+        // let temp = {householdName: 'data.householdName', lastMessage: '', lastMessager: ', avatar: data.photo}
+        setHomes([...homes, ...data])
+        axios.get('http://localhost:3000/db/message', {params: { messageId: data[z].messageId}}).then(({data}) => {
+          console.log('message data:', data[0].messages)
+          for (var j = 0; j < data[0].messages.length; j++) {
+            setMessages(data[0].messages[j])
+          }
+        }).catch((err) => console.error(err))
+      })
+    }
   }, [])
+
+  // Handles Search Function
+  const handleSearchSubmit = () => {
+    setSearchTerm('')
+    const foundMessage = messages.message.includes(searchTerm)
+    console.log(messages)
+    if (foundMessage) {
+      navigation.navigate('ChatRoom', { homeLocation: 'elite4', messageID: messageID});
+    }
+  };
+
+
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{flex: 1, backgroundColor: '#EFDBCA', padding: 10, maxHeight: '90%', position: 'absolute', top: 0, bottom: 0, left: 0, right: 0,}}>
-      <Text style={{marginBottom: 25}}>Your Houses</Text>
+      <ScrollView style={{flex: 1, backgroundColor: 'white', padding: 10, maxHeight: '90%', position: 'absolute', top: 0, bottom: 0, left: 0, right: 0,}}>
+      <Text style={{margin: 'auto', justifyContent: 'center', fontSize: 25}}>Your Houses</Text>
       {homes.map((home, index) => (
           <TouchableOpacity
           key={home.householdName}
@@ -86,19 +164,36 @@ export default function MessageGroupList() {
             navigation.setOptions({
               title: home.householdName
             });
-            navigation.navigate('ChatRoom', { homeLocation: home.householdName });
+            navigation.navigate('ChatRoom', { messageID: messageID, homeLocation: home.householdName});
             console.log('testing pressing and opacity', home)
-            console.log(homes)
+            console.log('this is homes: ', homes)
+            console.log('this is messages:', messages)
           }}
         >
-        <View key={home.householdName} style={{flexDirection: 'row', borderWidth: 0, borderColor: 'black', padding: 10, margin: 10, borderRadius: 20, marginBottom: 25, backgroundColor: index % 2 === 0 ? '#C6D5BE' : '#B7DBDB'}}>
-          <Image source={home.avatar} style={{width: 50, height: 50, borderRadius: 25}} />
-          <View style={{marginLeft: 10, marginBottom: 5}}>
-            <Text style={{fontWeight: 'bold', textDecoration: 'underline', fontSize: '20px', }}>{home.householdName}</Text>
-            <View style={{maxWidth: 200}}>
-              <Text style={{fontSize: '16px'}}>{home.lastMessager}</Text>
-              <Text>{home.lastMessage}</Text>
+        <View key={home.householdName} style={{flexDirection: 'row', borderWidth: 2, backgroundColor: 'white', padding: 10, margin: 10, borderRadius: 20, marginBottom: 25, borderColor: index % 2 === 0 ? 'green' : '#B7DBDB'}}>
+          <Image source={home.photo} style={{width: 50, height: 50, borderRadius: 25, justifyContent: 'center', margin: 'auto'}} />
+          <View style={{margin: 'auto', marginRight: 70, marginLeft: 15}}>
+            <Text style={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', marginTop: 10 }}>{home.householdName}</Text>
+            <View style={{maxWidth: 200, flexDirection: 'row'}}>
+              <Text style={{fontSize: '16px'}}>{messages.firstName}{' '}{messages.lastName}:</Text>
+              <Text style={{marginLeft: 5, marginTop: 0.5}}>{messages.message}</Text>
             </View>
+            <Text style={{fontSize: 12}}>{messages.time}</Text>
+          </View>
+          <View style={{position: 'absolute',  right: 20, bottom: 22}}>
+          {/* {index === 1 &&
+          // <MaterialCommunityIcons
+          //         name="magnify"
+          //         size={40}
+          //         color={offlineRoom}
+          //       />
+          <LinearGradient
+          colors={offlineRoom ? ['#5AFF15', '#5AFF15', '#5AFF15D8'] : ['#FF0000', '#FF0000', '#FF0000D8']}
+          start={{ x: 0.0, y: 0.25 }}
+          end={{ x: 0.5, y: 1.0 }}
+          style={styles.circle}
+        />
+          } */}
           </View>
         </View>
         </TouchableOpacity>
@@ -156,12 +251,28 @@ export default function MessageGroupList() {
           </View>
         </View>
       </Modal>
-      <View style={{position: 'absolute', bottom: 10, left: 0, right: 0, backgroundColor: '#B7DBDB'}}>
-      <Pressable
+      <View style={{position: 'absolute', bottom: 10, left: 0, right: 0, backgroundColor: 'white'}}>
+      {/* <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => setModalVisible(true)}>
         <Text style={styles.textStyle}>Create Home</Text>
-      </Pressable>
+      </Pressable> */}
+      <View style={{display: 'flex', flexDirection: 'row'}}>
+      <TextInput
+        placeholder="Search messages"
+        value={searchTerm}
+        onChangeText={setSearchTerm}
+        style={{maxWidth: '80%', borderBottomWidth: 2, borderBottomColor: 'black', margin: 'auto', marginBottom: 5, marginRight: 0, textAlign: 'center'}}
+      />
+      <Pressable style={[styles.button, styles.buttonOpen, {marginRight: 100, marginLeft: 0}]} title="Search" onPress={handleSearchSubmit}>
+      {/* <Text style={styles.textStyle}>Hello world</Text> */}
+       <MaterialCommunityIcons
+                  name="magnify"
+                  size={40}
+                  color={offlineRoom}
+                />
+        </Pressable>
+        </View>
       </View>
     </View>
   )
@@ -173,7 +284,7 @@ const styles = StyleSheet.create({
         // all the available vertical space will be occupied by it
     // justifyContent: 'space-between', // will create the gutter between body and footer
     position: 'relative',
-    backgroundColor: '#B7DBDB'
+    backgroundColor: '#EFDBCA'
   },
   modalView: {
     margin: 20,
@@ -191,17 +302,15 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
+    width: 100,
     borderRadius: 20,
-    padding: 10,
-    elevation: 2,
+    padding: 5,
   },
   buttonOpen: {
-    backgroundColor: '#C6D5BE',
     flex: 0.2,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10,
+    padding: 5,
   },
   buttonClose: {
     backgroundColor: '#C6D5BE',
@@ -225,5 +334,11 @@ const styles = StyleSheet.create({
     padding: 5,
     margin: 5,
     backgroundColor: 'none'
+  },
+  circle: {
+    width: 30,
+    height: 30,
+    borderRadius: 100,
+    backgroundColor: 'linear-gradient(45deg, #5AFF15 0%, #5AFF15 40%, #5AFF15D8 100%)',
   }
 })

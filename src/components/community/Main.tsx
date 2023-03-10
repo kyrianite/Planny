@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     width: '50%',
   },
   button: {
-    backgroundColor: Colors.sage,
+    // backgroundColor: Colors.sage,
     paddingVertical: 8,
     paddingHorizontal: 10,
     borderRadius: 20,
@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
   },
   addPost: {
     backgroundColor: Colors.greenBlack,
+    // backgroundColor:'#1D9D51',
     borderRadius: 30,
     marginLeft: 30,
     width: 30,

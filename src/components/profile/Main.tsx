@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, ScrollView, Button, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, ScrollView, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Button } from 'react-native-elements';
 import {CheckBox} from '@rneui/themed'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
@@ -105,35 +106,41 @@ export default function MainScreen() {
   return (
   <View style={styles.profileContainer} >
 
-    <TouchableOpacity  onPress={onPhotoSelect} style={{width:100}}>
+    <TouchableOpacity  onPress={onPhotoSelect} style={{width:100, marginBottom:40}}>
       <Image source={{uri:userData.profilePicture}} style={{width: 150, height: 150, borderRadius: 25, marginLeft:-23}} />
     </TouchableOpacity>
 
-    <View style={styles.textContainer}>
-      <TouchableOpacity onPress={changeDis}>
-        <Text style={styles.text}>Name: {userData.firstName} {userData.lastName}    <Icon name="create" size={15} color="#000" />
+    <View >
+      <TouchableOpacity onPress={changeDis} >
+        <Text style={styles.textName}> {userData.firstName} {userData.lastName} <Icon name="create" size={15} color="#000" />
         </Text>
       </TouchableOpacity>
       {changeNameDis && (
-        <View style={{marginLeft:57}}>
+        <View style={Styles.container}>
           <TextInput
-            style={{ width:130, height: 20, borderColor: 'gray', borderWidth: 1 }}
+            style={styles1.singleLineInput}
             onChangeText={(text) => setfn(text)}
             value={fn}
             placeholder="First name"
           />
           <TextInput
-          style={{ width:130, height: 20, borderColor: 'gray', borderWidth: 1 }}
+          style={styles1.singleLineInput}
           onChangeText={(text) => setln(text)}
           value={ln}
           placeholder="Last name"
           />
-          <TouchableOpacity style={{paddingHorizontal: 16, paddingVertical: 8 }}>
-            <Button title="Submit" color='green' onPress={handleChangeName} />
-          </TouchableOpacity>
+            <Button
+            title="Submit"
+            onPress={() => {
+              handleChangeName
+            }}
+            type="outline"
+            buttonStyle={{paddingVertical: 7, borderColor: '#1D9D51', borderWidth: 2, borderRadius: 15}}
+            titleStyle={{color: '#1D9D51', fontWeight: 'bold'}}
+          />
         </View>
       )}
-      <Text style={styles.text}>Email: {userData.email}</Text>
+      <Text style={styles.textName}>{userData.email}</Text>
     </View>
     <CheckBox
       title="notification"
@@ -141,24 +148,36 @@ export default function MainScreen() {
       onPress={() => setCheckedNotif(!checkedNotif)}
         />
     <Button
+      style={styles.button}
       title="Change Email"
       onPress={() => {
       navigation.navigate('ChangeEmail');
       }}
+      type="outline"
+      buttonStyle={{paddingVertical: 7, borderColor: '#1D9D51', borderWidth: 2, borderRadius: 15}}
+      titleStyle={{color: '#1D9D51', fontWeight: 'bold'}}
     />
     <Button
+      style={styles.button}
       title="Change Password"
       onPress={() => {
       navigation.navigate('ChangePass');
       }}
+      type="outline"
+      buttonStyle={{paddingVertical: 7, borderColor: '#1D9D51', borderWidth: 2, borderRadius: 15}}
+      titleStyle={{color: '#1D9D51', fontWeight: 'bold'}}
     />
     <Button
+      style={styles.button}
       title="Logout"
       onPress={() => {
         // setUser(null)
         auth.signOut()
       // navigation.navigate('ChangePass');
       }}
+      type="outline"
+      buttonStyle={{paddingVertical: 7, borderColor: '#1D9D51', borderWidth: 2, borderRadius: 15}}
+      titleStyle={{color: '#1D9D51', fontWeight: 'bold'}}
     />
   </View>
   )
@@ -181,9 +200,51 @@ const styles = StyleSheet.create({
     marginLeft:20
   },
   text: {
-    fontSize:18
+    fontSize:18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    display: 'flex'
+  },
+  textName: {
+    fontSize:18,
+    textAlign: 'center',
+    marginBottom:10
+  },
+  button: {
+    marginBottom:20
   }
 })
+
+const styles1 = StyleSheet.create({
+  container: {
+    display: 'flex',
+  },
+  logo: {
+    width: 210,
+    height: 250,
+    resizeMode: 'contain',
+    alignContent: 'center',
+  },
+  singleLineInput: {
+    outlineStyle: 'none',
+    borderBottomWidth: 1,
+    height: '5%',
+    width: '70%',
+    margin: '3%',
+    padding: 10,
+    textAlign: 'center',
+  },
+  noAccount: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: '4vw',
+  },
+  labelText: {
+    fontWeight: 'bold',
+    marginTop: '5%'
+  },
+});
 
 // const styles = StyleSheet.create({
 //   container: {
