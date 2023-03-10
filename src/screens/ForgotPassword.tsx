@@ -73,7 +73,7 @@ type ForgotPasswordScreenNavigationProp =
   NativeStackNavigationProp<AuthStackParamList>;
 
 const ForgotPasswordScreen = () => {
-  const navigation = useNavigation<ForgotPasswordScreenNavigationProp>();
+  const navigationAuth = useNavigation<ForgotPasswordScreenNavigationProp>();
 
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
