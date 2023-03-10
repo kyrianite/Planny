@@ -158,7 +158,7 @@ export default function MainScreen() {
     <Button
       title="Logout"
       onPress={() => {
-        setUser(null)
+        // setUser(null)
         auth.signOut()
       // navigation.navigate('ChangePass');
       }}
