@@ -19,7 +19,7 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<
 type HomeGroupsProp = {
   householdName: string;
   householdId: string;
-  photo: string;
+  householdPhoto: string;
 }
 const SERVER = `http://localhost:${PORT}/db`;
 
@@ -42,8 +42,7 @@ export default function HomeScreen() {
             let groupObj = {
               householdName: contents.data[0].householdName,
               householdId: contents.data[0].householdId,
-              photo: (contents.data[0].photo === undefined ? require('../../assets/budew.png')
-              : contents.data[0].photo)
+              householdPhoto: contents.data[0].photo
             }
             copy.push(groupObj);
           }
@@ -55,8 +54,8 @@ export default function HomeScreen() {
     }, [])
   )
 
-  function press(groupName, groupId) {
-    navigation.navigate('HouseGroup', {screen: 'HouseGroup', p: {groupName, groupId}});
+  function press(groupName, groupId, groupPhoto) {
+    navigation.navigate('HouseGroup', {screen: 'HouseGroup', p: {groupName, groupId, groupPhoto}});
   }
 
   function makeHouseGroups() {
@@ -69,10 +68,10 @@ export default function HomeScreen() {
       return groups.map((groupObj) => {
         return (
           <TouchableOpacity style={tempStyling.groups} key={groupObj.householdId}
-          onPress={() => press(groupObj.householdName, groupObj.householdId)}>
-            <Image source={groupObj.photo as any} style={{width: '20%', height: '100%', resizeMode: 'contain', marginLeft: '8%'}}/>
-            <View style={{alignSelf:'stretch', justifyContent:'center', alignContent:'center', marginLeft: '5%'}}>
-              <Text style={{textAlign:'center'}}> {groupObj.householdName} </Text>
+          onPress={() => press(groupObj.householdName, groupObj.householdId, groupObj.householdPhoto)}>
+            <Image style={tempStyling.groupThumbnail} source={groupObj.householdPhoto as any} />
+            <View style={{width: '30%'}}>
+              <Text style={{textAlign: 'center'}}> {groupObj.householdName} </Text>
             </View>
           </TouchableOpacity>
         )
@@ -140,19 +139,24 @@ export default function HomeScreen() {
 //temporary styling
 const tempStyling = StyleSheet.create({
   groups: {
-    alignItems: 'baseline',
-    // justifyContent: 'space-between',
+    // backgroundColor: '#B4CCE1',
+    // width: 300, margin: 5,
+    // height: 75, borderRadius: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: '70%',
-    height: '20%',
-    flexDirection:'row',
+    height: '12%',
     // padding: '7%',
     marginVertical: '3%',
     borderWidth: 2,
-    borderRadius: 25,
-    borderColor: ColorScheme.lightBlue,
-    overflow:'hidden'
+    borderRadius: 30,
+    borderColor: ColorScheme.lightBlue
   },
-
+  groupThumbnail: {
+    height: 50, width: 50,
+    resizeMode: 'contain'
+  },
   FloatingMenuStyle: {
     flexDirection: 'row', bottom: 0,
     alignItems: 'center', justifyContent:'space-evenly',

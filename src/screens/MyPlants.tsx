@@ -81,53 +81,66 @@ export default function MyPlantsScreen() {
     }
     return myPlants.map((plant) => {
       return (
-        <TouchableOpacity style={tempStyling.TouchableOpacityStyle}
-          onPress={(() => {
-            navigation.navigate('Plant Profile', {plantId: +plant.plantId, houseId: null})})}
-          key={plant.plantId}
-        >
-          <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-            <Image style={tempStyling.ImageStyle} source={plant.photo as any}/>
-            <View style={{alignSelf: 'flex-start', marginLeft: '3%'}}>
-              <Text style={{fontWeight:'bold'}}>
-                {cap(plant.plantName)}
-              </Text>
-              <Text>
-                {cap(plant.location)}
-              </Text>
-              <Text>
-                {cap(plant.lastWater)}
-              </Text>
+        <View style={tempStyling.BottomBorder}>
+          <TouchableOpacity style={tempStyling.TouchableOpacityStyle}
+            onPress={(() => {
+              navigation.navigate('Plant Profile', {plantId: +plant.plantId, houseId: null})})}
+            key={plant.plantId}
+          >
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Image style={tempStyling.ImageStyle} source={plant.photo as any}/>
+              <View style={{alignSelf: 'flex-start', marginLeft: '3%'}}>
+                <Text style={{fontWeight:'bold'}}>
+                  {cap(plant.plantName)}
+                </Text>
+                <Text>
+                  {cap(plant.location)}
+                </Text>
+                <Text>
+                💧 {cap(plant.lastWater)}
+                </Text>
+              </View>
             </View>
-          </View>
-          <View style={{right: 40, bottom: 10}}>
-
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
       )
     })
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={tempStyling.ScrollStyle}>
-      <View style={{alignSelf: 'center'}}>
-        {makeButtons()}
+    <>
+      <View style={tempStyling.Header}>
+        <Text style={{fontWeight:'bold', fontSize: 25, marginLeft: 10}}>My Plants</Text>
       </View>
-    </ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false} style={tempStyling.ScrollStyle}>
+        {/* <View> */}
+          {makeButtons()}
+        {/* </View> */}
+      </ScrollView>
+    </>
   )
 }
 
 //temporary styling
 const tempStyling = StyleSheet.create({
+  Header: {
+    top: 0,
+    backgroundColor: ColorScheme.lightBlue,
+    paddingVertical: '3%',
+    paddingHorizontal: '5%'
+  },
+  BottomBorder: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: ColorScheme.lightBlue,
+  },
   TouchableOpacityStyle: {
-    // height: 100,
-    // width: 350,
     alignSelf: 'flex-start',
     justifyContent: 'center',
-    alignItems:'baseline',
+    alignItems:'center',
+    alignContent: 'center',
     flexDirection:'row',
-    // marginHorizontal: '7%',
-    paddingVertical: '3%'
+    paddingVertical: '5%',
+    marginLeft: '20%'
   },
   ImageStyle: {
     height: 80,
