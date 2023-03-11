@@ -68,13 +68,14 @@ export default function ChangeEmail() {
             setUser(userContextCopy)
             setLoading(false)
             let objUpdate = {
-              userId: user.userId,
+              userId: userContextCopy.userId,
               update: {
                 email: email.newEmail
               }
             }
+            console.log(objUpdate)
             axios.put('http://localhost:3000/db/user', objUpdate)
-              .then((data) => console.log(data, 'email successfully updated'))
+              .then((data) => console.log('I neeeed This', data, 'email successfully updated'))
               .catch((err) => console.log(err, 'itis err'))
             navigation.navigate('Profile')
             console.log('Email address updated successfully!');
