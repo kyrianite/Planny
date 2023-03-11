@@ -4,7 +4,7 @@ const placeholder1 = require('./images/placeholder-1.jpeg')
 const placeholder2 = require('./images/placeholder-2.webp')
 const placeholder3 = require('./images/placeholder-3.png')
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Chatroom from './chatroom'
 import { RootStackParamList } from '../../../RootStack';
 import axios from 'axios'
@@ -13,9 +13,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { UserContext } from '../../../App';
 
+import { RouteProp, useFocusEffect } from '@react-navigation/core';
+
 type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Your Homes'>;
 
-export default function MessageGroupList() {
+export default function MessageGroupList(route) {
 
   const navigation = useNavigation<CreateHouseScreenNavigationProp>();
   const { user, setUser } = useContext(UserContext);
@@ -171,6 +173,7 @@ export default function MessageGroupList() {
 
   // Use Effect to get user's rooms.
   useEffect(() => {
+    console.log(route)
     // Navigate to ChatRoomat page
     navigation.setOptions({
       title: '',
