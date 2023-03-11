@@ -1,5 +1,5 @@
 
-import React, { useContext, Component, useEffect, useState } from 'react';
+import React, { useContext, Component, useEffect, useState, useCallback } from 'react';
 import { StyleSheet, Text, TextInput, View, ScrollView, Image, BackHandler } from 'react-native';
 import io from 'socket.io-client';
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
@@ -12,12 +12,15 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Notifications } from 'react-native-notifications';
 import axios from 'axios'
 import { UserContext } from '../../../App';
+import { RouteProp, useFocusEffect } from '@react-navigation/core';
 
 
-type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Messages'>;
+type ChatRoomNavigationProp = NativeStackNavigationProp<RootStackParamList, 'ChatRoom'>;
+type ChatRoomScreenRouteProp = RouteProp<RootStackParamList, 'ChatRoom'>;
+type Props = { route: ChatRoomScreenRouteProp; navigation: ChatRoomNavigationProp };
 
 
-export default function Chatroom({ route }) {
+export default function Chatroom( {route, navigation}: Props) {
   const { user, setUser } = useContext(UserContext);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
@@ -26,7 +29,7 @@ export default function Chatroom({ route }) {
   // const [user, setUser] = useState(null);
   const [height, setHeight] = useState(41);
   // const { homeLocation } = navigation.state.params;
-  const navigation = useNavigation<CreateHouseScreenNavigationProp>();
+  // const navigation = useNavigation<CreateHouseScreenNavigationProp>();
 
   const timeOptions = { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', };
   var room123 = "Mom\'s House"; // this ref will be pulled from DB
@@ -36,13 +39,20 @@ export default function Chatroom({ route }) {
     return Number(str.replace(/[^0-9]/g, ''));
   }
 
-  useEffect(() => {
-    console.log('this is route: ', route.params.messageID)
-    axios.get('http://localhost:3000/db/message', {params: { messageId: route.params.messageID}}).then(({data}) => {
-      console.log(data[0].messages)
-      setMessages(data[0].messages)
-    })
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      navigation.setOptions({
+        title: '',
+        headerLeft: null,
+      });
+      console.log('this is route: ', route.params.messageID)
+      console.log('this is nav: ', navigation)
+      axios.get('http://localhost:3000/db/message', {params: { messageId: route.params.messageID}}).then(({data}) => {
+        console.log(data[0].messages)
+        setMessages(data[0].messages)
+      })
+    }, [route.params.homeLocation])
+  );
 
 
 
@@ -51,7 +61,7 @@ export default function Chatroom({ route }) {
       'hardwareBackPress',
       () => {
         navigation
-          .push('Your Homes')
+          .navigate('Messages')
         return true;
       }
     );
@@ -76,7 +86,8 @@ export default function Chatroom({ route }) {
       console.log(message)
       setMessages([...messages, message]);
     });
-    navigation.setOptions({ title: route.params.homeLocation})
+    //navigation.setOptions({ title: route.params.homeLocation})
+
   }, [messages, room, user]);
 
   // useEffect(() => {

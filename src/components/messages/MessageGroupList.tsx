@@ -4,7 +4,7 @@ const placeholder1 = require('./images/placeholder-1.jpeg')
 const placeholder2 = require('./images/placeholder-2.webp')
 const placeholder3 = require('./images/placeholder-3.png')
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Chatroom from './chatroom'
 import { RootStackParamList } from '../../../RootStack';
 import axios from 'axios'
@@ -13,13 +13,15 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { UserContext } from '../../../App';
 
+import { RouteProp, useFocusEffect } from '@react-navigation/core';
+
 type CreateHouseScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Your Homes'>;
 
-export default function MessageGroupList() {
+export default function MessageGroupList(route) {
 
   const navigation = useNavigation<CreateHouseScreenNavigationProp>();
   const { user, setUser } = useContext(UserContext);
-  const [messageID, setMessageID] = useState(null)
+  const [messageID, setMessageID] = useState([])
   const [searchTerm, setSearchTerm] = useState('');
   const [messages, setMessages] = useState([]);
   //Dummy room data in state for now
@@ -106,38 +108,38 @@ export default function MessageGroupList() {
 
   // CHANGE NAVIGATION TITLE ON BACK
 
-  useFocusEffect(
+  // useFocusEffect(
 
-    React.useCallback(() => {
-      // navigation.setOptions({ title: ''})
-      console.log('use focus test', user)
-      let tempHomes = []
-      if (user.household.length !== 0) {
-      let allRooms = user.household.flat()
-      for (var i = 0; i < allRooms.length; i++) {
-        //console.log(allRooms[i])
-        let z = i
-        axios.get('http://localhost:3000/db/household', {params: {householdId: allRooms[i]}}).then(({data}) => {
-          //console.log('this is msg id', data)
-          setMessageID(data[0].messageId)
-          // let temp = {householdName: 'data.householdName', lastMessage: '', lastMessager: ', avatar: data.photo}
-          console.log(data)
-          console.log([...data])
-          //setHomes([...homes, ...data])
-          tempHomes.push(data)
-          setHomes(tempHomes.flat())
-          //console.log('this is the bug:', data[0].messageId)
-          axios.get('http://localhost:3000/db/message', {params: { messageId: data[0].messageId}}).then(({data}) => {
-            //console.log('message data:', data[0].messages)
-            for (var j = 0; j < data[0].messages.length; j++) {
-              setMessages(data[0].messages[j])
-            }
-          }).catch((err) => console.error(err))
-        })
-      }
-    }
-    }, [])
-  );
+  //   React.useCallback(() => {
+  //     // navigation.setOptions({ title: ''})
+  //     console.log('use focus test', user)
+  //     let tempHomes = []
+  //     if (user.household.length !== 0) {
+  //     let allRooms = user.household.flat()
+  //     for (var i = 0; i < allRooms.length; i++) {
+  //       //console.log(allRooms[i])
+  //       let z = i
+  //       axios.get('http://localhost:3000/db/household', {params: {householdId: allRooms[i]}}).then(({data}) => {
+  //         //console.log('this is msg id', data)
+  //         setMessageID(data[0].messageId) //currently being overwritten
+  //         // let temp = {householdName: 'data.householdName', lastMessage: '', lastMessager: ', avatar: data.photo}
+  //         console.log(data)
+  //         console.log([...data])
+  //         //setHomes([...homes, ...data])
+  //         tempHomes.push(data)
+  //         setHomes(tempHomes.flat())
+  //         //console.log('this is the bug:', data[0].messageId)
+  //         axios.get('http://localhost:3000/db/message', {params: { messageId: data[0].messageId}}).then(({data}) => {
+  //           //console.log('message data:', data[0].messages)
+  //           for (var j = 0; j < data[0].messages.length; j++) {
+  //             setMessages(data[0].messages[j])
+  //           }
+  //         }).catch((err) => console.error(err))
+  //       })
+  //     }
+  //   }
+  //   }, [])
+  // );
 
   // useFocusEffect(
 
@@ -171,17 +173,25 @@ export default function MessageGroupList() {
 
   // Use Effect to get user's rooms.
   useEffect(() => {
+    console.log(route)
+    // Navigate to ChatRoomat page
+    navigation.setOptions({
+      title: '',
+      headerLeft: null,
+    });
       // console.log('all households', user.household)
       // console.log('all households, flattened', allRooms)
       let tempHomes = []
+      let tempIDs = []
       if (user.household.length !== 0) {
       let allRooms = user.household.flat()
       for (var i = 0; i < allRooms.length; i++) {
         //console.log(allRooms[i])
         let z = i
         axios.get('http://localhost:3000/db/household', {params: {householdId: allRooms[i]}}).then(({data}) => {
-          //console.log('this is msg id', data)
-          setMessageID(data[0].messageId)
+          //setMessageId
+          tempIDs.push(data[0].messageId)
+          setMessageID(tempIDs) // currently overwriting to the last messageId
           // let temp = {householdName: 'data.householdName', lastMessage: '', lastMessager: ', avatar: data.photo}
           console.log(data)
           console.log([...data])
@@ -192,7 +202,7 @@ export default function MessageGroupList() {
           axios.get('http://localhost:3000/db/message', {params: { messageId: data[0].messageId}}).then(({data}) => {
             //console.log('message data:', data[0].messages)
             for (var j = 0; j < data[0].messages.length; j++) {
-              setMessages(data[0].messages[j])
+              setMessages([...messages, data[0].messages[j]])
             }
           }).catch((err) => console.error(err))
         })
@@ -203,6 +213,7 @@ export default function MessageGroupList() {
   // Handles Search Function
   const handleSearchSubmit = () => {
     console.log('this is homes we map: ', homes)
+    console.log('this is all messages: ', messages)
     setSearchTerm('')
     const foundMessage = messages.message.includes(searchTerm)
     console.log(messages)
@@ -221,12 +232,13 @@ export default function MessageGroupList() {
           onPress={() => {
             // Navigate to ChatRoomat page
             navigation.setOptions({
-              title: home.householdName
+              title: ''
             });
-            navigation.navigate('ChatRoom', { messageID: messageID, homeLocation: home.householdName});
-            console.log('testing pressing and opacity', home)
-            console.log('this is homes: ', homes)
-            console.log('this is messages:', messages)
+            navigation.navigate('ChatRoom', { messageID: messageID[index], homeLocation: home.householdName});
+            // console.log('testing pressing and opacity', home)
+            // console.log('this is homes: ', homes)
+            // console.log('this is messages:', messages)
+            console.log(messageID)
           }}
         >
         <View key={home.householdName} style={{flexDirection: 'row', borderWidth: 2, backgroundColor: 'white', padding: 10, margin: 10, borderRadius: 20, marginBottom: 25, borderColor: index % 2 === 0 ? 'green' : '#B7DBDB'}}>
