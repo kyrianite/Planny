@@ -33,9 +33,7 @@ export default function CreateHouseScreen() {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onerror = reject;
-      reader.onload = () => {
-        resolve(reader.result);
-      };
+      reader.onload = () => { resolve(reader.result); };
       reader.readAsDataURL(blob);
     });
   };
@@ -52,12 +50,8 @@ export default function CreateHouseScreen() {
     await formData.append('file', base64Data);
     await formData.append('upload_preset', 'o9exuyqa');
     await axios.post('https://api.cloudinary.com/v1_1/dsiywf70i/image/upload', formData)
-      .then((res) => {
-        setImage(res.data.secure_url);
-      })
-      .catch((err) => {
-        console.log('post request to cloudinary err', err)
-      })
+      .then((res) => { setImage(res.data.secure_url); })
+      .catch((err) => { console.log('could not post to cloudinary', err) })
   }
 
   function loadingScreen() {
@@ -123,7 +117,6 @@ export default function CreateHouseScreen() {
 const tempStyling = StyleSheet.create({
   TInput: {
     height: 40, marginBottom: 30,
-    // borderWidth: 1, borderRadius: 5,
     borderBottomWidth: 1,
     textAlign: 'center',
     overflow: 'hidden', padding: 10
