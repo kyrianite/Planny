@@ -124,9 +124,7 @@ export default function ChangeEmail() {
         <View style={Styles.container}>
           <Button
             title="Submit"
-            onPress={() => {
-              onSubmit
-            }}
+            onPress={onSubmit}
             type="outline"
             buttonStyle={{paddingVertical: 7, borderColor: '#1D9D51', borderWidth: 2, borderRadius: 15}}
             titleStyle={{color: '#1D9D51', fontWeight: 'bold'}}

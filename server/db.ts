@@ -4,6 +4,7 @@ const model = require('./model')
 
 module.exports={
   updateUser: (objUpdate, callback) => {
+    console.log(objUpdate)
     model.User.updateOne({userId:objUpdate.userId}, objUpdate.update)
       .exec()
       .then((data) => callback(null, data))
