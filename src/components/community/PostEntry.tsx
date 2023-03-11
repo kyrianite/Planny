@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import Colors from '../../constants/ColorScheme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -43,12 +43,9 @@ export default function PostEntry(props: PostProps) {
     profilePicture
   } = props;
 
-  // console.log('messageId: ',messageId);
-
   const onLikePress = async () => {
     await axios.put(`http://localhost:${PORT}/db/communityLikes`, { "communityId": communityId })
       .then((res) => {
-        // console.log('SUCCESS WITH PUTTING LIKES: ', res.data)
         setUpdate(!update);
       })
       .catch((err) => console.error('ERR WITH PUTTING LIKES: ', err));
@@ -76,11 +73,8 @@ export default function PostEntry(props: PostProps) {
           ))}
         </ScrollView>
       </View> : null}
-
       <View style={styles.posttopic}>
-
         <Text>{topic}</Text>
-
       </View>
       <View style={styles.postFooter}>
         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={onLikePress}>
@@ -132,7 +126,6 @@ const styles = StyleSheet.create({
   posttopic: {
     marginBottom: 5,
   },
-
   postPhotoContainer: {
     flexDirection: 'row',
     justifyContent: 'center',

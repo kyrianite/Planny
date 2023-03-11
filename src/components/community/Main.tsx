@@ -3,14 +3,15 @@ import { useContext } from 'react';
 import { UserContext } from '../../../App';
 import { View, Text, ScrollView, Button, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { CommunityStackParamList } from '../../screens/Community';
 import PostEntry from './PostEntry';
 import Colors from '../../constants/ColorScheme';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { post, dummyPosts } from './dummyData';
+import { post } from './dummyData';
 import axios from 'axios';
 import { PORT } from '@env';
+import ReactLoading from 'react-loading';
 
 type MainScreenNavigationProp = NativeStackNavigationProp<CommunityStackParamList, 'Main'>;
 type MainScreenProps = {
@@ -20,45 +21,46 @@ type MainScreenProps = {
 
 export default function MainScreen({ update, setUpdate }: MainScreenProps) {
   const { user } = useContext(UserContext);
-  // console.log('user info in community: ', user);
-
   const navigation = useNavigation<MainScreenNavigationProp>();
   const [queryType, setQueryType] = useState('');
   const [searchText, setSearchText] = useState('');
   const [showBackIcon, setShowBackIcon] = useState(false);
   const [posts, setPosts] = useState<post[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   posts.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
 
   const getCommunity = async () => {
     await axios.get(`http://localhost:${PORT}/db/community`)
-    .then(async (res) => {
-      console.log('community length', res.data.length);
-      if (res.data.length === 0) {
-        return;
-      }
-      const newData = await Promise.all(res.data.map(async (item) => {
-        const messageRes = await axios.get(`http://localhost:${PORT}/db/message/?messageId=${item.messageId}`);
-        const userRes = await axios.get(`http://localhost:${PORT}/db/user/?userId=${item.userId}`);
-        // console.log('message id in main: ', item.messageId)
-        return {
-          communityId: item.communityId,
-          messageId: item.messageId,
-          firstName: userRes.data[0].firstName,
-          lastName: userRes.data[0].lastName,
-          profilePicture: userRes.data[0].profilePicture,
-          time: item.time,
-          topic: item.topic,
-          photos: item.photos,
-          plantType: item.plantType,
-          plantName: item.plantName,
-          likes: item.likes,
-          replies: messageRes.data[0].messages.length,
-        };
-      }));
-      setPosts([...newData])
-    })
-    .catch((err) => console.error('ERR WITH GETTING FROM COMMUNITY:: ', err));
+      .then(async (res) => {
+        console.log('community length', res.data.length);
+        if (res.data.length === 0) {
+          return;
+        }
+        const newData = await Promise.all(res.data.map(async (item) => {
+          const messageRes = await axios.get(`http://localhost:${PORT}/db/message/?messageId=${item.messageId}`);
+          const userRes = await axios.get(`http://localhost:${PORT}/db/user/?userId=${item.userId}`);
+          // console.log('message id in main: ', item.messageId)
+          return {
+            communityId: item.communityId,
+            messageId: item.messageId,
+            firstName: userRes.data[0].firstName,
+            lastName: userRes.data[0].lastName,
+            profilePicture: userRes.data[0].profilePicture,
+            time: item.time,
+            topic: item.topic,
+            photos: item.photos,
+            plantType: item.plantType,
+            plantName: item.plantName,
+            likes: item.likes,
+            replies: messageRes.data[0].messages.length,
+          };
+        }));
+        setPosts([...newData])
+        setLoading(false);
+
+      })
+      .catch((err) => console.error('ERR WITH GETTING FROM COMMUNITY:: ', err));
   }
 
 
@@ -74,7 +76,7 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
   };
 
   const showComment = (messageId: number) => {
-  navigation.navigate('Comment', {messageId});
+    navigation.navigate('Comment', { messageId });
   };
 
 
@@ -86,9 +88,11 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
     }
   });
 
-  useEffect(() => {
-    getCommunity();
-  }, [update]);
+  useFocusEffect(
+    React.useCallback(() => {
+      getCommunity();
+    }, [update])
+  );
 
   return (
     <View style={styles.container} >
@@ -108,29 +112,33 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
           <Text style={styles.addPostText}>+</Text>
         </TouchableOpacity>
       </View>
+      {loading && (posts.length === 0 || filterPosts.length === 0) ?
+        (<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ReactLoading type={'bubbles'} color='#2F7A3E' height={'30%'} width={'30%'} />
+      </View>) :
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollViewContent}>
 
-        {filterPosts.map((post, index) => (
-          <PostEntry
-            key={index}
-            communityId={post.communityId}
-            messageId={post.messageId}
-            firstName={post.firstName}
-            lastName={post.lastName}
-            profilePicture={post.profilePicture}
-            time={post.time}
-            topic={post.topic}
-            photos={post.photos}
-            plantType={post.plantType}
-            plantName={post.plantName}
-            likes={post.likes}
-            replies={post.replies}
-            showComment={() => showComment(post.messageId)}
-            update={update}
-            setUpdate={setUpdate}
+          {filterPosts.map((post, index) => (
+            <PostEntry
+              key={index}
+              communityId={post.communityId}
+              messageId={post.messageId}
+              firstName={post.firstName}
+              lastName={post.lastName}
+              profilePicture={post.profilePicture}
+              time={post.time}
+              topic={post.topic}
+              photos={post.photos}
+              plantType={post.plantType}
+              plantName={post.plantName}
+              likes={post.likes}
+              replies={post.replies}
+              showComment={() => showComment(post.messageId)}
+              update={update}
+              setUpdate={setUpdate}
             />
-        ))}
-      </ScrollView>
+          ))}
+      </ScrollView>}
     </View>
   )
 }
@@ -159,7 +167,7 @@ const styles = StyleSheet.create({
     right: 0,
     height: 50,
     zIndex: 1,
-    backgroundColor:'white'
+    backgroundColor: 'white'
   },
   searchIcon: {
     marginLeft: 10,

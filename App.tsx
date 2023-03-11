@@ -2,7 +2,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import RootStack from './RootStack';
-import AuthStack from './AuthStack';
 import MessagesScreen from './src/screens/Messages';
 import CommunityScreen from './src/screens/Community';
 import ProfileScreen from './src/screens/Profile';

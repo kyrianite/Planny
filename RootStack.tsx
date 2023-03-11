@@ -1,6 +1,4 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './src/screens/Home';
 import CreateHouseScreen from './src/screens/CreateHouse';
@@ -10,8 +8,6 @@ import PlantProfileScreen from './src/screens/PlantProfile';
 import AssignPlantCaretakerScreen from './src/screens/AssignPlantCaretaker';
 import MyPlantsScreen from './src/screens/MyPlants';
 import HouseGroupScreen from './src/screens/HouseGroup';
-import SignUpScreen from './src/screens/SignUp';
-import LoginScreen from './src/screens/Login'
 import MessageGroupList from './src/components/messages/MessageGroupList'
 import Chatroom from './src/components/messages/chatroom'
 import MessagesScreen from './src/screens/Messages'
@@ -44,9 +40,7 @@ export default function RootStack() {
 
   return (
       <Stack.Navigator initialRouteName="Home">
-        {/* <Stack.Screen name="Login" component={LoginScreen} options={{ tabBarVisible: false }}/>
-        <Stack.Screen name="SignUp" component={SignUpScreen} /> */}
-        {/* <Stack.Screen name="Home" component={HomeScreen} options={{ headerLeft: null }}/> */}
+
         <Stack.Screen
           name="Home"
           component={HomeScreen}
