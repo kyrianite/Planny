@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import ReactLoading from 'react-loading';
 import axios from 'axios';
 import { StyleSheet } from 'react-native';
-import Styles from '../constants/Styles';
 import ColorScheme from '../constants/ColorScheme';
 import { RootStackParamList } from '../../RootStack';
 import { UserContext } from '../../App';
@@ -117,9 +116,7 @@ export default function MyPlantsScreen() {
         <Text style={{fontWeight:'bold', fontSize: 25, marginLeft: 10}}>My Plants</Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false} style={tempStyling.ScrollStyle}>
-        {/* <View> */}
-          {makeButtons()}
-        {/* </View> */}
+        {makeButtons()}
       </ScrollView>
     </>
   )

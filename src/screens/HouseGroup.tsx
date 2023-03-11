@@ -10,7 +10,6 @@ import ColorScheme from '../constants/ColorScheme';
 import { StyleSheet } from 'react-native';
 import { RootStackParamList } from '../../RootStack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Styles from '../constants/Styles';
 
 const SERVER = `http://localhost:${PORT}/db`;
 type HouseGroupNavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -18,7 +17,6 @@ type HouseGroupNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 function cap(str) { return str.charAt(0).toUpperCase() + str.slice(1)};
 
 export default function HouseGroupScreen({navigation, route}) {
-  const nav = useNavigation<HouseGroupNavigationProp>();
   const [props, setProps] = React.useState({});
   const [groupName, setGroupName] = React.useState('Loading');
   const [groupId, setGroupId] = React.useState('Loading');
@@ -57,7 +55,6 @@ export default function HouseGroupScreen({navigation, route}) {
     makePlants();
   }, [])
 
-  // const props = route.params.p;
   function plantTouch() {
     if (loading) {
       return (
