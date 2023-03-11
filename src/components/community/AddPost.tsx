@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     top: '50%',
     left: '50%',
     transform: [{ translateX: -Dimensions.get('window').width / 4 }],
-    backgroundColor: 'lightgrey',
+    backgroundColor: Colors.porcelain,
     borderRadius: 20,
     height: 100,
     justifyContent: 'center',
