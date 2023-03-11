@@ -138,6 +138,7 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 20,
     flex: 1,
     flexDirection: 'column',
     alignContent: 'center',
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 10,
     position: 'absolute',
-    top: 0,
+    top: 20,
     left: 0,
     right: 0,
     height: 50,

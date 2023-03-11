@@ -31,6 +31,7 @@ export default function MessageGroupList() {
   const [memberName, setMemberName] = useState('');
   const [dbMessageId, setDbMesageId] = useState(null);
   const [offlineRoom, setOfflineRoom] = useState('')
+  const[bool, SetBool] = useState(null)
 
   // Fake House DATA
   // {householdName: 'Mom\'s house', lastMessage: 'I watered your flowers', lastMessager: 'PlantMama040', avatar: placeholder1}, {householdName:  'Dorm', lastMessage: 'bro my cactus!', lastMessager: 'Todd', avatar: placeholder3}, {householdName: 'Grandma\'s house', lastMessage: 'How do I care for a succulent?', lastMessager: 'GreenGranny', avatar: placeholder2}
@@ -106,10 +107,59 @@ export default function MessageGroupList() {
   // CHANGE NAVIGATION TITLE ON BACK
 
   useFocusEffect(
+
     React.useCallback(() => {
-      navigation.setOptions({ title: ''})
+      // navigation.setOptions({ title: ''})
+      console.log('use focus test', user)
+      let tempHomes = []
+      if (user.household.length !== 0) {
+      let allRooms = user.household.flat()
+      for (var i = 0; i < allRooms.length; i++) {
+        //console.log(allRooms[i])
+        let z = i
+        axios.get('http://localhost:3000/db/household', {params: {householdId: allRooms[i]}}).then(({data}) => {
+          //console.log('this is msg id', data)
+          setMessageID(data[0].messageId)
+          // let temp = {householdName: 'data.householdName', lastMessage: '', lastMessager: ', avatar: data.photo}
+          console.log(data)
+          console.log([...data])
+          //setHomes([...homes, ...data])
+          tempHomes.push(data)
+          setHomes(tempHomes.flat())
+          //console.log('this is the bug:', data[0].messageId)
+          axios.get('http://localhost:3000/db/message', {params: { messageId: data[0].messageId}}).then(({data}) => {
+            //console.log('message data:', data[0].messages)
+            for (var j = 0; j < data[0].messages.length; j++) {
+              setMessages(data[0].messages[j])
+            }
+          }).catch((err) => console.error(err))
+        })
+      }
+    }
     }, [])
   );
+
+  // useFocusEffect(
+
+  //   React.useCallback(() => {
+  //     for (var i = 0; i < user.household.length; i++) {
+  //       // console.log(user.household[i])
+  //       let z = i
+  //       axios.get('http://localhost:3000/db/household', {params: {householdId: user.household[i]}}).then(({data}) => {
+  //         console.log('this is msg id', data)
+  //         setMessageID(data[z].messageId)
+  //         // let temp = {householdName: 'data.householdName', lastMessage: '', lastMessager: ', avatar: data.photo}
+  //         setHomes([...homes, ...data])
+  //         axios.get('http://localhost:3000/db/message', {params: { messageId: data[z].messageId}}).then(({data}) => {
+  //           console.log('message data:', data[0].messages)
+  //           for (var j = 0; j < data[0].messages.length; j++) {
+  //             setMessages(data[0].messages[j])
+  //           }
+  //         }).catch((err) => console.error(err))
+  //       })
+  //     }
+  //   }, [])
+  // );
 
   // Use Effect for Search Functionality, ideally loads all messages from user's rooms for sorting.
   // useEffect(() => {
@@ -121,36 +171,45 @@ export default function MessageGroupList() {
 
   // Use Effect to get user's rooms.
   useEffect(() => {
-    console.log(user)
-    for (var i = 0; i < user.household.length; i++) {
-      // console.log(user.household[i])
-      let z = i
-      axios.get('http://localhost:3000/db/household', {params: {householdId: user.household[i]}}).then(({data}) => {
-        console.log('this is msg id', data)
-        setMessageID(data[z].messageId)
-        // let temp = {householdName: 'data.householdName', lastMessage: '', lastMessager: ', avatar: data.photo}
-        setHomes([...homes, ...data])
-        axios.get('http://localhost:3000/db/message', {params: { messageId: data[z].messageId}}).then(({data}) => {
-          console.log('message data:', data[0].messages)
-          for (var j = 0; j < data[0].messages.length; j++) {
-            setMessages(data[0].messages[j])
-          }
-        }).catch((err) => console.error(err))
-      })
+      // console.log('all households', user.household)
+      // console.log('all households, flattened', allRooms)
+      let tempHomes = []
+      if (user.household.length !== 0) {
+      let allRooms = user.household.flat()
+      for (var i = 0; i < allRooms.length; i++) {
+        //console.log(allRooms[i])
+        let z = i
+        axios.get('http://localhost:3000/db/household', {params: {householdId: allRooms[i]}}).then(({data}) => {
+          //console.log('this is msg id', data)
+          setMessageID(data[0].messageId)
+          // let temp = {householdName: 'data.householdName', lastMessage: '', lastMessager: ', avatar: data.photo}
+          console.log(data)
+          console.log([...data])
+          //setHomes([...homes, ...data])
+          tempHomes.push(data)
+          setHomes(tempHomes.flat())
+          //console.log('this is the bug:', data[0].messageId)
+          axios.get('http://localhost:3000/db/message', {params: { messageId: data[0].messageId}}).then(({data}) => {
+            //console.log('message data:', data[0].messages)
+            for (var j = 0; j < data[0].messages.length; j++) {
+              setMessages(data[0].messages[j])
+            }
+          }).catch((err) => console.error(err))
+        })
+      }
     }
   }, [])
 
   // Handles Search Function
   const handleSearchSubmit = () => {
+    console.log('this is homes we map: ', homes)
     setSearchTerm('')
     const foundMessage = messages.message.includes(searchTerm)
     console.log(messages)
     if (foundMessage) {
-      navigation.navigate('ChatRoom', { homeLocation: 'elite4', messageID: messageID});
+      navigation.navigate('ChatRoom', { homeLocation: homes[0].householdName, messageID: messageID});
     }
   };
-
-
 
   return (
     <View style={styles.container}>
@@ -175,7 +234,10 @@ export default function MessageGroupList() {
           <View style={{margin: 'auto', marginRight: 70, marginLeft: 15}}>
             <Text style={{fontWeight: 'bold', fontSize: '20px', textAlign: 'center', marginTop: 10 }}>{home.householdName}</Text>
             <View style={{maxWidth: 200, flexDirection: 'row'}}>
-              <Text style={{fontSize: '16px'}}>{messages.firstName}{' '}{messages.lastName}:</Text>
+              <Text style={{fontSize: '16px'}}>
+                {messages.firstName &&
+                messages.firstName + ' ' + messages.lastName + ':'
+                }</Text>
               <Text style={{marginLeft: 5, marginTop: 0.5}}>{messages.message}</Text>
             </View>
             <Text style={{fontSize: 12}}>{messages.time}</Text>

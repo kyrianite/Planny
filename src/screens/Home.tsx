@@ -146,7 +146,7 @@ const tempStyling = StyleSheet.create({
     justifyContent: 'center',
     width: '70%',
     // height: '12%',
-    minHeight:'20%',
+    minHeight:'10%',
     // padding: '7%',
     marginVertical: '3%',
     borderWidth: 2,

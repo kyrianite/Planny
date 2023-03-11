@@ -87,9 +87,9 @@ export default function ChangeEmail() {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: '#fff' }}>
-      <View>
-        <View style={Styles.container}>
+    <>
+      <View style={Styles.container}>
+        <View style={{width:'75%', alignItems: 'center'}}>
           <Text style={styles1.labelText}>Current Email</Text>
           <TextInput
             style={styles1.singleLineInput}
@@ -97,7 +97,7 @@ export default function ChangeEmail() {
             onChangeText={onEmailChange}
           />
         </View>
-        <View style={Styles.container}>
+        <View style={{width:'75%', alignItems: 'center'}}>
           <Text style={styles1.labelText}>Password</Text>
           <TextInput
             secureTextEntry={true}
@@ -105,7 +105,7 @@ export default function ChangeEmail() {
             onChangeText={onPasswordChange}
           />
         </View>
-        <View style={Styles.container}>
+        <View style={{width:'75%', alignItems: 'center'}}>
           <Text style={styles1.labelText}>New Password</Text>
           <TextInput
             secureTextEntry={true}
@@ -113,7 +113,7 @@ export default function ChangeEmail() {
             onChangeText={onNewPasswordChange}
           />
         </View>
-        <View style={Styles.container}>
+        <View style={{width:'75%', alignItems: 'center'}}>
           <Text style={styles1.labelText}>Confirm Password</Text>
           <TextInput
             secureTextEntry={true}
@@ -121,7 +121,7 @@ export default function ChangeEmail() {
             onChangeText={onConfirmPasswordChange}
           />
         </View>
-        <View style={Styles.container}>
+        <View>
           <Button
             title="Submit"
             onPress={onSubmit}
@@ -137,7 +137,7 @@ export default function ChangeEmail() {
       {loading && (
         <ActivityIndicator/>
       )}
-    </ScrollView>
+    </>
   );
 }
 
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 10,
+    // padding: 10,
   },
   title: {
     fontSize: 20,
@@ -186,6 +186,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  profileContainer: {
+    // flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  }
 });
 
 const styles1 = StyleSheet.create({
@@ -215,7 +222,8 @@ const styles1 = StyleSheet.create({
   },
   labelText: {
     fontWeight: 'bold',
-    marginTop: '5%'
+    // marginTop: '5%'
   },
+
 });
 
