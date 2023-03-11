@@ -1,11 +1,10 @@
+// in the terminal enter: node ./server/seedCommunity.js
 const axios = require('axios');
 require('dotenv').config();
 
 const { User } = require('./model.ts');
 
-// console.Console(db)
-
-// step1: Insert dummy data into Community
+//  Insert dummy data into Community
 console.log('create dummy users')
 
 const dummyUser = [
