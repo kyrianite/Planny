@@ -2,7 +2,6 @@ import * as React from 'react';
 import { UserContext } from '../../App';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
 import { PORT } from '@env';
 import axios from 'axios';
 import ReactLoading from 'react-loading';
