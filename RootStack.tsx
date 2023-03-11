@@ -14,6 +14,7 @@ import SignUpScreen from './src/screens/SignUp';
 import LoginScreen from './src/screens/Login'
 import MessageGroupList from './src/components/messages/MessageGroupList'
 import Chatroom from './src/components/messages/chatroom'
+import MessagesScreen from './src/screens/Messages'
 
 export type RootStackParamList = {
   // Login: undefined;
@@ -22,6 +23,7 @@ export type RootStackParamList = {
   JoinHouse: undefined;
   MyPlants: undefined;
   Messages: undefined;
+  ChatRoom: undefined;
   HouseGroup: { screen: string; p: object } | undefined;
   'Add New Plant': { houseId: number };
   'Plant Profile': { plantId: number, houseId: number | null};
@@ -94,15 +96,21 @@ export default function RootStack() {
         />
 
         <Stack.Screen
+          name="Messages"
+          component={MessagesScreen}
+          options={{ headerTitle: '', headerLeft: null, }}
+        />
+
+        <Stack.Screen
           name="Your Homes"
           component={MessageGroupList}
-          options={{ headerTitle: '' }}
+          options={{ headerTitle: '', headerLeft: null, }}
         />
 
         <Stack.Screen
           name="ChatRoom"
           component={Chatroom}
-          options={{ headerTitle: '' }}
+          options={{ headerTitle: '', headerLeft: null, }}
         />
 
       </Stack.Navigator>
