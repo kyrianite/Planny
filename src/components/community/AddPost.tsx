@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
@@ -9,7 +9,6 @@ import { useContext } from 'react';
 import { UserContext } from '../../../App';
 import axios from 'axios'
 import { PORT } from '@env';
-import Styles from '../../constants/Styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 type AddPostScreenNavigationProp = NativeStackNavigationProp<CommunityStackParamList, 'AddPost'>;
@@ -32,6 +31,9 @@ export default function AddPostScreen({ update, setUpdate }: AddPostScreenProps)
   const { user } = useContext(UserContext);
   const [showModal, setShowModal] = useState<boolean>(false); // add type for showModal
   const navigation = useNavigation<AddPostScreenNavigationProp>();
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = useState<string>('');
+
   const [newPost, setNewPost] = useState<NewPost>({
     userId: user?.userId ?? 'try1',
     time: new Date(),
@@ -65,6 +67,8 @@ export default function AddPostScreen({ update, setUpdate }: AddPostScreenProps)
       });
     }
 
+    setLoading(true); // set loading to true when user selects a photo
+
     let result = await ImagePicker.launchImageLibraryAsync()
     let base64Data;
     if (!result.canceled) {
@@ -77,13 +81,18 @@ export default function AddPostScreen({ update, setUpdate }: AddPostScreenProps)
       await axios.post('https://api.cloudinary.com/v1_1/dsiywf70i/image/upload', formData)
         .then(res => {
           setNewPost({ ...newPost, photos: [...newPost.photos, res.data.secure_url] });
+          setLoading(false); // set loading back to false when photo is uploaded
           console.log('success with uploading photo to cloudinary: ', res.data.secure_url);
         })
         .catch(err => console.error('err with uploading photo to cloudinary: ', err))
     }
   };
 
+
   const handleSubmit = async () => {
+    if (!newPost.topic) {
+      return;
+    }
     await setNewPost({ ...newPost, time: new Date() });
     console.log('time', newPost.time);
     await axios.post(`http://localhost:${PORT}/db/community`, newPost)
@@ -113,14 +122,24 @@ export default function AddPostScreen({ update, setUpdate }: AddPostScreenProps)
           value={newPost.plantName}
           onChangeText={onPlantNameChange}
         />
-        <Text style={styles.label}>Body</Text>
+        <Text style={styles.label}>Description</Text>
           <TextInput
             style={styles.addPostInput}
             multiline={true}
             numberOfLines={4}
             value={newPost.topic}
             onChangeText={onBodyChange}
+            placeholder={'write something...'}
+            onBlur={() => {
+              if (!newPost.topic) {
+                setError('Please write something in description');
+              } else {
+                setError('');
+              }
+            }}
           />
+          {error ? <Text style={styles.error}>{error}</Text> : null}
+
         {showModal && (
           <View style={styles.modal}>
             <Text style={styles.modalText}>Post submitted successfully!</Text>
@@ -129,9 +148,10 @@ export default function AddPostScreen({ update, setUpdate }: AddPostScreenProps)
             </TouchableOpacity>
           </View>
         )}
-        <View>
-          <Icon name="photo-camera" size={30} onPress={onPhotoSelect} />
 
+        <Icon name="photo-camera" size={40} onPress={onPhotoSelect} />
+          {loading &&  <ActivityIndicator/>}
+          <View>
           {newPost.photos.map((photo, index) => (
             <Image source={{ uri: photo }} style={styles.postPhoto} key={index} />
           ))}
@@ -175,14 +195,6 @@ const styles = StyleSheet.create({
     padding: 10,
     textAlign: 'center',
   },
-  // addPostContainer: {
-  //   height: 60,
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   marginTop: 10,
-  //   marginBottom: 30,
-  // },
   addPostInput: {
     width:'80%',
     height: 100,
@@ -195,12 +207,17 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   postPhoto: {
-    height: 30,
-    resizeMode: 'contain',
-    marginVertical: 2,
+    height: 50,
+    width: 50,
+    marginVertical: 5,
+  },
+  error: {
+    color: 'red',
+    fontSize: 14,
+    marginTop: 5,
+    marginBottom: 10,
   },
   button: {
-    // backgroundColor: Colors.sage,
     backgroundColor: '#1D9D51',
     paddingVertical: 10,
     paddingHorizontal: 15,

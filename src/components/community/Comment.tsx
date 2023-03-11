@@ -37,30 +37,7 @@ export default function CommentScreen({ update, setUpdate, route, navigation }: 
   const { user } = useContext(UserContext);
   const { messageId } = route.params ? route.params : { messageId: 0 } as CommentScreenRouteParams;
   const [newComment, setNewComment] = useState<String>('');
-
   const [comments, setComments] = useState<comment[]>([]);
-  // const [comments, setComments] = useState<comment[]>([
-  //   {
-  //     firstName: 'William',
-  //     lastName: 'Wong',
-  //     time: '2023-03-03',
-  //     message: 'so cute!!',
-  //   },
-  //   {
-  //     firstName: 'Quanjing',
-  //     lastName: 'Chen',
-  //     time: '2023-03-03',
-  //     message: 'nice!',
-  //   },
-  //   {
-  //     firstName: 'Sandy',
-  //     lastName: 'Chu',
-  //     time: '2023-03-04',
-  //     message: 'Where did you get it?',
-  //   }
-  // ]);
-  // console.log('messageId: ', messageId);
-
   const onCommentSubmit = async () => {
     const currentDate = new Date();
     const newCommentObj = {
@@ -81,10 +58,6 @@ export default function CommentScreen({ update, setUpdate, route, navigation }: 
   };
 
   const getComments = async () => {
-    if (messageId > 1000000) {
-      //demo data with messageId > 1000000, no need to make axios call
-      return;
-    }
     await axios.get(`http://localhost:${PORT}/db/message/?messageId=${messageId}`)
       .then(res => {
         const newData = res.data[0].messages.map(item => {
@@ -106,7 +79,6 @@ export default function CommentScreen({ update, setUpdate, route, navigation }: 
   return (
     <View style={styles.container}>
     <Text style={styles.title}>Comment</Text>
-
       {comments.map((comment, index) => (
         <View key={index} style={styles.commentContainer}>
           <View style={styles.commentHeader}>
@@ -124,7 +96,7 @@ export default function CommentScreen({ update, setUpdate, route, navigation }: 
       <View style={styles.addCommentContainer}>
         <TextInput
           style={styles.addCommentInput}
-          placeholder="Enter a comment"
+          placeholder="enter a comment"
           value={newComment}
           onChangeText={setNewComment}
         />
@@ -155,7 +127,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
     margin: 10,
-    // borderRadius: 20,
     borderBottomColor:Colors.sage,
     borderBottomWidth:0.2,
     borderStyle: 'dashed'
@@ -194,7 +165,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   button: {
-    // backgroundColor: Colors.sage,
     backgroundColor: '#1D9D51',
     paddingVertical: 10,
     paddingHorizontal: 15,
