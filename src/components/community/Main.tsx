@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { UserContext } from '../../../App';
 import { View, Text, ScrollView, Button, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { CommunityStackParamList } from '../../screens/Community';
 import PostEntry from './PostEntry';
 import Colors from '../../constants/ColorScheme';
@@ -88,9 +88,11 @@ export default function MainScreen({ update, setUpdate }: MainScreenProps) {
     }
   });
 
-  useEffect(() => {
-    getCommunity();
-  }, [update]);
+  useFocusEffect(
+    React.useCallback(() => {
+      getCommunity();
+    }, [update])
+  );
 
   return (
     <View style={styles.container} >
