@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet, Share } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import Colors from '../../constants/ColorScheme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { formatDistanceToNow } from 'date-fns';
@@ -55,11 +55,6 @@ export default function PostEntry(props: PostProps) {
     showComment();
   };
   const onSharePress = () => {
-    Share.share({
-      message: topic,
-      url: photos[0],
-      title: 'Check out this post on Planty!',
-    });
     console.log('share + 1')
   };
 
