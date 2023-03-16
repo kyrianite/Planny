@@ -60,11 +60,11 @@ Planny's aim is to foster collaboration and accountability by bringing household
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 <!-- Insert plant screenshots here -->
 <div align="center">
-  <img style="margin-right: 15px; margin-top: 15px;" src="assets/SSHome.png" alt="Home" width="288" height="640"></br>
-  <img style="margin-right: 15px; margin-top: 15px;" src="assets/SSPlantProfile.png" alt="Plant Profile" width="288" height="640"></br>
-  <img style="margin-right: 15px; margin-top: 15px;" src="assets/SSCommunity.png" alt="Community" width="288" height="640"></br>
-  <img style="margin-right: 15px; margin-top: 15px;" src="assets/SSProfile.png" alt="Profile" width="288" height="640"></br>
-  <img style="margin-right: 15px; margin-top: 15px;" src="assets/SSLogin.png" alt="Login" width="288" height="640">
+  <table><tr><td><img style="margin-right: 15px; margin-top: 15px;" src="assets/SSHome.png" alt="Home" width="288" height="640" /></td></tr></table></br>
+  <table><tr><td><img style="margin-right: 15px; margin-top: 15px;" src="assets/SSPlantProfile.png" alt="Plant Profile" width="288" height="640" /></td></tr></table></br>
+  <table><tr><td><img style="margin-right: 15px; margin-top: 15px;" src="assets/SSCommunity.png" alt="Community" width="288" height="640" /></td></tr></table></br>
+  <table><tr><td><img style="margin-right: 15px; margin-top: 15px;" src="assets/SSProfile.png" alt="Profile" width="288" height="640" /></td></tr></table></br>
+  <table><tr><td><img style="margin-right: 15px; margin-top: 15px;" src="assets/SSLogin.png" alt="Login" width="288" height="640" /></td></tr></table>
 </div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
